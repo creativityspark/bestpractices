@@ -21,7 +21,7 @@ Event Names: Create, Update, CreateUpdate, Delete, Assign, Child, Demand
 
 ## Examples
 
-- Contact - Create_Update - Send Notifications
+- Contact - CreateUpdate - Send Notifications
 - Account - Update - Validations
 - Order - Update - Move out of notice wait period
 - Product - Child - Set Reference Number
