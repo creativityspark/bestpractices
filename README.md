@@ -12,6 +12,15 @@ One of the purposes of the structure used is to facilitate the cloning of this r
 - Every good practice contains an ID and explanation of the reason for being a good practice. 
 - In cases where is necessary, examples should be provided. 
 
+# Categories
+
+- Power Apps
+  - Model Driven Apps
+    -  [Workflows](/PowerApps/ModelDrivenApps/Workflows.md)
+
+- Dataverse
+   - [Tables](/Dataverse/Tables.md)
+
 # Contribution
 
 Contribution is encouraged through pull requests and issues. 
