@@ -9,9 +9,12 @@ Workflows and Actions names must follow the pattern:
 ```
  [Table Schema Name] - [Event Name(s)] - [Action/Purpose]
 ```
-Table Schema Name: The name of the main table triggering this Workflow or Action.
-Event Name(s): Create, Update, CreateUpdate, Delete, Assign, Child, Demand.
-Action/Purpose: Brief text describing the purpose or the action taken by the Workflow or Action. 
+
+- Table Schema Name: The name of the main table triggering this Workflow or Action. * 
+- Event Name(s): Create, Update, CreateUpdate, Delete, Assign, Child, Demand. *
+- Action/Purpose: Brief text describing the purpose or the action taken by the Workflow or Action. 
+
+\* Camel Casing
 
 ## Rationale 
 
