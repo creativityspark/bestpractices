@@ -2,7 +2,7 @@
 
 Good practices for Dataverse Tables. 
 
-# 001
+# TAB-001
 
 Naming rules:
 
@@ -32,7 +32,7 @@ Naming rules:
 - [Dataverse and Model-Driven Apps Standards and Naming Conventions](https://docs.microsoft.com/en-us/microsoft-365/community/cds-and-model-driven-apps-standards-and-naming-conventions)
 - [Illustrated guide to entity creation in Dynamics CRM](https://crmtipoftheday.com/646/illustrated-guide-to-entity-creation-in-dynamics-crm)
 
-# 002
+# TAB-002
 
 Avoid creating new custom tables to replace existing system tables. If you need to do it so, rename the system entity with the OOTB prefix.
 
