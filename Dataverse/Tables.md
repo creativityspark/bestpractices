@@ -43,3 +43,15 @@ Avoid creating new custom tables to replace existing system tables. If you need 
 
 ## Additional Information
 - [When to use standard tables, and when to create new tables](https://docs.microsoft.com/en-us/learn/modules/get-started-with-powerapps-common-data-service/2-learn-about-entities)
+
+# TAB-003
+
+Every entity must have an icon configured. 
+The selected icon must be made available in .svg format as web resources in the solution.
+
+There are many sites providing access to free svg icons. The one below is just a proposal.
+https://freeicons.io/ 
+
+## Rationale
+
+Table icons are used in many places in the UI, and when they are not set, it gives a sense of unfinished or unpolished product. No matter how small your table is, is always recommended to add an icon, and it takes only a few minutes.

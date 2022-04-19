@@ -29,4 +29,4 @@ Contribution is encouraged through pull requests and issues.
 
 # License
 
-- This repository and its pages is shared within the terms of the [MIT license](/LICENSE).
+This repository and its pages is shared within the terms of the [MIT license](/LICENSE).
