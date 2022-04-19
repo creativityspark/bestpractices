@@ -1,4 +1,4 @@
-# Tables
+# Forms
 
 Good practices for Dataverse Forms. 
 
