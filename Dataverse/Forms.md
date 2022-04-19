@@ -4,7 +4,7 @@ Good practices for Dataverse Forms.
 
 # FRM-001
 
-Every entity main form must have a hidden Admin tab, containing all the system attributes, including status, owner, creation, modification dates, etc.
+Every table main form must have a hidden Admin tab, containing all the system attributes, including status, owner, creation, modification dates, etc.
 
 You can use a tool like [Level up for Dynamics](https://github.com/rajyraman/Levelup-for-Dynamics-CRM) to make the tab visible and access the values. 
 
