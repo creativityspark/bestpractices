@@ -9,10 +9,10 @@ Naming Rules:
 - The [*Snake Case*](https://en.wikipedia.org/wiki/Snake_case) notation must be used in the Name.
 - Avoid abbreviations on Display or Name as much as possible.
 - Make your Display Name as descriptive as possible, remembering this value can be changed if necessary.
-- Make the display name unique.
+- Make the Display Name unique.
 - If you need to use the same Display Name of an existing system field, change the system field Display Name to include the OOTB (Out-of-the-box) prefix. 
 - If the field type is Lookup it must end with the "_id" suffix.
-- If the field type is Lookup, remember to check the Relationship name, and adjust it to use the [*Snake Case*](https://en.wikipedia.org/wiki/Snake_case)  notation.
+- If the field type is Lookup, remember to check the Relationship name, and adjust it to use the [*Snake Case*](https://en.wikipedia.org/wiki/Snake_case) notation.
 - If you have multiple fields grouped logically, use the same prefix to all of them on the Name and Display Name. 
 
 ## Rationale
