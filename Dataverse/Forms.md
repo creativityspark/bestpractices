@@ -8,9 +8,9 @@ Every table main form must have a hidden Admin tab, containing all the system at
 
 You can use a tool like [Level up for Dynamics](https://github.com/rajyraman/Levelup-for-Dynamics-CRM) to make the tab visible and access the values. 
 
-![hidden-admin](/img/frm-001-hidden-admin.png)
+![Hidden Admin Tab](/img/frm-001-hidden-admin.png)
 
-![hidden-admin](/img/frm-001-hidden-admin-2.png)
+![Hidden Admin Tab](/img/frm-001-hidden-admin-2.png)
 
 ## Rationale
 

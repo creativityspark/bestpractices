@@ -27,14 +27,14 @@ Naming Rules:
 
 - Several fields grouped logically: csp_review_due_date, csp_review_completed_on, csp_review_link instead of csp_due_date_review, csp_review_completed_on, csp_link_review
 
-![hidden-admin](/img/fld-001-naming-rules.png)
+![Field Naming Rules](/img/fld-001-naming-rules.png)
 
 # FLD-002
 
 - Always include a description remembering that it will be shown as a tooltip in the user interface. 
 - If the field is for internal system purposes, start the description with "System Field.". Remember also to include it in the hidden admin tab [FRM-001](/Dataverse/Forms.md#frm-001)
 
-![hidden-admin](/img/fld-002-description.png)
+![Field Description](/img/fld-002-description.png)
 
 ## Rationale
 
