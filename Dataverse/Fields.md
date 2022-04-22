@@ -34,7 +34,7 @@ Naming Rules:
 - Always include a description remembering that it will be shown as a tooltip in the user interface. 
 - If the field is for internal system purposes, start the description with "System Field.". Remember also to include it in the hidden admin tab [FRM-001](/Dataverse/Forms.md#frm-001)
 
-![hidden-admin](/img/fld-002-description.png.png)
+![hidden-admin](/img/fld-002-description.png)
 
 ## Rationale
 
