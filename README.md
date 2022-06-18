@@ -18,12 +18,13 @@ The inclusion of an ID makes referencing and linking easier. You can use the rul
 
 - Power Apps
   - Model Driven Apps
-    -  [Workflows](/PowerApps/ModelDrivenApps/Workflows.md)
-
+    - [Workflows](/PowerApps/ModelDrivenApps/Workflows.md)
+- Power Pages
+  - [Component Naming](/PowerPages/Component-Naming.md)
 - Dataverse
-   - [Tables](/Dataverse/Tables.md)
-   - [Forms](/Dataverse/Forms.md)
-   - [Fields](/Dataverse/Fields.md)
+  - [Tables](/Dataverse/Tables.md)
+  - [Forms](/Dataverse/Forms.md)
+  - [Fields](/Dataverse/Fields.md)
 
 # Contribution
 
