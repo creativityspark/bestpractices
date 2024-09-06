@@ -1,6 +1,6 @@
 # Workflows
 
-Good practices for Model Driven Apps Workflows and Actions. 
+Good practices for Dataverse Classic Workflows and Actions. 
 
 # WF-001
 
@@ -18,10 +18,8 @@ Workflows and Actions names must follow the pattern:
 
 ## Rationale 
 
-- Having naming conventions in place makes the task of chosing names easier. 
-
+- Having naming conventions in place makes the task of choosing names easier. 
 - Including the table name at the beginning of the name, makes it easier to identify and select the workflows in the UI. 
-
 - Same applies to the event. Is immediately noticeable what's the trigger of the Workflow/Action.
 
 ## Examples
