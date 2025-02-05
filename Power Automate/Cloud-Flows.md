@@ -2,7 +2,7 @@
 
 Good practices for Power Automate flows. 
 
-# PA-001
+# PA-001: Naming
 
 Cloud flow names must follow the pattern:
 
@@ -50,10 +50,10 @@ Cloud flow names must follow the pattern:
 - **DV - Account - MOD - Validations**: Performs validations when an account record is updated in dataverse.
 - **SP - Orders - MOD - Move out of notice wait period**: Moves an order out of wait notice period when an item is updated in the Orders SharePoint list. 
 - **CF - Set Reference Number**: Child flow that sets a reference number.
-- **SCH - Daily - Set Status**: Schedule flow that runs daily and sets the status.
+- **SCH - Daily - Set Status**: Scheduled flow that runs daily and sets the status.
 - **PA - Orders Management - Cancel Record**: Called from the Orders Management Power App to Cancel a record.
 
-# PA-002
+# PA-002: Description
 
 All flows must have a description.
 
@@ -64,8 +64,7 @@ All flows must have a description.
 1. Well-documented flows improve collaboration among team members by providing clear context and reducing the learning curve for new team members.
 1. Descriptions can also serve as a reference for stakeholders to understand the business logic implemented in the flow.
 
-# PA-003
-Trigger Names
+# PA-003: Trigger Names
 
 Trigger names should be clear and descriptive to ensure that anyone reviewing the flow can quickly understand what initiates it.
 
@@ -85,15 +84,15 @@ Trigger names should be clear and descriptive to ensure that anyone reviewing th
 - When a new contact is added to Dataverse
 - When a file is created in SharePoint instead of File Created SP
 
-# PA-004
+# PA-004: Action Names
 
 Action Names:
 
-# PA-005
+# PA-005: Variable Names
 
 Variable Names:
 
-# PA-006
+# PA-006: Connection Reference Names
 Connection Reference Names:
 
 # More Information
