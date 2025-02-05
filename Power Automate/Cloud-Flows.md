@@ -46,12 +46,12 @@ Cloud flow names must follow the pattern:
 
 ## Examples
 
-- DV - Contact - NEWMOD - Send Notifications
-- DV - Account - MOD - Validations
-- SP - Orders - MOD - Move out of notice wait period
-- INS - Set Reference Number
-- SCH - Daily - Set Status
-- PA - Orders Management - Cancel Record
+- **DV - Contact - NEWMOD - Send Notifications**: Sends an notification when a record is created or modified in a Dataverse contact record.
+- **DV - Account - MOD - Validations**: Performs validations when an account record is updated in dataverse.
+- **SP - Orders - MOD - Move out of notice wait period**: Moves an order out of wait notice period when an item is updated in the Orders SharePoint list. 
+- **CF - Set Reference Number**: Child flow that sets a reference number.
+- **SCH - Daily - Set Status**: Schedule flow that runs daily and sets the status.
+- **PA - Orders Management - Cancel Record**: Called from the Orders Management Power App to Cancel a record.
 
 # PA-002
 
