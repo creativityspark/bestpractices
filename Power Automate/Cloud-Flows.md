@@ -86,14 +86,320 @@ Trigger names should be clear and descriptive to ensure that anyone reviewing th
 
 # PA-004: Action Names
 
-Action Names:
+All actions must be renamed from their default names to clear, descriptive names that explain what the action does.
+
+1. **Use a Verb-Noun Format**: Start with a verb that describes the action, followed by a noun that specifies the object. For example, `Get Customer Details` instead of `Get_item`.
+1. **Include Key Details**: Incorporate important details such as the data source and the entity being acted upon.
+1. **Be Consistent**: Use the same naming style (e.g., Title Case) across all actions in a flow.
+1. **Avoid Default Names**: Never leave the auto-generated action names like `Apply_to_each`, `Condition`, or `Compose`.
+
+## Rationale
+
+1. Descriptive action names make the flow self-documenting and easier to understand at a glance.
+1. When troubleshooting errors in flow run history, descriptive action names make it immediately obvious where the failure occurred.
+1. Expressions that reference other actions (e.g., `outputs('Get_Customer_Details')`) become much more readable when actions are named descriptively.
+1. When multiple team members work on the same flow, clear action names reduce the need for additional documentation.
+
+## Examples
+
+### Good
+
+- `Get Customer by Email`
+- `Send Approval Email to Manager`
+- `Filter Active Orders`
+- `Update Contact Status to Inactive`
+- `Apply to Each Invoice Line`
+- `Check if Account Exists`
+- `Parse JSON Response from API`
+
+### Bad
+
+- `Get_item` (default name, unclear which item)
+- `Compose` (default name, no indication of purpose)
+- `Apply_to_each` (default name, unclear what is being iterated)
+- `Condition` (default name, unclear what is being evaluated)
+- `HTTP` (default name, unclear what endpoint is being called)
 
 # PA-005: Variable Names
 
-Variable Names:
+Variable names must use **camelCase** notation and be prefixed with a short type indicator to make the data type immediately obvious.
+
+| Prefix | Data Type | Example            |
+| ------ | --------- | ------------------ |
+| str    | String    | strCustomerName    |
+| int    | Integer   | intRetryCount      |
+| bool   | Boolean   | boolIsApproved     |
+| arr    | Array     | arrEmailRecipients |
+| obj    | Object    | objApiResponse     |
+| flt    | Float     | fltTotalAmount     |
+
+1. **Use descriptive names**: The name should clearly indicate the purpose of the variable.
+1. **Avoid abbreviations**: Use full words to ensure clarity.
+1. **Avoid generic names**: Names like `temp`, `x`, or `var1` should never be used.
+
+## Rationale
+
+1. Type prefixes make it immediately clear what kind of data the variable holds without needing to inspect its initialization.
+1. Using camelCase notation is consistent with the expression language used in Power Automate.
+1. Descriptive variable names make the flow self-documenting and easier to maintain.
+1. When referencing variables in expressions, clear names prevent confusion and reduce errors.
+
+## Examples
+
+### Good
+
+- `strCustomerFullName`
+- `intNumberOfRetries`
+- `boolIsEligibleForDiscount`
+- `arrPendingApprovals`
+- `objOrderDetails`
+
+### Bad
+
+- `x` (no indication of purpose or type)
+- `temp` (unclear and generic)
+- `var1` (unclear and generic)
+- `name` (no type prefix, ambiguous)
+- `n` (single character, meaningless)
 
 # PA-006: Connection Reference Names
-Connection Reference Names:
+
+Connection reference names must follow the pattern:
+
+```
+[Publisher Prefix] - [Connector Name] - [Purpose/Context]
+```
+
+- Publisher Prefix: The solution publisher prefix to identify the owning solution.
+- Connector Name: The name of the connector (e.g., Dataverse, SharePoint, Outlook).
+- Purpose/Context: A brief description of what the connection is used for or the environment context.
+
+1. **Use service accounts**: Connections should use service accounts rather than personal user accounts.
+1. **Reuse connection references**: Share connection references across flows within the same solution instead of creating duplicates.
+1. **Document the connection**: Include a description explaining the purpose and the account used.
+
+## Rationale
+
+1. Descriptive connection reference names make it easier to manage connections across environments during solution deployment.
+1. Using service accounts prevents flow failures when individual users leave the organization or change roles.
+1. Reusing connection references reduces the number of connections that need to be configured when deploying solutions to new environments.
+1. Including the purpose in the name helps administrators quickly identify and troubleshoot connection issues.
+
+## Examples
+
+### Good
+
+- `csp - Dataverse - Main Application`
+- `csp - SharePoint - Document Library`
+- `csp - Outlook - Service Notifications`
+- `csp - Teams - Approval Notifications`
+
+### Bad
+
+- `My Connection` (no structure, no context)
+- `Dataverse` (missing publisher prefix and purpose)
+- `John's SharePoint` (personal account reference, no standard format)
+- `New Connection Reference` (default name, meaningless)
+
+# PA-007: Error Handling
+
+All cloud flows must implement error handling using the **Scope-based Try-Catch-Finally** pattern.
+
+1. **Try Scope**: Contains the main business logic of the flow.
+1. **Catch Scope**: Configured to run after the Try Scope has **failed**, **timed out**, or been **skipped**. Contains error notification and logging actions.
+1. **Finally Scope**: Configured to run after the Catch Scope regardless of its outcome. Contains cleanup actions.
+
+The Catch Scope should at minimum:
+1. Log the error details (flow name, action that failed, error message) to a centralized location (e.g., Dataverse table, SharePoint list).
+1. Send a notification to the flow owner or a support team.
+1. Terminate the flow with a **Failed** status and include the error message.
+
+## Rationale
+
+1. Without error handling, flow failures can go unnoticed, leading to data inconsistencies and broken business processes.
+1. The Scope-based pattern is the standard approach to error handling in Power Automate, as there is no native try-catch construct.
+1. Centralized error logging provides a single place to monitor and troubleshoot all flow failures.
+1. Sending notifications ensures that failures are addressed promptly.
+
+## Examples
+
+### Good
+
+```
+Scope: Try - Process Invoice
+    ├── Get Invoice from SharePoint
+    ├── Validate Invoice Data
+    └── Create Record in Dataverse
+Scope: Catch - Handle Errors (Run after: Try has failed, timed out, skipped)
+    ├── Log Error to Dataverse Errors Table
+    ├── Send Error Notification to Support Team
+    └── Terminate with Failed Status
+Scope: Finally - Cleanup (Run after: Catch)
+    └── Update Processing Status
+```
+
+### Bad
+
+- No error handling at all — the flow silently fails.
+- Using individual "Configure Run After" on each action instead of grouping logic into Scopes.
+- Catching errors but not logging or notifying anyone.
+
+# PA-008: Initialize Variables at the Top
+
+All variables must be initialized at the very beginning of the flow, before any other actions or logic.
+
+1. Group all `Initialize Variable` actions together at the top of the flow.
+1. Use a **Scope** named `Initialize Variables` to group them visually.
+1. Do not initialize variables inside conditions, loops, or other branches.
+
+## Rationale
+
+1. Power Automate requires variables to be initialized at the top level of the flow — they cannot be initialized inside conditions, loops, or scopes that run in parallel.
+1. Grouping all variable initializations at the top provides a clear overview of all the data the flow uses.
+1. It makes it easier to identify and update default values when reviewing the flow.
+1. A dedicated Scope for initialization keeps the flow organized and collapsible.
+
+## Examples
+
+### Good
+
+```
+Scope: Initialize Variables
+    ├── Initialize strCustomerEmail
+    ├── Initialize intRetryCount
+    ├── Initialize boolIsProcessed
+    └── Initialize arrResults
+Scope: Try - Main Logic
+    └── ...
+```
+
+### Bad
+
+```
+Get Items from SharePoint
+Initialize strCustomerEmail        ← Mixed with other actions
+Condition: Check Status
+    ├── Yes: Initialize intCount   ← Inside a condition (will cause an error)
+    └── No: ...
+```
+
+# PA-009: Avoid Hardcoded Values
+
+Avoid hardcoding values such as URLs, email addresses, IDs, or configuration settings directly in flow actions or expressions. Use **Environment Variables** instead.
+
+1. Store configurable values in **Environment Variables** within the solution.
+1. Reference environment variables in your flow expressions.
+1. For values that change between environments (dev, test, production), environment variables are mandatory.
+
+## Rationale
+
+1. Hardcoded values break flows when deploying across environments (e.g., development to production) because URLs, IDs, and endpoints differ.
+1. Environment variables can be updated without modifying the flow definition, reducing the risk of introducing errors.
+1. Using environment variables makes it easy to see all configurable values in one place.
+1. It simplifies the deployment process across multiple environments through solution management.
+
+## Examples
+
+### Good
+
+- Referencing an environment variable for a SharePoint site URL: `@{parameters('env_SharePointSiteUrl')}`
+- Using an environment variable for a notification email: `@{parameters('env_SupportTeamEmail')}`
+- Storing an API key in an environment variable: `@{parameters('env_ExternalApiKey')}`
+
+### Bad
+
+- Hardcoding a SharePoint URL: `https://contoso.sharepoint.com/sites/Operations`
+- Hardcoding an email address: `support@contoso.com`
+- Hardcoding a record GUID: `a1b2c3d4-e5f6-7890-abcd-ef1234567890`
+
+# PA-010: Use Child Flows for Reusability
+
+Extract reusable logic into **Child Flows** to avoid duplicating actions across multiple flows.
+
+1. A child flow should perform a single, well-defined task.
+1. Use clear input and output parameters to define the child flow's interface.
+1. Name child flows with the `CF -` prefix as defined in [PA-001](#pa-001-naming).
+1. Child flows must be **solution-aware** so they can be deployed across environments.
+
+## Rationale
+
+1. Duplicating the same logic across multiple flows leads to maintenance problems — a bug fix or change must be applied to every copy.
+1. Child flows promote a modular design where each flow has a single responsibility.
+1. Child flows reduce the total number of actions per flow, keeping flows under the 500-action limit and improving performance in the designer.
+1. Changes to shared logic only need to be made in one place when using child flows.
+
+## Examples
+
+### Good
+
+- A child flow `CF - Set Reference Number` that generates and assigns a reference number, called from multiple parent flows.
+- A child flow `CF - Send Notification Email` that accepts a recipient, subject, and body as inputs, used across all notification scenarios.
+- A child flow `CF - Validate Address` that validates and standardizes address data, reused by multiple record creation flows.
+
+### Bad
+
+- Copying and pasting the same 15 actions for sending a notification email into 10 different flows.
+- A single monolithic flow with 400+ actions that handles multiple unrelated processes.
+- Creating child flows for trivial single-action operations where the overhead is not justified.
+
+# PA-011: Add Notes to Complex Actions
+
+Use the built-in **Notes** feature to document complex expressions, business logic, and non-obvious design decisions within the flow.
+
+1. Add notes to actions that contain complex expressions or formulas.
+1. Document the business rule or requirement that drives a particular condition or branch.
+1. Explain any workarounds or non-obvious implementations.
+
+## Rationale
+
+1. Power Automate expressions can be difficult to read, especially when they involve nested functions. Notes provide human-readable context.
+1. Business rules are often not obvious from the flow structure alone. Notes help future maintainers understand the *why* behind the logic.
+1. Notes are visible directly in the designer, making them more discoverable than external documentation.
+1. When troubleshooting, notes can save significant time by explaining the expected behavior.
+
+## Examples
+
+### Good
+
+- Adding a note to a complex Compose action: _"Calculates the fiscal quarter based on the invoice date. Fiscal year starts in April."_
+- Adding a note to a Condition action: _"Checks if the order total exceeds the auto-approval threshold defined by Finance ($5,000)."_
+- Adding a note to an HTTP action: _"Calls the external tax calculation API. Retry logic is handled by the parent Scope."_
+
+### Bad
+
+- No notes anywhere in a flow with 50+ actions and complex expressions.
+- Adding obvious notes like _"This sends an email"_ on a `Send an email` action.
+
+# PA-012: Solution-Aware Flows
+
+All cloud flows must be created inside a **Solution**. Avoid creating flows outside of solutions (known as "non-solution flows" or "My Flows").
+
+1. Create all flows within a managed or unmanaged solution.
+1. Use a consistent solution publisher prefix.
+1. Include all related components (connection references, environment variables, child flows) in the same solution.
+
+## Rationale
+
+1. Solution-aware flows can be exported and imported across environments, enabling proper Application Lifecycle Management (ALM).
+1. Non-solution flows cannot be easily migrated between environments and are tied to the creator's account.
+1. Solution-aware flows support connection references, which decouple the flow from specific user connections.
+1. Solutions enable version control, change tracking, and managed deployments through pipelines.
+
+## Examples
+
+### Good
+
+- Creating a flow inside the `Orders Management` solution alongside its related tables, connection references, and environment variables.
+- Using a solution publisher prefix `csp` and including all flows for a business process in one solution.
+
+### Bad
+
+- Creating a flow from the **My Flows** section of the Power Automate portal.
+- Having related flows scattered across multiple solutions with no clear organization.
+- Creating flows outside of solutions and manually recreating them in each environment.
 
 # More Information
-- [Matthew Devaney - Power Automate Standards](https://www.matthewdevaney.com/power-automate-coding-standards-for-cloud-flows/power-automate-standards-naming-conventions/)
+- [Matthew Devaney - Power Automate Coding Standards](https://www.matthewdevaney.com/power-automate-coding-standards-for-cloud-flows/)
+- [Microsoft Learn - Power Automate Limits and Configuration](https://learn.microsoft.com/en-us/power-automate/limits-and-config)
+- [Microsoft Power Platform Guidance - Naming Conventions](https://learn.microsoft.com/en-us/power-platform/guidance/adoption/naming-conventions)
+- [Microsoft Learn - Solutions Overview](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/solutions-overview)
