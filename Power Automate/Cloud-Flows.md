@@ -1,33 +1,33 @@
-# Cloudflows
+# Cloud Flows
 
-Good practices for Power Automate flows. 
+Good practices for Power Automate flows.
 
 # PA-001: Naming
 
 Cloud flow names must follow the pattern:
 
 ```
-[Connector prefix] - [Data Store] - [Event Nam Code(s)] - [Action/Purpose]
+[Connector Prefix] - [Data Store] - [Event Name Code(s)] - [Action/Purpose]
 ```
 
-- Connector prefix: Identifies the connector used in the trigger of the flow.
-- Datastore: Identifies what data is behind the trigger. For example for Dataverse, it will be the table name. If the trigger is SharePoint, it will be the library. 
-- Event Name Code(s): Action that triggered the flow, like record creation or update.
-- Action/Purpose: Brief text describing the purpose or the action taken by the Flow.
+- Connector Prefix: Identifies the connector used in the trigger of the flow.
+- Data Store: Identifies what data is behind the trigger. For example, for Dataverse, it will be the table name. If the trigger is SharePoint, it will be the library.
+- Event Name Code(s): Action that triggered the flow, like record creation or update. Combine codes when the flow triggers on multiple events (e.g., `NEWMOD` for create and update).
+- Action/Purpose: Brief text describing the purpose or the action taken by the flow.
 
-\* If the connector does not have a data store associated, like a manual trigger this can be skipped
+\* If the connector does not have a data store associated, like a manual trigger, this can be skipped.
 
-## Trigger prefixes and Data Stores
+## Trigger Prefixes and Data Stores
 
-| Prefix | Connector                           | Datastore                                                |
+| Prefix | Connector                           | Data Store                                               |
 | ------ | ----------------------------------- | -------------------------------------------------------- |
 | DV     | Dataverse                           | Dataverse table or action                                |
 | SP     | SharePoint                          | SharePoint list                                          |
-| CF     | Instant, Child Flow, Button, Manual |
+| CF     | Instant, Child Flow, Button, Manual | N/A                                                      |
 | SCH    | Scheduled                           | Periodicity of the schedule. i.e., Daily, Weekly, Hourly |
-| PA     | Power Apps                          | Power Apps Name.                                         |
-| OUT    | Outlook                             | Mailbox name.                                            |
-| TEA    | Teams                               | Teams name.                                              |
+| PA     | Power Apps                          | Power Apps name                                          |
+| OUT    | Outlook                             | Mailbox name                                             |
+| TEA    | Teams                               | Teams name                                               |
 
 ## Event Name Codes
 
@@ -37,25 +37,30 @@ Cloud flow names must follow the pattern:
 |                       | MOD  | Record Updated     |
 |                       | DEL  | Record Deleted     |
 
-## Rationale 
+## Rationale
 
-1. Having naming conventions in place makes the task of choosing names easier. 
-1. Including the trigger prefix and the data store name at the beginning, makes it easier to identify and select the workflows in the UI. 
+1. Having naming conventions in place makes the task of choosing names easier.
+1. Including the trigger prefix and the data store name at the beginning makes it easier to identify and select the flows in the UI.
 1. Having naming conventions makes it easier to group similar flows together by the name.
 1. The Action/Purpose makes it very easy to see what the flow is doing.
 
 ## Examples
 
-- **DV - Contact - NEWMOD - Send Notifications**: Sends an notification when a record is created or modified in a Dataverse contact record.
-- **DV - Account - MOD - Validations**: Performs validations when an account record is updated in dataverse.
-- **SP - Orders - MOD - Move out of notice wait period**: Moves an order out of wait notice period when an item is updated in the Orders SharePoint list. 
+- **DV - Contact - NEWMOD - Send Notifications**: Sends a notification when a record is created or modified in a Dataverse Contact record.
+- **DV - Account - MOD - Validations**: Performs validations when an Account record is updated in Dataverse.
+- **SP - Orders - MOD - Move out of notice wait period**: Moves an order out of the wait notice period when an item is updated in the Orders SharePoint list.
 - **CF - Set Reference Number**: Child flow that sets a reference number.
 - **SCH - Daily - Set Status**: Scheduled flow that runs daily and sets the status.
-- **PA - Orders Management - Cancel Record**: Called from the Orders Management Power App to Cancel a record.
+- **PA - Orders Management - Cancel Record**: Called from the Orders Management Power App to cancel a record.
 
 # PA-002: Description
 
-All flows must have a description.
+All flows must have a description. The description should summarize the flow's purpose, the business process it supports, and any important details about its behavior.
+
+1. **State the purpose**: Explain what the flow does in one or two sentences.
+1. **Mention the trigger**: Briefly describe what initiates the flow.
+1. **Include business context**: Reference the business process or requirement the flow supports.
+1. **Note dependencies**: Mention any child flows, external APIs, or shared resources the flow relies on.
 
 ## Rationale
 
@@ -63,6 +68,19 @@ All flows must have a description.
 1. Descriptions help in documenting the flow's behavior, making it easier to troubleshoot and update in the future.
 1. Well-documented flows improve collaboration among team members by providing clear context and reducing the learning curve for new team members.
 1. Descriptions can also serve as a reference for stakeholders to understand the business logic implemented in the flow.
+
+## Examples
+
+### Good
+
+- _"Triggered when a Contact record is created or modified in Dataverse. Sends an email notification to the account manager with the updated contact details. Calls the CF - Send Notification Email child flow."_
+- _"Runs daily at 6:00 AM. Queries all open orders older than 30 days and updates their status to Expired. Part of the Order Lifecycle Management process."_
+
+### Bad
+
+- _"My flow"_ (meaningless, no context)
+- _"Handles stuff"_ (vague, no useful information)
+- No description at all
 
 # PA-003: Trigger Names
 
@@ -80,9 +98,17 @@ Trigger names should be clear and descriptive to ensure that anyone reviewing th
 
 ## Examples
 
-- When a new item is created
-- When a new contact is added to Dataverse
-- When a file is created in SharePoint instead of File Created SP
+### Good
+
+- `When a new item is created`
+- `When a new contact is added to Dataverse`
+- `When a file is created in SharePoint`
+
+### Bad
+
+- `File Created SP` (abbreviated, unclear)
+- `Manually trigger a flow` (default name, not descriptive)
+- `Recurrence` (default name, no indication of purpose)
 
 # PA-004: Action Names
 
