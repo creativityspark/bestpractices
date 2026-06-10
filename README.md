@@ -25,6 +25,7 @@ The inclusion of an ID makes referencing and linking easier. You can use the rul
   - [Tables](/Dataverse/Tables.md)
   - [Forms](/Dataverse/Forms.md)
   - [Fields](/Dataverse/Fields.md)
+  - [Classic Workflows](/Dataverse/Classic-Workflows.md)
 
 # Contribution
 

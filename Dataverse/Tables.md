@@ -60,3 +60,133 @@ There are many sites providing access to free svg icons. The ones below are just
 ## Rationale
 
 Table icons are used in many places in the UI, and when they are not set, it gives a sense of unfinished or unpolished product. No matter how small your table is, is always recommended to add an icon, and it takes only a few minutes.
+
+# TAB-004
+
+Choose the appropriate ownership type for each table based on the security requirements.
+
+1. Use **User or Team** ownership for tables that require row-level security (e.g., records where access should differ per user or team).
+1. Use **Organization** ownership for reference or master data tables where all users should have the same access (e.g., country lists, product catalogs, configuration tables).
+
+## Rationale
+
+1. User or Team ownership enables row-level security through Dataverse security roles, allowing fine-grained access control.
+1. Organization-owned tables are simpler to manage and have slightly better performance since the security engine does not need to evaluate row-level access.
+1. Changing ownership type after a table is created is not supported, so choosing the correct type upfront avoids having to recreate the table.
+
+## Examples
+
+### Good
+
+| Table               | Ownership Type | Reason                                                  |
+| ------------------- | -------------- | ------------------------------------------------------- |
+| Customer            | User or Team   | Different sales reps should only see their own customers |
+| Support Case        | User or Team   | Cases are assigned to specific agents                   |
+| Country             | Organization   | All users need to see all countries                     |
+| Configuration       | Organization   | System-wide settings accessible to everyone             |
+
+### Bad
+
+| Table               | Ownership Type | Problem                                                         |
+| ------------------- | -------------- | --------------------------------------------------------------- |
+| Country             | User or Team   | Unnecessarily complex; all users need the same access           |
+| Customer            | Organization   | No ability to restrict access per sales rep or team             |
+
+## More Information
+1. [Table ownership - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/types-of-entities)
+
+# TAB-005
+
+Enable auditing only on tables and columns where tracking changes is required by business or compliance needs.
+
+1. Do not enable auditing on all tables by default.
+1. Identify which tables contain sensitive or business-critical data and enable auditing only for those.
+1. Within audited tables, enable auditing only on columns that need to be tracked.
+1. Periodically review and clean up audit logs to manage storage.
+
+## Rationale
+
+1. Auditing every table and column generates large volumes of data that consumes storage and can impact performance.
+1. Selective auditing ensures that meaningful change history is captured without unnecessary overhead.
+1. Audit log retention must be managed to comply with data retention policies and control storage costs.
+
+## Examples
+
+### Good
+
+- Auditing enabled on the Customer table for the `credit_limit`, `status`, and `owner` columns because financial and ownership changes must be tracked.
+- Auditing enabled on the Order table for `order_status` and `total_amount` to support compliance requirements.
+
+### Bad
+
+- Auditing enabled on all tables and all columns "just in case", resulting in excessive storage usage and no clear audit strategy.
+- Auditing enabled on the Country reference table where values rarely change and tracking is not required.
+
+## More Information
+1. [Auditing overview - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/admin/manage-dataverse-auditing)
+1. [Configure tables and columns for auditing - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/admin/manage-dataverse-auditing)
+
+# TAB-006
+
+Define alternate keys for tables that participate in data integration or migration scenarios.
+
+1. Use alternate keys on fields that external systems use as unique identifiers (e.g., external IDs, codes, SKUs).
+1. Only define alternate keys on fields whose values are immutable or rarely change.
+1. Limit the number of alternate keys per table to avoid unnecessary index overhead.
+
+## Rationale
+
+1. Alternate keys allow external systems to reference Dataverse records without needing the internal GUID, simplifying integrations and upsert operations.
+1. Each alternate key creates an additional database index. Too many keys can negatively impact write performance.
+1. If an alternate key is defined on a field whose value changes frequently, it can cause key violations and integration failures.
+
+## Examples
+
+### Good
+
+- An `external_id` alternate key on the Customer table, mapped to the ERP system's customer number, used for upsert operations during data synchronization.
+- A composite alternate key on `product_code` and `region` for the Price List Item table to ensure unique pricing per region.
+
+### Bad
+
+- An alternate key on the `full_name` field of the Contact table, which is not unique and changes when contacts update their names.
+- Defining five or more alternate keys on a single table without a clear integration requirement.
+
+## More Information
+1. [Define alternate keys - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/define-alternate-keys-portal)
+
+# TAB-007
+
+Configure relationship cascade behaviors deliberately instead of relying on the default settings.
+
+1. Review the cascade behavior for Assign, Share, Unshare, Reparent, Delete, and Merge on every relationship.
+1. Use **Restrict** or **Remove Link** for Delete behavior unless cascading deletes are explicitly required.
+1. Avoid **Cascade All** unless child records must always follow the parent for all actions.
+1. Document the chosen cascade behavior and the reasoning behind it.
+
+## Rationale
+
+1. Default cascade settings may cause unintended mass updates, deletions, or reassignments when a parent record is modified.
+1. Cascading deletes on large hierarchies can cause long-running transactions and timeouts.
+1. Using Restrict on delete forces users to manually handle child records before deleting a parent, preventing accidental data loss.
+1. Explicit cascade configuration ensures predictable system behavior and avoids surprises during production use.
+
+## Examples
+
+### Good
+
+| Relationship                  | Delete Behavior | Reason                                              |
+| ----------------------------- | --------------- | --------------------------------------------------- |
+| Account → Contacts            | Remove Link     | Contacts may still be valid without the account     |
+| Order → Order Line Items      | Cascade All     | Line items have no meaning without the parent order |
+| Customer → Cases              | Restrict        | Cases must be resolved before deleting the customer |
+
+### Bad
+
+| Relationship                  | Delete Behavior | Problem                                                    |
+| ----------------------------- | --------------- | ---------------------------------------------------------- |
+| Account → All child tables    | Cascade All     | Deleting an account silently deletes all related records   |
+| Order → Order Line Items      | Remove Link     | Orphaned line items with no parent order                   |
+
+## More Information
+1. [Configure relationship cascade behavior - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/create-edit-entity-relationships-portal)
