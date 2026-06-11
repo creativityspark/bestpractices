@@ -16,15 +16,15 @@ The inclusion of an ID makes referencing and linking easier. You can use the rul
 
 # Categories
 
-- Power Apps
-  - Model Driven Apps
-    - [Workflows](/PowerApps/ModelDrivenApps/Workflows.md)
+- Power Automate
+  - [Cloud Flows](/Power%20Automate/Cloud-Flows.md)
 - Power Pages
   - [Component Naming](/PowerPages/Component-Naming.md)
 - Dataverse
   - [Tables](/Dataverse/Tables.md)
   - [Forms](/Dataverse/Forms.md)
   - [Fields](/Dataverse/Fields.md)
+  - [Classic Workflows](/Dataverse/Classic-Workflows.md)
 
 # Contribution
 
