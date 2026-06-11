@@ -19,6 +19,7 @@ The inclusion of an ID makes referencing and linking easier. You can use the rul
 - Power Automate
   - [Cloud Flows](/Power%20Automate/Cloud-Flows.md)
 - Power Pages
+  - [Power Pages](/PowerPages/Power-Pages.md)
   - [Component Naming](/PowerPages/Component-Naming.md)
 - Dataverse
   - [Tables](/Dataverse/Tables.md)
