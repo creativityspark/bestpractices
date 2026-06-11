@@ -1,12 +1,12 @@
 # Forms
 
-Good practices for Dataverse Forms. 
+Good practices for Dataverse Forms.
 
 # FRM-001
 
-1. Every table main form must have a hidden **Admin** tab, containing all the system attributes, including state, status, owner, creation, owning business unit, modification dates, etc.
+Every table main form must have a hidden **Admin** tab containing all the system attributes, including state, status, owner, creation date, owning business unit, and modification dates.
 
-You can use a tool like [Level up for Dynamics](https://github.com/rajyraman/Levelup-for-Dynamics-CRM) to make the tab visible and access the values. 
+You can use a tool like [Level up for Dynamics](https://github.com/rajyraman/Levelup-for-Dynamics-CRM) to make the tab visible and access the values.
 
 ![Hidden Admin Tab](/img/frm-001-hidden-admin.png)
 
@@ -14,7 +14,8 @@ You can use a tool like [Level up for Dynamics](https://github.com/rajyraman/Lev
 
 ## Rationale
 
-1. In many occasions there is need for testers and developers to be able to access and update these values. Having them in a hidden tab facilitates debugging and testing tasks.
+1. Testers and developers often need to access and update system attribute values. Having them in a hidden tab facilitates debugging and testing tasks.
+1. Keeping the tab hidden by default prevents end users from accidentally modifying system attributes.
 
 # FRM-002
 
@@ -146,3 +147,32 @@ Use Quick View Forms to display related record information without requiring nav
 
 ## More Information
 1. [Create and edit quick view forms - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/create-edit-quick-view-forms)
+
+# FRM-006
+
+Every form must have a description that explains its purpose and intended audience.
+
+1. **State the purpose**: Explain what the form is used for in one or two sentences.
+1. **Identify the audience**: Indicate which user roles or teams are expected to use this form.
+1. **Note special behavior**: Mention any business rules, JavaScript handlers, or non-obvious behavior associated with the form.
+
+## Rationale
+
+1. Dataverse tables can have multiple forms. Without descriptions, it is difficult to determine which form to assign to which security role or use case.
+1. Descriptions provide immediate context when managing forms in the solution, reducing the risk of accidental modifications to the wrong form.
+1. Documenting special behavior helps future developers understand the form's logic without having to inspect every event handler and business rule.
+
+## Examples
+
+### Good
+
+- _"Main form for the Customer Service team. Displays case details, communication history, and SLA timers. Includes a business rule to enforce phone number when origin is Phone."_
+- _"Quick create form for the Sales team. Captures essential lead information (name, email, source) for rapid entry during phone calls."_
+
+### Bad
+
+- _"Main form"_ — meaningless, does not differentiate from other forms.
+- No description at all — administrators have no way to tell forms apart beyond their name.
+
+## More Information
+1. [Create and edit model-driven app forms - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/create-design-forms)

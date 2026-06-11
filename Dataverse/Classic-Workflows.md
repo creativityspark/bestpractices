@@ -1,67 +1,145 @@
 # Workflows
 
-Good practices for Dataverse Classic Workflows and Actions. 
+Good practices for Dataverse Classic Workflows and Actions.
 
 # WF-001
 
-Workflows and Actions names must follow the pattern:
+Workflow and Action names must follow the pattern:
 
 ```
- [Table Schema Name] - [Event Name(s)] - [Action/Purpose]
+[App Prefix] - [Table Schema Name] - [Event Name Code(s)] - [Action/Purpose]
 ```
 
-- Table Schema Name: The name of the main table triggering this Workflow or Action. * 
-- Event Name(s): Create, Update, CreateUpdate, Delete, Assign, Child, Demand. *
-- Action/Purpose: Brief text describing the purpose or the action taken by the Workflow or Action. 
+- **App Prefix**: A short prefix (3 letters) that identifies the application the workflow belongs to. This helps group workflows from the same application together in any list.
+- **Table Schema Name**: The name of the main table triggering this Workflow or Action.
+- **Event Name Code(s)**: A short code identifying the triggering event. Combine codes when the workflow triggers on multiple events (e.g., `NEWMOD` for create and update).
+- **Action/Purpose**: Brief text describing the purpose or the action taken by the Workflow or Action.
 
-\* Camel Casing
+## Event Name Codes
 
-## Rationale 
+| Code    | Event              |
+| ------- | ------------------ |
+| NEW     | Record Created     |
+| MOD     | Record Updated     |
+| NEWMOD  | Created or Updated |
+| DEL     | Record Deleted     |
+| ASN     | Record Assigned    |
+| CHD     | Child Workflow     |
+| DMD     | On Demand          |
 
-- Having naming conventions in place makes the task of choosing names easier. 
-- Including the table name at the beginning of the name, makes it easier to identify and select the workflows in the UI. 
-- Same applies to the event. Is immediately noticeable what's the trigger of the Workflow/Action.
+## Rationale
+
+1. Having naming conventions in place makes the task of choosing names easier.
+1. Including the app prefix at the beginning groups all workflows belonging to the same application together when sorted alphabetically.
+1. Including the table name makes it easier to identify and select the workflows in the UI.
+1. Using short event name codes keeps the name concise while making the trigger immediately recognizable, and is consistent with the Power Automate flow naming conventions ([PA-001](/Power%20Automate/Cloud-Flows.md#pa-001)).
 
 ## Examples
 
-- Contact - CreateUpdate - Send Notifications
-- Account - Update - Validations
-- Order - Update - Move out of notice wait period
-- Product - Child - Set Reference Number
-- CaseBPF - Update - Set Status
-- CustomerRequest - Demand - Cancel Record
+### Good
+
+- `CRM - Contact - NEWMOD - Send Notifications`
+- `CRM - Account - MOD - Validations`
+- `OMS - Order - MOD - Move Out of Notice Wait Period`
+- `OMS - Product - CHD - Set Reference Number`
+- `CRM - CaseBPF - MOD - Set Status`
+- `OMS - CustomerRequest - DMD - Cancel Record`
+
+### Bad
+
+- `Send Notifications` — no prefix, no table name, no event; impossible to identify at a glance.
+- `Contact - CreateUpdate - Send Notifications` — missing the app prefix; uses long event name instead of a short code.
+
+## More Information
+1. [Configure workflow stages and steps - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/configure-workflow-steps)
 
 # WF-002
+
+All workflows and actions must have a description. The description should summarize the workflow's purpose, the business process it supports, and any important details about its behavior.
+
+1. **State the purpose**: Explain what the workflow does in one or two sentences.
+1. **Mention the trigger**: Briefly describe what event initiates the workflow.
+1. **Include business context**: Reference the business process or requirement the workflow supports.
+1. **Note dependencies**: Mention any child workflows, custom actions, or external resources the workflow relies on.
+
+## Rationale
+
+1. Providing a description for each workflow ensures that anyone reviewing or maintaining it can quickly understand its purpose and functionality.
+1. Descriptions help document the workflow's behavior, making it easier to troubleshoot and update in the future.
+1. Well-documented workflows improve collaboration among team members by providing clear context and reducing the learning curve for new team members.
+
+## Examples
+
+### Good
+
+- _"Triggered when a Contact record is created or updated. Sends an email notification to the account manager with the updated contact details. Calls the CRM - Contact - CHD - Send Notification Email child workflow."_
+- _"Runs on demand. Cancels the selected Customer Request record and updates all related Order records to Cancelled status. Part of the Customer Request Lifecycle process."_
+
+### Bad
+
+- _"My workflow"_ — meaningless, provides no context.
+- _"Handles stuff"_ — vague, no useful information.
+- No description at all.
+
+## More Information
+1. [Configure workflow stages and steps - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/configure-workflow-steps)
+
+# WF-003
 
 Set the workflow scope to the narrowest necessary level.
 
 1. Use **User** scope when the workflow should only run for records owned by the workflow owner.
 1. Use **Business Unit** scope when it should apply to all users within the same business unit.
 1. Use **Organization** scope only when the workflow must apply to all records across the entire organization.
-1. Assign workflow ownership to a dedicated service account rather than a named user.
 
 ## Rationale
 
 1. A narrower scope reduces the number of times the workflow is triggered, improving system performance.
 1. Overly broad scopes can cause the workflow to run on records it was never intended to process, leading to unexpected behavior.
-1. Using a service account as the workflow owner prevents the workflow from being disabled or orphaned when a named user leaves the organization or is deactivated.
 
 ## Examples
 
 ### Good
 
 - A workflow that sends a notification to the record owner when a Case is updated, scoped to **Organization** because all case owners need the notification.
-- A workflow that auto-approves expenses under $100, owned by a service account `svc_workflow@contoso.com`.
+- A workflow that generates a report for a specific business unit's records, scoped to **Business Unit**.
 
 ### Bad
 
 - A workflow scoped to **Organization** that only applies to a specific team's records, triggering unnecessarily for every user in the system.
-- A workflow owned by a named user `john.smith@contoso.com` — when John leaves the organization, the workflow stops running.
 
 ## More Information
 1. [Configure workflow stages and steps - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/configure-workflow-steps)
 
-# WF-003
+# WF-004
+
+Assign workflow ownership to a dedicated service account rather than a named user account.
+
+1. Create a dedicated service account (e.g., `svc_workflow@contoso.com`) to own all workflows.
+1. Ensure the service account has the appropriate security roles and remains active.
+1. Avoid assigning workflow ownership to individual users who may leave the organization or change roles.
+
+## Rationale
+
+1. When a named user leaves the organization or is deactivated, all workflows owned by that user stop running, potentially disrupting business processes.
+1. A dedicated service account provides a stable owner that is not affected by personnel changes.
+1. Centralizing workflow ownership under a service account makes it easier to manage permissions and audit workflow execution.
+
+## Examples
+
+### Good
+
+- All production workflows owned by a service account `svc_workflow@contoso.com` with the appropriate security roles.
+
+### Bad
+
+- A workflow owned by `john.smith@contoso.com` — when John leaves the organization, the workflow stops running and must be manually reassigned.
+- Multiple workflows owned by different individual users, making it difficult to track and maintain ownership.
+
+## More Information
+1. [Configure workflow stages and steps - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/configure-workflow-steps)
+
+# WF-005
 
 Prefer asynchronous (background) workflows over real-time (synchronous) workflows unless immediate validation or cancellation is required.
 
@@ -90,14 +168,14 @@ Prefer asynchronous (background) workflows over real-time (synchronous) workflow
 ## More Information
 1. [Real-time workflows vs background workflows - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/overview-realtime-workflows)
 
-# WF-004
+# WF-006
 
 Use child workflows to encapsulate reusable logic and keep parent workflows manageable.
 
 1. Extract repeated logic into child workflows that can be called from multiple parent workflows.
 1. Design child workflows to be self-contained — they should not rely on assumptions about the calling context.
 1. Keep parent workflows focused on orchestration and decision-making, delegating specific actions to child workflows.
-1. Include the word "Child" or use the Demand trigger to clearly identify child workflows.
+1. Use the `CHD` event code in the name to clearly identify child workflows (see [WF-001](#wf-001)).
 
 ## Rationale
 
@@ -109,7 +187,7 @@ Use child workflows to encapsulate reusable logic and keep parent workflows mana
 
 ### Good
 
-- A child workflow `Contact - Demand - Send Welcome Email` that handles all welcome email logic. Called by both the `Contact - Create - Onboarding` and `Lead - Update - Qualification` parent workflows.
+- A child workflow `CRM - Contact - CHD - Send Welcome Email` that handles all welcome email logic. Called by both the `CRM - Contact - NEW - Onboarding` and `CRM - Lead - MOD - Qualification` parent workflows.
 
 ### Bad
 
@@ -119,7 +197,7 @@ Use child workflows to encapsulate reusable logic and keep parent workflows mana
 ## More Information
 1. [Configure child workflows - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/configure-workflow-steps#child-workflows)
 
-# WF-005
+# WF-007
 
 Implement error handling and early termination in workflows.
 
