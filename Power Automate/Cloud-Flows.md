@@ -7,9 +7,10 @@ Good practices for Power Automate flows.
 Cloud flow names must follow the pattern:
 
 ```
-[Connector Prefix] - [Data Store] - [Event Name Code(s)] - [Action/Purpose]
+[App Prefix] - [Connector Prefix] - [Data Store] - [Event Name Code(s)] - [Action/Purpose]
 ```
 
+- App Prefix: A 3-letter code that identifies the application the flow belongs to. This ensures all flows for the same app appear grouped together in lists. If the flow belongs to multiple apps or is shared across applications, omit this prefix.
 - Connector Prefix: Identifies the connector used in the trigger of the flow.
 - Data Store: Identifies what data is behind the trigger. For example, for Dataverse, it will be the table name. If the trigger is SharePoint, it will be the library.
 - Event Name Code(s): Action that triggered the flow, like record creation or update. Combine codes when the flow triggers on multiple events (e.g., `NEWMOD` for create and update).
@@ -40,18 +41,19 @@ Cloud flow names must follow the pattern:
 ## Rationale
 
 1. Having naming conventions in place makes the task of choosing names easier.
-1. Including the trigger prefix and the data store name at the beginning makes it easier to identify and select the flows in the UI.
+1. The app prefix groups all flows belonging to the same application together in alphabetical lists, making it easy to find and manage them.
+1. Including the trigger prefix and the data store name makes it easier to identify and select the flows in the UI.
 1. Having naming conventions makes it easier to group similar flows together by the name.
 1. The Action/Purpose makes it very easy to see what the flow is doing.
 
 ## Examples
 
-- **DV - Contact - NEWMOD - Send Notifications**: Sends a notification when a record is created or modified in a Dataverse Contact record.
-- **DV - Account - MOD - Validations**: Performs validations when an Account record is updated in Dataverse.
-- **SP - Orders - MOD - Move out of notice wait period**: Moves an order out of the wait notice period when an item is updated in the Orders SharePoint list.
-- **CF - Set Reference Number**: Child flow that sets a reference number.
-- **SCH - Daily - Set Status**: Scheduled flow that runs daily and sets the status.
-- **PA - Orders Management - Cancel Record**: Called from the Orders Management Power App to cancel a record.
+- **ORM - DV - Contact - NEWMOD - Send Notifications**: Sends a notification when a record is created or modified in a Dataverse Contact record. Part of the Orders Management (ORM) app.
+- **ORM - DV - Account - MOD - Validations**: Performs validations when an Account record is updated in Dataverse. Part of the Orders Management (ORM) app.
+- **ORM - SP - Orders - MOD - Move out of notice wait period**: Moves an order out of the wait notice period when an item is updated in the Orders SharePoint list. Part of the Orders Management (ORM) app.
+- **HRO - CF - Set Reference Number**: Child flow that sets a reference number. Part of the HR Onboarding (HRO) app.
+- **HRO - SCH - Daily - Set Status**: Scheduled flow that runs daily and sets the status. Part of the HR Onboarding (HRO) app.
+- **PA - Orders Management - Cancel Record**: Called from the Orders Management Power App to cancel a record. Shared across multiple apps, so no app prefix is used.
 
 # PA-002: Description
 
