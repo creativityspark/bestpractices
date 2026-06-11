@@ -16,6 +16,8 @@ The inclusion of an ID makes referencing and linking easier. You can use the rul
 
 # Categories
 
+- Power Apps
+  - [Canvas Apps](/Power%20Apps/Power-Apps.md)
 - Power Automate
   - [Cloud Flows](/Power%20Automate/Cloud-Flows.md)
 - Power Pages
