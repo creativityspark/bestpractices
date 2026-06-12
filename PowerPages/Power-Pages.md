@@ -36,7 +36,7 @@ Always configure table permissions for every Dataverse table exposed on the port
 
 ## More Information
 1. [Table permissions in Power Pages - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/security/table-permissions)
-1. [Power Pages security best practices - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/security/best-practices)
+1. [Power Pages security - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/security/power-pages-security)
 
 # PP-002: Web Roles
 
@@ -68,7 +68,7 @@ Define granular web roles that map to distinct user personas. Assign table permi
 
 ## More Information
 1. [Create web roles for Power Pages - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/security/create-web-roles)
-1. [Power Pages security best practices - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/security/best-practices)
+1. [Power Pages security - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/security/power-pages-security)
 
 # PP-003: Liquid Templates
 
@@ -130,101 +130,53 @@ Keep Liquid templates focused on presentation logic. Avoid embedding complex bus
 1. [Liquid overview - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/liquid/liquid-overview)
 1. [Work with Liquid templates - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/liquid/liquid-types)
 
-# PP-004: FetchXML Queries
+# PP-004: Header and Footer Output Caching
 
-Write efficient FetchXML queries by selecting only the columns you need, filtering early, and limiting the result set.
+Enable header and footer output caching to improve portal performance. This caching mechanism applies specifically to the header and footer web templates, which are rendered on every page and can become a performance bottleneck on high-traffic sites.
 
-1. Select only the attributes required for the current view. Avoid using `all-attributes`.
-1. Apply `<filter>` conditions to restrict the data returned at the database level.
-1. Use the `top` or `count` attribute on the `<fetch>` element to limit the number of records returned.
-1. Use `paging-cookie` for paginated result sets.
-1. Always alias linked entities for clarity and to avoid ambiguity.
+> **Note:** This rule covers header and footer output caching. For broader page-level caching strategies, consider implementing caching at the CDN or reverse-proxy level as part of your infrastructure design.
+
+1. Set the site setting `Header/OutputCache/Enabled` to `true` and `Footer/OutputCache/Enabled` to `true`.
+1. Set `Header/OutputCache/Duration` and `Footer/OutputCache/Duration` to a value in seconds that reflects how frequently the header and footer content changes.
+1. Avoid placing highly dynamic or user-specific content directly in header or footer web templates when caching is enabled.
+1. If personalized elements (e.g., user name, notifications) must appear in the header, load them asynchronously via JavaScript after the cached header has rendered.
 
 ## Rationale
 
-1. Fetching all attributes returns unnecessary data, increasing page load time and memory usage.
-1. Filtering early reduces the amount of data transferred from Dataverse, improving response times.
-1. Unbounded queries can return thousands of records, causing timeouts or excessive rendering times on the portal.
-1. Paging ensures consistent performance regardless of data volume.
+1. The header and footer web templates are rendered on every single page of the portal. Without caching, the Liquid code in these templates executes on every request, adding unnecessary overhead.
+1. Caching headers and footers significantly reduces server-side rendering time, especially when they contain FetchXML queries, content snippets, or complex Liquid logic.
+1. Placing dynamic per-user content in cached headers or footers causes all users to see the same cached output, leading to incorrect information being displayed.
 
 ## Examples
 
 ### Good
 
-```liquid
-{% fetchxml active_accounts %}
-  <fetch top="10">
-    <entity name="account">
-      <attribute name="name" />
-      <attribute name="emailaddress1" />
-      <filter type="and">
-        <condition attribute="statecode" operator="eq" value="0" />
-      </filter>
-      <order attribute="name" />
-    </entity>
-  </fetch>
-{% endfetchxml %}
-```
+| Site Setting                       | Value   | Reason                                         |
+| ---------------------------------- | ------- | ---------------------------------------------- |
+| `Header/OutputCache/Enabled`       | `true`  | Enables caching for the header web template    |
+| `Footer/OutputCache/Enabled`       | `true`  | Enables caching for the footer web template    |
+| `Header/OutputCache/Duration`      | `3600`  | 1-hour cache; header content rarely changes    |
+| `Footer/OutputCache/Duration`      | `3600`  | 1-hour cache; footer content rarely changes    |
 
 ### Bad
 
-```liquid
-{% fetchxml all_accounts %}
-  <fetch>
-    <entity name="account">
-      <all-attributes />
-    </entity>
-  </fetch>
-{% endfetchxml %}
-```
+| Site Setting                       | Value     | Problem                                                           |
+| ---------------------------------- | --------- | ----------------------------------------------------------------- |
+| `Header/OutputCache/Enabled`       | `false`   | Header Liquid code executes on every page load                    |
+| `Header/OutputCache/Duration`      | `10`      | Too short; frequent cache invalidation negates the benefit        |
+| Header template includes `{{ user.fullname }}` inline | N/A | All users see the same cached name after the first render |
 
 ## More Information
-1. [Use FetchXML in Power Pages - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/liquid/liquid-fetchxml)
+1. [Enable header and footer output caching - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/enable-header-footer-output-caching)
 
-# PP-005: Page Output Caching
-
-Enable page output caching for pages that do not require real-time data. Configure cache duration and vary parameters appropriately.
-
-1. Set the site setting `OutputCache:Enabled` to `true`.
-1. Set `OutputCache:Duration` to a value in seconds that reflects how frequently the content changes.
-1. Use `OutputCache:VaryByParam` to differentiate cached content when pages serve different results based on query string parameters.
-1. Avoid caching pages with highly personalized or user-specific content unless you vary by user.
-
-## Rationale
-
-1. Output caching reduces the number of Liquid rendering passes and Dataverse queries per page load, significantly improving response times.
-1. Without caching, every request triggers a full server-side rendering cycle, which is expensive on high-traffic sites.
-1. Incorrect vary parameters can cause users to see stale or another user's cached content.
-
-## Examples
-
-### Good
-
-| Site Setting               | Value   | Reason                                     |
-| -------------------------- | ------- | ------------------------------------------ |
-| `OutputCache:Enabled`      | `true`  | Enables output caching site-wide           |
-| `OutputCache:Duration`     | `300`   | 5-minute cache for semi-static content     |
-| `OutputCache:VaryByParam`  | `id`    | Caches separate versions per record ID     |
-
-### Bad
-
-| Site Setting               | Value     | Problem                                                       |
-| -------------------------- | --------- | ------------------------------------------------------------- |
-| `OutputCache:Enabled`      | `false`   | No caching; every request renders from scratch                |
-| `OutputCache:Duration`     | `86400`   | 24-hour cache on a page with frequently changing data         |
-| `OutputCache:VaryByParam`  | *(empty)* | All users see the same cached page regardless of parameters   |
-
-## More Information
-1. [Page output caching in Power Pages - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/page-output-caching)
-
-# PP-006: Basic and Advanced Forms
+# PP-005: Basic and Advanced Forms
 
 Configure forms with proper validation and table permissions. Use basic forms for simple data entry and advanced forms for multi-step processes.
 
 1. Always pair forms with table permissions that enforce the correct scope and operations for the target table.
 1. Enable field-level validation (required fields, data types, ranges) to ensure data quality.
 1. Use advanced forms (multi-step forms) when the data collection process has a logical workflow with multiple stages.
-1. Avoid exposing system fields or sensitive columns on portal forms.
+1. Avoid exposing system fields or sensitive columns on portal forms (e.g., `ownerid`, `createdby`, `modifiedby`, `statecode`, `statuscode`, internal pricing fields, or security-related columns such as password hashes).
 1. Set the form mode (Insert, Edit, Read Only) explicitly and do not rely on default behavior.
 
 ## Rationale
@@ -248,9 +200,9 @@ Configure forms with proper validation and table permissions. Use basic forms fo
 
 ## More Information
 1. [Basic forms in Power Pages - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/basic-forms)
-1. [Advanced forms in Power Pages - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/advanced-form-overview)
+1. [Multistep forms in Power Pages - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/getting-started/multistep-forms)
 
-# PP-007: Custom JavaScript
+# PP-006: Custom JavaScript
 
 Minimize custom JavaScript on portal pages. When JavaScript is necessary, follow secure coding practices and keep scripts maintainable.
 
@@ -282,7 +234,7 @@ Minimize custom JavaScript on portal pages. When JavaScript is necessary, follow
 ## More Information
 1. [Add custom JavaScript to Power Pages - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/add-custom-javascript)
 
-# PP-008: ALM and Source Control
+# PP-007: ALM and Source Control
 
 Manage Power Pages configuration as code using the Power Platform CLI. Store portal artifacts in source control and deploy through automated pipelines.
 
@@ -313,10 +265,10 @@ Manage Power Pages configuration as code using the Power Platform CLI. Store por
 - Portal configuration is shared between developers via email or file shares with no version history.
 
 ## More Information
-1. [Power Pages ALM overview - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/power-pages-alm)
+1. [Power Pages ALM overview - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/portals-alm)
 1. [Power Platform CLI overview - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction)
 
-# PP-009: Anonymous Access
+# PP-008: Anonymous Access
 
 Restrict anonymous access to the minimum set of pages and data required for unauthenticated users. Explicitly review every permission granted to the Anonymous Users web role.
 
@@ -344,9 +296,9 @@ Restrict anonymous access to the minimum set of pages and data required for unau
 - No page permissions configured, so all portal pages are visible to unauthenticated users including administrative dashboards.
 
 ## More Information
-1. [Power Pages security best practices - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/security/best-practices)
+1. [Power Pages security - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/security/power-pages-security)
 
-# PP-010: Content Snippets
+# PP-009: Content Snippets
 
 Use content snippets for reusable text, labels, and messages that appear across multiple pages. Avoid duplicating the same content in multiple web templates.
 
