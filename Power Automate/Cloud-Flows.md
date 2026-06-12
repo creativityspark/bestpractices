@@ -55,6 +55,10 @@ Cloud flow names must follow the pattern:
 - **HRO - SCH - Daily - Set Status**: Scheduled flow that runs daily and sets the status. Part of the HR Onboarding (HRO) app.
 - **PA - Orders Management - Cancel Record**: Called from the Orders Management Power App to cancel a record. Shared across multiple apps, so no app prefix is used.
 
+## More Information
+1. [Matthew Devaney - Power Automate Coding Standards](https://www.matthewdevaney.com/power-automate-coding-standards-for-cloud-flows/)
+1. [Microsoft Power Platform Guidance - Naming Conventions](https://learn.microsoft.com/en-us/power-platform/guidance/adoption/naming-conventions)
+
 # PA-002: Description
 
 All flows must have a description. The description should summarize the flow's purpose, the business process it supports, and any important details about its behavior.
@@ -272,6 +276,9 @@ Scope: Finally - Cleanup (Run after: Catch)
 - Using individual "Configure Run After" on each action instead of grouping logic into Scopes.
 - Catching errors but not logging or notifying anyone.
 
+## More Information
+1. [Microsoft Learn - Power Automate Limits and Configuration](https://learn.microsoft.com/en-us/power-automate/limits-and-config)
+
 # PA-008: Initialize Variables at the Top
 
 All variables must be initialized at the very beginning of the flow, before any other actions or logic.
@@ -426,8 +433,87 @@ All cloud flows must be created inside a **Solution**. Avoid creating flows outs
 - Having related flows scattered across multiple solutions with no clear organization.
 - Creating flows outside of solutions and manually recreating them in each environment.
 
-# More Information
-- [Matthew Devaney - Power Automate Coding Standards](https://www.matthewdevaney.com/power-automate-coding-standards-for-cloud-flows/)
-- [Microsoft Learn - Power Automate Limits and Configuration](https://learn.microsoft.com/en-us/power-automate/limits-and-config)
-- [Microsoft Power Platform Guidance - Naming Conventions](https://learn.microsoft.com/en-us/power-platform/guidance/adoption/naming-conventions)
-- [Microsoft Learn - Solutions Overview](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/solutions-overview)
+## More Information
+1. [Microsoft Learn - Solutions Overview](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/solutions-overview)
+
+# PA-013: Dataverse Trigger Configuration
+
+Dataverse triggers must always be configured with the specific fields that should trigger the flow, and must include condition expressions to filter the triggering events.
+
+1. **Select triggering columns**: In the trigger's **Column filter** property, specify only the columns that should cause the flow to run. Never leave this empty to trigger on all column changes.
+1. **Add filter expressions**: Use the trigger's **Filter rows** property to include condition expressions (OData filter) that limit when the flow fires (e.g., only when a status changes to a specific value).
+1. **Combine column and row filters**: Use both column filters and row filter expressions together to ensure the flow only triggers when the relevant data changes meet the expected criteria.
+
+## Rationale
+
+1. Without a column filter, the flow triggers on every update to the record, even for irrelevant field changes. This leads to unnecessary flow runs, wasted API calls, and potential throttling.
+1. Condition expressions on the trigger prevent the flow from running when the data change does not match the business scenario, reducing execution costs and avoiding unwanted side effects.
+1. Properly filtered triggers improve overall environment performance and reduce the risk of hitting Power Automate daily execution limits.
+1. Explicit trigger configuration serves as documentation, making it clear what conditions the flow is designed to handle.
+
+## Examples
+
+### Good
+
+- Column filter set to `statuscode` and filter expression `statuscode eq 5` — the flow only triggers when the Status Reason changes to the Approved value.
+- Column filter set to `emailaddress1,telephone1` — the flow only triggers when the primary email or phone number changes.
+- Column filter set to `csp_review_status` and filter expression `csp_review_status eq 100000001` — the flow only triggers when the review status changes to Complete.
+
+### Bad
+
+- No column filter set — the flow triggers on every field update, including system fields like `modifiedon`.
+- No filter expression — the flow triggers for all status values, not just the one the business logic requires.
+- Relying on a Condition action inside the flow to check field values instead of filtering at the trigger level — wastes a flow run for every non-matching event.
+
+## More Information
+1. [Microsoft Learn - Dataverse Connector Triggers](https://learn.microsoft.com/en-us/connectors/commondataserviceforapps/#triggers)
+1. [Microsoft Learn - Limits of Triggers in Dataverse](https://learn.microsoft.com/en-us/power-automate/dataverse/trigger-limits)
+
+# PA-014: Dataverse Query Optimization
+
+When querying Dataverse, minimize the number of columns and rows retrieved to optimize performance and reduce API consumption.
+
+1. **Minimize columns**: Use the **Select columns** property or FetchXML `attribute` elements to retrieve only the fields needed by the flow. Never retrieve all columns.
+1. **Set page size and count**: When using FetchXML queries, always set the `count` attribute on the `<fetch>` element to limit the number of rows per page (e.g., `<fetch count="50">`).
+1. **Add filters**: Always include `<filter>` elements in FetchXML or OData `$filter` expressions to restrict the rows returned to only those needed by the flow.
+1. **Avoid unbounded queries**: Never use a List Rows action or FetchXML query without a filter — always constrain the result set.
+
+## Rationale
+
+1. Retrieving all columns increases response payload size, slows down the flow, and consumes more API throughput capacity.
+1. Without a row count limit, large tables can return thousands of rows, causing the flow to hit Dataverse API limits and time out.
+1. Filters reduce the load on the Dataverse platform, improving performance for both the flow and other users sharing the same environment.
+1. Optimized queries reduce the number of API requests consumed, helping stay within the daily Power Platform request limits.
+
+## Examples
+
+### Good
+
+FetchXML with selected attributes, count, and filter:
+```xml
+<fetch count="50">
+  <entity name="contact">
+    <attribute name="fullname" />
+    <attribute name="emailaddress1" />
+    <filter>
+      <condition attribute="statuscode" operator="eq" value="1" />
+    </filter>
+  </entity>
+</fetch>
+```
+
+List Rows action with selected columns and filter:
+- **Select columns**: `fullname,emailaddress1`
+- **Filter rows**: `statuscode eq 1`
+- **Row count**: `50`
+
+### Bad
+
+- Using List Rows with no column selection — retrieves all columns for every row.
+- FetchXML without a `count` attribute — retrieves all matching rows without pagination.
+- No filter applied — retrieves the entire table regardless of how many rows are actually needed.
+- Using `<all-attributes />` in FetchXML instead of specifying individual `<attribute>` elements.
+
+## More Information
+1. [Microsoft Learn - Query Data Using FetchXML](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/use-fetchxml-construct-query)
+1. [Microsoft Learn - Optimize Performance for Dataverse](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/optimize-performance)
