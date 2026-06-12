@@ -2,7 +2,7 @@
 
 Good practices for Power Pages site development and configuration.
 
-# PP-001: Table Permissions
+# PP-001
 
 Always configure table permissions for every Dataverse table exposed on the portal. Use the most restrictive scope that satisfies the business requirement.
 
@@ -38,7 +38,7 @@ Always configure table permissions for every Dataverse table exposed on the port
 1. [Table permissions in Power Pages - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/security/table-permissions)
 1. [Power Pages security - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/security/power-pages-security)
 
-# PP-002: Web Roles
+# PP-002
 
 Define granular web roles that map to distinct user personas. Assign table permissions, page permissions, and site settings through web roles rather than directly to users.
 
@@ -70,7 +70,7 @@ Define granular web roles that map to distinct user personas. Assign table permi
 1. [Create web roles for Power Pages - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/security/create-web-roles)
 1. [Power Pages security - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/security/power-pages-security)
 
-# PP-003: Liquid Templates
+# PP-003
 
 Keep Liquid templates focused on presentation logic. Avoid embedding complex business logic or heavy data processing in Liquid code.
 
@@ -130,7 +130,7 @@ Keep Liquid templates focused on presentation logic. Avoid embedding complex bus
 1. [Liquid overview - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/liquid/liquid-overview)
 1. [Work with Liquid templates - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/liquid/liquid-types)
 
-# PP-004: Header and Footer Output Caching
+# PP-004
 
 Enable header and footer output caching to improve portal performance. This caching mechanism applies specifically to the header and footer web templates, which are rendered on every page and can become a performance bottleneck on high-traffic sites.
 
@@ -169,7 +169,7 @@ Enable header and footer output caching to improve portal performance. This cach
 ## More Information
 1. [Enable header and footer output caching - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/enable-header-footer-output-caching)
 
-# PP-005: Basic and Advanced Forms
+# PP-005
 
 Configure forms with proper validation and table permissions. Use basic forms for simple data entry and advanced forms for multi-step processes.
 
@@ -202,7 +202,7 @@ Configure forms with proper validation and table permissions. Use basic forms fo
 1. [Basic forms in Power Pages - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/basic-forms)
 1. [Multistep forms in Power Pages - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/getting-started/multistep-forms)
 
-# PP-006: Custom JavaScript
+# PP-006
 
 Minimize custom JavaScript on portal pages. When JavaScript is necessary, follow secure coding practices and keep scripts maintainable.
 
@@ -234,7 +234,7 @@ Minimize custom JavaScript on portal pages. When JavaScript is necessary, follow
 ## More Information
 1. [Add custom JavaScript to Power Pages - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/add-custom-javascript)
 
-# PP-007: ALM and Source Control
+# PP-007
 
 Manage Power Pages configuration as code using the Power Platform CLI. Store portal artifacts in source control and deploy through automated pipelines.
 
@@ -268,7 +268,7 @@ Manage Power Pages configuration as code using the Power Platform CLI. Store por
 1. [Power Pages ALM overview - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/portals-alm)
 1. [Power Platform CLI overview - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction)
 
-# PP-008: Anonymous Access
+# PP-008
 
 Restrict anonymous access to the minimum set of pages and data required for unauthenticated users. Explicitly review every permission granted to the Anonymous Users web role.
 
@@ -298,7 +298,7 @@ Restrict anonymous access to the minimum set of pages and data required for unau
 ## More Information
 1. [Power Pages security - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/security/power-pages-security)
 
-# PP-009: Content Snippets
+# PP-009
 
 Use content snippets for reusable text, labels, and messages that appear across multiple pages. Avoid duplicating the same content in multiple web templates.
 
