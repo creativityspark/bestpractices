@@ -40,6 +40,7 @@ The query above retrieves every column on the Account table, most of which are l
 
 ## More Information
 1. [Use FetchXML to construct a query - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/use-fetchxml-construct-query)
+1. [Query data using FetchXml - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/overview)
 
 # FXL-002
 
@@ -328,6 +329,7 @@ The results of this query might include orders whose totals were modified by a t
 
 ## More Information
 1. [FetchXml reference - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/reference/)
+1. [Optimize performance using FetchXml - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/optimize-performance)
 
 # FXL-007
 
@@ -430,7 +432,8 @@ Use the `top` attribute on the `<fetch>` element when you only need a limited nu
 This retrieves all orders from the table when only the top 10 are needed.
 
 ## More Information
-1. [Limit the number of rows using FetchXml - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/limit-rows)
+1. [FetchXml reference: fetch element - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/reference/fetch)
+1. [Query data using FetchXml - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/overview)
 
 # FXL-009
 
@@ -533,9 +536,3 @@ If `userInput` contains `' /><condition attribute='statecode' operator='eq' valu
 1. [Build queries with QueryExpression - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/org-service/build-queries-with-queryexpression)
 1. [FetchXml reference - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/reference/)
 
-# More Information
-
-1. [FetchXml reference - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/reference/)
-1. [Optimize performance using FetchXml - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/optimize-performance)
-1. [Query data using FetchXml - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/overview)
-1. [Use FetchXML to construct a query - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/use-fetchxml-construct-query)
