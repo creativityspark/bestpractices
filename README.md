@@ -21,6 +21,8 @@ The inclusion of an ID makes referencing and linking easier. You can use the rul
 - Power Pages
   - [Power Pages](/PowerPages/Power-Pages.md)
   - [Component Naming](/PowerPages/Component-Naming.md)
+- Model Driven Apps
+  - [General](/Model%20Driven%20Apps/General.md)
 - Dataverse
   - [Tables](/Dataverse/Tables.md)
   - [Forms](/Dataverse/Forms.md)
