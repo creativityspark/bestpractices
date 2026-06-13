@@ -280,59 +280,6 @@ Using `inner` join when the goal is to find accounts that may or may not have co
 
 # FXL-006
 
-Use the `no-lock` attribute for read-only or reporting queries where real-time data accuracy is not critical.
-
-1. Add `no-lock="true"` to the `<fetch>` element for queries used in dashboards, reports, or batch reads.
-1. Do not use `no-lock` for queries that feed into write operations or where data consistency is required.
-
-## Rationale
-
-1. The `no-lock` attribute tells Dataverse to read data without acquiring shared locks, reducing lock contention and improving query performance.
-1. Without `no-lock`, read queries can be blocked by concurrent write operations, increasing response times.
-1. The trade-off is that `no-lock` queries may return uncommitted data (dirty reads), which is acceptable for reporting scenarios but not for transactional logic.
-
-## Examples
-
-### Good
-
-A reporting query that benefits from `no-lock`:
-
-```xml
-<fetch no-lock="true">
-  <entity name="opportunity">
-    <attribute name="name" />
-    <attribute name="estimatedvalue" />
-    <filter>
-      <condition attribute="statecode" operator="eq" value="0" />
-    </filter>
-  </entity>
-</fetch>
-```
-
-### Bad
-
-Using `no-lock` in a query that feeds into a critical business process:
-
-```xml
-<!-- Dangerous: reading uncommitted data before updating records -->
-<fetch no-lock="true">
-  <entity name="salesorder">
-    <attribute name="totalamount" />
-    <filter>
-      <condition attribute="statecode" operator="eq" value="0" />
-    </filter>
-  </entity>
-</fetch>
-```
-
-The results of this query might include orders whose totals were modified by a transaction that later gets rolled back, causing incorrect downstream calculations.
-
-## More Information
-1. [FetchXml reference - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/reference/)
-1. [Optimize performance using FetchXml - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/optimize-performance)
-
-# FXL-007
-
 Prefer the `eq` and `in` operators over `like` for filter conditions. Use wildcard operators only when pattern matching is genuinely required.
 
 1. Use `eq` for exact value matches.
@@ -390,7 +337,7 @@ Also avoid chaining multiple `or` conditions when `in` is more appropriate:
 ## More Information
 1. [Filter rows using FetchXml - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/filter-rows)
 
-# FXL-008
+# FXL-007
 
 Use the `top` attribute on the `<fetch>` element when you only need a limited number of records.
 
@@ -435,7 +382,7 @@ This retrieves all orders from the table when only the top 10 are needed.
 1. [FetchXml reference: fetch element - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/reference/fetch)
 1. [Query data using FetchXml - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/overview)
 
-# FXL-009
+# FXL-008
 
 Use aggregate and grouping queries carefully. Avoid unnecessary aggregations and ensure grouping columns are indexed.
 
@@ -484,7 +431,7 @@ This scans the entire activity table, which can contain millions of records and 
 ## More Information
 1. [Aggregate data using FetchXml - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/aggregate-data)
 
-# FXL-010
+# FXL-009
 
 Build FetchXML queries programmatically using the SDK `QueryExpression`-to-FetchXML conversion or dedicated builder libraries. Avoid constructing FetchXML by string concatenation.
 
