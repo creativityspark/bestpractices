@@ -1,0 +1,86 @@
+name: PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "**/*.md"
+
+jobs:
+  markdown-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint markdown files
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: "**/*.md"
+          config: ".markdownlint.json"
+
+  ai-review:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get diff of changed markdown files
+        id: diff
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DIFF=$(git diff origin/${{ github.base_ref }}...HEAD -- "*.md" "**/*.md" 2>/dev/null || true)
+          if [ -z "$DIFF" ]; then
+            echo "diff=" >> "$GITHUB_OUTPUT"
+          else
+            TRUNCATED=$(echo "$DIFF" | head -c 3000)
+            # Use a delimiter to safely handle multiline output
+            EOF=$(openssl rand -hex 8)
+            echo "diff<<$EOF" >> "$GITHUB_OUTPUT"
+            echo "$TRUNCATED" >> "$GITHUB_OUTPUT"
+            echo "$EOF" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: AI review of changed docs
+        id: ai-review
+        if: steps.diff.outputs.diff != ''
+        uses: actions/ai-inference@v1
+        with:
+          model: openai/gpt-4o-mini
+          system-prompt: |
+            You are reviewing a Pull Request for a Power Platform best practices documentation repository.
+            The repository contains Markdown files organized by technology (Power Apps, Power Automate, Dataverse, etc.).
+            Review the provided diff and check for:
+            - Clarity and readability of the documentation
+            - Consistency with documentation style (headings, bullet points, code blocks)
+            - Proper best practice IDs and naming conventions
+            - Markdown quality and formatting
+            Provide concise, actionable feedback. If the changes look good, say so briefly.
+          prompt: |
+            Please review the following diff of changed Markdown documentation files:
+
+            ```diff
+            ${{ steps.diff.outputs.diff }}
+            ```
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Post AI review as PR comment
+        if: steps.diff.outputs.diff != ''
+        uses: actions/github-script@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AI_RESPONSE: ${{ steps.ai-review.outputs.response }}
+        with:
+          script: |
+            const aiResponse = process.env.AI_RESPONSE || '_No response from AI model._';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## 🤖 AI Review\n\n${aiResponse}`
+            });
