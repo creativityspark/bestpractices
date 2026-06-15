@@ -2,7 +2,7 @@
 
 Good practices for Power Platform Application Lifecycle Management.
 
-# ALM-001: Environment Strategy
+# ALM-001
 
 Establish a minimum of three separate environments — Development, Test, and Production — to support a healthy application lifecycle.
 
@@ -39,7 +39,7 @@ Establish a minimum of three separate environments — Development, Test, and Pr
 1. [Environments overview - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/admin/environments-overview)
 1. [Data loss prevention policies - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/admin/wp-data-loss-prevention)
 
-# ALM-002: Use Managed Solutions for Non-Development Environments
+# ALM-002
 
 Always deploy **managed solutions** to Test, UAT, and Production environments. Reserve unmanaged solutions exclusively for Development.
 
@@ -74,7 +74,7 @@ Always deploy **managed solutions** to Test, UAT, and Production environments. R
 1. [Managed and unmanaged solutions - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/alm/solution-concepts-alm)
 1. [Apply solution upgrade or update - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/alm/update-solutions-alm)
 
-# ALM-003: Solution Publisher and Naming Conventions
+# ALM-003
 
 Create a dedicated **solution publisher** with a short, unique prefix and apply consistent naming conventions to all solutions.
 
@@ -111,7 +111,7 @@ Create a dedicated **solution publisher** with a short, unique prefix and apply 
 1. [Create a solution publisher - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/create-solution#create-a-solution-publisher)
 1. [Solution publisher prefix - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/introduction-solutions#solution-publisher)
 
-# ALM-004: Use Environment Variables
+# ALM-004
 
 Use **environment variables** to store configuration values that differ between environments instead of hardcoding them in apps, flows, or plugins.
 
@@ -165,7 +165,7 @@ Use **environment variables** to store configuration values that differ between 
 1. [Environment variables overview - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/environmentvariables)
 1. [Use environment variables in solutions - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/environmentvariables#use-environment-variables-in-solutions)
 
-# ALM-005: Use Connection References
+# ALM-005
 
 Use **connection references** in solutions instead of embedding connections directly, so that flows and apps can be rebound to environment-specific connections during deployment.
 
@@ -200,7 +200,7 @@ Use **connection references** in solutions instead of embedding connections dire
 1. [Connection references overview - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/create-connection-reference)
 1. [Use service principal with connection references - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/admin/power-automate-authentication#use-service-principal-based-authentication)
 
-# ALM-006: Source Control Integration
+# ALM-006
 
 Store all solution artifacts in source control (Git) to enable version history, collaboration, code reviews, and automated pipelines.
 
@@ -252,7 +252,7 @@ Repository structure:
 1. [Power Platform CLI - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction)
 1. [ALM developer guide - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/alm/alm-for-developers)
 
-# ALM-007: Automate Deployments with CI/CD Pipelines
+# ALM-007
 
 Automate solution export, packing, validation, and import using CI/CD pipelines instead of performing manual deployments.
 
@@ -328,7 +328,7 @@ stages:
 1. [GitHub Actions for Power Platform - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/alm/devops-github-actions)
 1. [Use service principal authentication - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/admin/create-users-assign-online-security-roles#create-an-application-user)
 
-# ALM-008: Run Solution Checker in Pipelines
+# ALM-008
 
 Integrate the **Power Platform Solution Checker** into your CI/CD pipeline to automatically validate solutions for best practice violations, performance issues, and security concerns before deployment.
 
@@ -374,53 +374,7 @@ Integrate the **Power Platform Solution Checker** into your CI/CD pipeline to au
 1. [Power Platform Checker - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/alm/checker-api/overview)
 1. [Use Solution Checker in pipelines - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/alm/devops-build-tools#solution-checker)
 
-# ALM-009: Solution Segmentation
-
-Break large projects into **multiple smaller solutions** organized by feature, module, or team to improve maintainability and reduce deployment risk.
-
-1. Create separate solutions for independent functional areas (e.g., `Contoso_HR_Onboarding`, `Contoso_HR_LeaveManagement`, `Contoso_HR_Core`).
-1. Place shared components (common tables, security roles, shared environment variables) in a **base/core solution** that other solutions depend on.
-1. Deploy the base solution first, then dependent solutions, to respect the dependency order.
-1. Keep solutions small enough that a single team can own and manage each one independently.
-
-## Rationale
-
-1. A monolithic solution containing all components becomes difficult to manage, slow to export/import, and risky to deploy — a single change forces a full redeployment of everything.
-1. Smaller solutions allow independent release cycles: one team can deploy a fix without waiting for other teams to be ready.
-1. Solution segmentation makes it easier to identify what changed and reduces merge conflicts when multiple teams contribute to the same project.
-1. A base solution with shared components prevents duplication and ensures that common elements are consistent across dependent solutions.
-
-## Examples
-
-### Good
-
-```
-Solutions:
-├── Contoso_Core          (shared tables, security roles, environment variables)
-├── Contoso_Onboarding    (depends on Core; onboarding app, flows, and tables)
-├── Contoso_LeaveManagement (depends on Core; leave request app and flows)
-└── Contoso_Reporting     (depends on Core; dashboards and reports)
-```
-
-- `Contoso_Onboarding` can be updated independently without affecting `Contoso_LeaveManagement`.
-- Shared tables like `contoso_Employee` live in `Contoso_Core` and are referenced by other solutions.
-
-### Bad
-
-```
-Solutions:
-└── Contoso_Everything    (every table, app, flow, dashboard, security role, and plugin in one solution)
-```
-
-- A small fix to a single flow requires exporting and reimporting the entire solution containing 200+ components.
-- Two teams editing different features in the same solution cause merge conflicts and deployment delays.
-
-## More Information
-
-1. [Organize solutions - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/alm/organize-solutions)
-1. [Solution layers - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/alm/solution-layers-alm)
-
-# ALM-010: Solution Versioning
+# ALM-009
 
 Apply **semantic versioning** to every solution and increment the version number with each deployment to maintain a clear release history.
 
