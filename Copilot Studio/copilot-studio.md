@@ -2,7 +2,7 @@
 
 Good practices for Microsoft Copilot Studio agent development.
 
-# CS-001: Topic Naming Conventions
+# CS-001
 
 All topics must use a consistent naming convention that indicates the topic's category and purpose.
 
@@ -39,7 +39,7 @@ All topics must use a consistent naming convention that indicates the topic's ca
 1. [Create and edit topics in Copilot Studio - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-create-edit-topics)
 1. [Microsoft Copilot Studio implementation guidance - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/overview)
 
-# CS-002: Trigger Phrase Design
+# CS-002
 
 Design trigger phrases that are specific, varied, and non-overlapping across topics to ensure accurate intent matching.
 
@@ -90,7 +90,7 @@ Trigger phrases:
 1. [Best practices for topic trigger phrases - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/trigger-phrases-best-practices)
 1. [Analyze bot performance - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-overview)
 
-# CS-003: Fallback and Error Handling
+# CS-003
 
 Customize the fallback and error system topics to provide a helpful experience when the agent cannot understand or process a user request.
 
@@ -146,7 +146,7 @@ If the issue continues, contact support at support@contoso.com."
 1. [Configure the fallback topic - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-system-fallback-topic)
 1. [Manage system topics - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-system-topics)
 
-# CS-004: Knowledge Sources and Generative Answers
+# CS-004
 
 Configure knowledge sources carefully and apply appropriate guardrails when enabling generative answers.
 
@@ -184,7 +184,7 @@ Configure knowledge sources carefully and apply appropriate guardrails when enab
 1. [Use knowledge sources for generative answers - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/nlu-boost-conversations)
 1. [Manage knowledge sources - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/manage-knowledge-sources)
 
-# CS-005: Authentication and Security
+# CS-005
 
 Enable end-user authentication and follow security best practices when connecting your agent to external systems and data.
 
@@ -220,7 +220,7 @@ Enable end-user authentication and follow security best practices when connectin
 1. [Configure user authentication in Copilot Studio - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/configuration-end-user-authentication)
 1. [Configure single sign-on for Copilot Studio - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/configure-sso)
 
-# CS-006: Application Lifecycle Management (ALM)
+# CS-006
 
 Use solution-based development and environment separation to manage your agent through development, testing, and production stages.
 
@@ -256,7 +256,7 @@ Use solution-based development and environment separation to manage your agent t
 1. [Export and import agents using solutions - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-export-import-bots)
 1. [Application lifecycle management with Power Platform - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/alm/overview-alm)
 
-# CS-007: Testing and Analytics
+# CS-007
 
 Establish a thorough testing strategy and use built-in analytics to continuously improve your agent's performance.
 
@@ -293,7 +293,7 @@ Establish a thorough testing strategy and use built-in analytics to continuously
 1. [Analyze agent performance - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-overview)
 1. [Export conversation transcripts - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-sessions-transcripts)
 
-# CS-008: Channel Deployment and User Experience
+# CS-008
 
 Plan your deployment channels carefully and design the conversational experience to match each channel's capabilities.
 
@@ -346,7 +346,7 @@ If we cannot help you, we will transfer you to an agent."
 1. [Publish your agent to multiple channels - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/publication-fundamentals-publish-channels)
 1. [Configure the greeting topic - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-system-topics)
 
-# CS-009: Responsible AI and Content Moderation
+# CS-009
 
 Apply responsible AI principles and configure content moderation to ensure your agent produces safe, accurate, and appropriate responses.
 
