@@ -7,7 +7,7 @@ Good practices for Dataverse Web Resources.
 Use a consistent naming convention with virtual folder structures for all web resources.
 
 1. Always start the name with the publisher prefix followed by a forward slash.
-1. Group web resources by type using virtual folders (e.g., `scripts/`, `html/`, `css/`, `images/`).
+1. Group web resources by type using virtual folders (e.g., `js/`, `html/`, `css/`, `img/`).
 1. Within each type folder, group by entity or feature.
 1. Use camelCase or lowercase for file names. Avoid spaces and special characters.
 1. Keep the folder hierarchy shallow — no more than 3 levels deep.
@@ -24,12 +24,12 @@ Use a consistent naming convention with virtual folder structures for all web re
 ### Good
 
 ```
-contoso_/scripts/account/formEvents.js
-contoso_/scripts/contact/phoneValidation.js
-contoso_/scripts/lib/utilities.js
+contoso_/js/account/formEvents.js
+contoso_/js/contact/phoneValidation.js
+contoso_/js/lib/utilities.js
 contoso_/html/account/quickView.html
 contoso_/css/common.css
-contoso_/images/icons/phone.svg
+contoso_/img/icons/phone.svg
 ```
 
 ### Bad
@@ -38,7 +38,7 @@ contoso_/images/icons/phone.svg
 new_script1.js
 new_script2.js
 accountformeventsvalidationandribbon.js
-contoso_/scripts/features/module1/submodule2/helpers/internal/utils.js
+contoso_/js/features/module1/submodule2/helpers/internal/utils.js
 ```
 
 ## More Information
@@ -46,278 +46,34 @@ contoso_/scripts/features/module1/submodule2/helpers/internal/utils.js
 
 # WR-002
 
-Use namespaces to avoid polluting the global scope in JavaScript web resources.
+Every web resource must have a display name and a description that explain its purpose and usage.
 
-1. Define a namespace object for your organization or project and attach all functions to it.
-1. Use the Immediately Invoked Function Expression (IIFE) pattern or ES module patterns to encapsulate code.
-1. Never declare functions or variables directly in the global scope.
+1. Set a clear **Display Name** that describes what the web resource does.
+1. Write a **Description** that includes the entity or feature it supports, the events it handles, and any dependencies on other web resources.
+1. If the web resource is a shared library, list the web resources that depend on it.
 
 ## Rationale
 
-1. Multiple web resources may be loaded on the same form. Global variables and functions from different scripts can collide, causing unpredictable behavior.
-1. Namespaces make it clear which project or module a function belongs to, improving readability and debuggability.
-1. Encapsulated code is easier to test and maintain because it does not depend on or interfere with other scripts.
+1. Dataverse solutions can contain hundreds of web resources. Without display names and descriptions, it is difficult to determine the purpose of each resource.
+1. Descriptions reduce the risk of accidental modification or deletion by making the resource's usage and dependencies clear.
+1. Good metadata helps onboard new developers and simplifies solution maintenance.
 
 ## Examples
 
 ### Good
 
-```javascript
-var Contoso = Contoso || {};
-Contoso.Account = {
-    onLoad: function (executionContext) {
-        var formContext = executionContext.getFormContext();
-        // Form load logic
-    },
-    onSave: function (executionContext) {
-        var formContext = executionContext.getFormContext();
-        // Save logic
-    }
-};
-```
+- **Display Name**: _Account Form Events_
+- **Description**: _Handles OnLoad, OnSave, and OnChange events for the Account main form. Depends on contoso\_/js/lib/utilities.js. Registered on the Account Main Form._
 
 ### Bad
 
-```javascript
-function onLoad(executionContext) {
-    var formContext = executionContext.getFormContext();
-    // Form load logic
-}
-
-function onSave(executionContext) {
-    var formContext = executionContext.getFormContext();
-    // Save logic
-}
-
-var accountName = "";
-```
+- **Display Name**: _Script1_
+- **Description**: _(empty)_
 
 ## More Information
-1. [Organize your code using namespaces - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/client-scripting-best-practices#organize-your-code-using-namespaces)
+1. [Create or edit web resources - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/create-edit-web-resources)
 
 # WR-003
-
-Use only supported Client API and Web API methods. Never use unsupported or undocumented APIs.
-
-1. Only use methods documented in the [Client API Reference](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/reference) and the [Dataverse Web API](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/overview).
-1. Do not directly manipulate the DOM of model-driven app forms. Use the `formContext` API instead.
-1. Do not use internal objects such as `Mscrm.*`, `Xrm.Internal.*`, or other undocumented namespaces.
-1. Do not access `Xrm` through `window.parent.Xrm` in HTML web resources — use the context object passed via the `getContentWindow` method or the `Xrm` object passed to the resource.
-
-## Rationale
-
-1. Unsupported APIs may change or be removed without notice during platform updates, breaking your solution.
-1. Direct DOM manipulation bypasses the application's rendering pipeline and will break when Microsoft updates the UI framework.
-1. Microsoft does not provide support or fix issues caused by the use of unsupported APIs, leaving your organization responsible for troubleshooting and remediation.
-
-## Examples
-
-### Good
-
-```javascript
-// Using supported Client API to get a field value
-var formContext = executionContext.getFormContext();
-var accountName = formContext.getAttribute("name").getValue();
-
-// Using supported Web API to retrieve data
-Xrm.WebApi.retrieveRecord("account", accountId, "?$select=name,revenue").then(
-    function (result) { /* handle result */ },
-    function (error) { /* handle error */ }
-);
-```
-
-### Bad
-
-```javascript
-// Directly manipulating the DOM to read a field value
-var accountName = document.getElementById("name_i").value;
-
-// Using undocumented internal API
-var userId = Mscrm.CrmHeader.CURRENT_USER_ID;
-
-// Accessing Xrm from parent window in an HTML web resource
-var formContext = window.parent.Xrm.Page;
-```
-
-## More Information
-1. [Client API Reference - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/reference)
-1. [Client scripting best practices - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/client-scripting-best-practices)
-1. [Supported and unsupported customizations - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/supported-customizations)
-
-# WR-004
-
-Avoid using jQuery or other heavy third-party libraries in JavaScript web resources. Use modern vanilla JavaScript instead.
-
-1. Do not include jQuery for DOM manipulation, AJAX calls, or event handling — modern JavaScript and the Client API cover all of these scenarios.
-1. If a third-party library is absolutely necessary, evaluate its size, maintenance status, and compatibility with the platform before including it.
-1. Remove unused libraries from the solution to reduce load times.
-
-## Rationale
-
-1. jQuery adds unnecessary weight to form load times. Modern browsers natively support all functionality that jQuery was originally created to provide.
-1. Microsoft may change the internal DOM structure of forms at any time. jQuery selectors that target form elements will break when the UI is updated.
-1. Third-party libraries can introduce security vulnerabilities and conflict with the platform's own scripts.
-1. The Dataverse Client API and Web API provide all the supported methods needed to interact with forms and data.
-
-## Examples
-
-### Good
-
-```javascript
-// Using vanilla JavaScript for DOM manipulation in an HTML web resource
-var element = document.querySelector("#output");
-element.textContent = "Hello, World!";
-
-// Using the fetch API for HTTP calls in an HTML web resource
-fetch("/api/data/v9.2/accounts?$select=name")
-    .then(function (response) { return response.json(); })
-    .then(function (data) { /* handle data */ });
-```
-
-### Bad
-
-```javascript
-// Loading jQuery just to set text content
-$("#output").text("Hello, World!");
-
-// Using jQuery for AJAX when the Web API is available
-$.ajax({
-    url: "/api/data/v9.2/accounts?$select=name",
-    type: "GET",
-    success: function (data) { /* handle data */ }
-});
-```
-
-## More Information
-1. [Client scripting best practices - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/client-scripting-best-practices)
-1. [You Might Not Need jQuery](https://youmightnotneedjquery.com/)
-
-# WR-005
-
-Always use asynchronous operations. Never use synchronous API calls or blocking operations in web resources.
-
-1. Use `Xrm.WebApi` methods, which are asynchronous by design, for all data operations.
-1. Never use synchronous `XMLHttpRequest` calls.
-1. Use Promises or async/await patterns for any operation that involves server communication.
-1. Keep event handlers (`OnLoad`, `OnSave`, `OnChange`) lightweight and non-blocking.
-
-## Rationale
-
-1. Synchronous calls block the UI thread, freezing the form and degrading the user experience.
-1. Modern browsers are deprecating synchronous `XMLHttpRequest` on the main thread and may block them entirely in future updates.
-1. Asynchronous patterns allow the form to remain responsive while data is being fetched or saved.
-
-## Examples
-
-### Good
-
-```javascript
-Contoso.Account = {
-    onLoad: async function (executionContext) {
-        var formContext = executionContext.getFormContext();
-        try {
-            var result = await Xrm.WebApi.retrieveRecord(
-                "account", formContext.data.entity.getId(),
-                "?$select=name,revenue"
-            );
-            // Process result
-        } catch (error) {
-            console.error("Error retrieving account: " + error.message);
-        }
-    }
-};
-```
-
-### Bad
-
-```javascript
-function onLoad(executionContext) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/api/data/v9.2/accounts(00000000-0000-0000-0000-000000000000)", false);
-    xhr.send(); // Synchronous — blocks the UI thread
-    var data = JSON.parse(xhr.responseText);
-}
-```
-
-## More Information
-1. [Interact with HTTP and HTTPS resources asynchronously - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/client-scripting-best-practices#interact-with-http-and-https-resources-asynchronously)
-1. [Xrm.WebApi - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/reference/xrm-webapi)
-
-# WR-006
-
-Load JavaScript web resources only on the forms and events where they are needed.
-
-1. Do not add a JavaScript library to a form unless it contains event handlers registered on that form.
-1. When registering event handlers, specify only the events that are actually used (e.g., `OnLoad`, `OnSave`, `OnChange`).
-1. Remove any web resource references from forms where they are no longer needed.
-1. Place shared utility functions in a separate library and load it only on forms that require it.
-
-## Rationale
-
-1. Every web resource added to a form increases the initial load time, as the browser must download and parse the script before rendering the form.
-1. Unused scripts waste bandwidth and consume memory on the client device.
-1. Keeping form script registrations clean makes it easier to understand and maintain the form's behavior.
-
-## Examples
-
-### Good
-
-- The `contoso_/scripts/account/formEvents.js` library is loaded only on the Account main form, where its `onLoad` and `onSave` handlers are registered.
-- A shared `contoso_/scripts/lib/utilities.js` library is loaded only on the three forms that use its validation functions.
-
-### Bad
-
-- A single `contoso_/scripts/allFormEvents.js` file containing handlers for every entity is loaded on every form in the application.
-- A JavaScript library is still referenced on a form even though all its event registrations were removed months ago.
-
-## More Information
-1. [Optimize form performance - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/optimize-form-performance)
-
-# WR-007
-
-Optimize Web API calls by selecting only the columns you need and applying filters.
-
-1. Always use the `$select` query option to retrieve only the columns required by your logic.
-1. Use the `$filter` query option to narrow down the result set.
-1. Use `$top` to limit the number of records when you only need a subset.
-1. Use batch requests (`$batch`) when you need to make multiple API calls to reduce the number of HTTP roundtrips.
-1. Cache results when the data is static or rarely changes (e.g., option set metadata, configuration records).
-
-## Rationale
-
-1. Retrieving all columns transfers unnecessary data over the network, slowing down the response and increasing load on the server.
-1. Large unfiltered result sets consume more memory and processing time on both client and server.
-1. Batch requests reduce the number of HTTP connections and improve overall performance.
-1. Caching avoids repeated calls for data that does not change frequently.
-
-## Examples
-
-### Good
-
-```javascript
-// Select only the columns needed
-Xrm.WebApi.retrieveMultipleRecords(
-    "contact",
-    "?$select=fullname,emailaddress1&$filter=statecode eq 0&$top=10"
-).then(function (results) {
-    // Process results
-});
-```
-
-### Bad
-
-```javascript
-// Retrieving all columns without any filter
-Xrm.WebApi.retrieveMultipleRecords("contact").then(function (results) {
-    // Processing all contacts with all fields
-});
-```
-
-## More Information
-1. [Query data using the Web API - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/query-data-web-api)
-1. [Execute batch operations - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/execute-batch-operations-using-web-api)
-
-# WR-008
 
 Sanitize all user input and dynamic data rendered in HTML web resources to prevent Cross-Site Scripting (XSS).
 
@@ -363,71 +119,270 @@ eval("var data = " + serverResponse);
 1. [DOMPurify - GitHub](https://github.com/cure53/DOMPurify)
 1. [Cross-site scripting prevention - OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Scripting_Prevention_Cheat_Sheet.html)
 
+# WR-004
+
+Optimize all image web resources for size and use SVG format whenever possible.
+
+1. Use SVG format for icons, logos, and any graphics that can be represented as vectors.
+1. Compress raster images (PNG, JPG, GIF) before uploading them as web resources. Use tools such as [TinyPNG](https://tinypng.com/), [Squoosh](https://squoosh.app/), or ImageOptim.
+1. Choose the appropriate raster format: PNG for images requiring transparency, JPG for photographs, and avoid BMP or TIFF entirely.
+1. Keep image dimensions appropriate for their usage context — do not upload a 4000×3000 image for a 32×32 icon.
+1. Avoid embedding large Base64-encoded images in HTML or CSS web resources.
+
+## Rationale
+
+1. SVG files are resolution-independent, scale perfectly on all screen sizes, and are typically much smaller than raster equivalents for icons and simple graphics.
+1. Unoptimized images are the most common cause of large solution sizes and slow form load times.
+1. Dataverse has a 5 MB file size limit per web resource. Optimizing images ensures you stay well within this limit.
+1. Base64-encoded images bypass browser caching and inflate the size of the parent HTML or CSS file.
+
+## Examples
+
+### Good
+
+- A table icon uploaded as a 2 KB SVG file at `contoso_/img/icons/customer.svg`.
+- A product photograph compressed from 3.2 MB to 180 KB using TinyPNG before uploading as `contoso_/img/products/widget.jpg`.
+
+### Bad
+
+- A 1.5 MB PNG file used as a 32×32 table icon when a 2 KB SVG would suffice.
+- An uncompressed 4000×3000 BMP screenshot uploaded as a dashboard background.
+- A 500 KB Base64-encoded logo embedded directly inside an HTML web resource.
+
+## More Information
+1. [Image web resources - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/image-web-resources)
+1. [SVG on the web - MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/SVG)
+1. [Squoosh - Image compression tool](https://squoosh.app/)
+
+# WR-005
+
+Prefix all CSS class and ID names with the project or publisher prefix to avoid collisions with platform styles.
+
+1. Use a short, consistent prefix derived from your publisher or project name for all CSS selectors (e.g., `.csp-header`, `#csp-sidebar`).
+1. Do not use generic class names such as `.header`, `.container`, or `.active` without a prefix.
+1. Keep CSS in external `.css` web resource files rather than inline `<style>` blocks in HTML web resources.
+1. Avoid using `!important` to override platform styles — this creates fragile dependencies on the platform's internal CSS.
+
+## Rationale
+
+1. HTML web resources are loaded inside iframes, but in some contexts (e.g., custom pages, embedded resources) CSS can leak across boundaries. Prefixed selectors eliminate the risk of collisions.
+1. Generic class names are commonly used by the platform's own stylesheets. Overriding them can cause unexpected visual side effects.
+1. External CSS files can be cached by the browser separately from the HTML, improving load times on subsequent visits.
+1. Using `!important` to fight platform styles breaks when Microsoft updates their CSS, leading to unpredictable rendering.
+
+## Examples
+
+### Good
+
+```css
+.csp-dashboard-header {
+    font-size: 18px;
+    color: #333333;
+}
+
+.csp-status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+```
+
+### Bad
+
+```css
+.header {
+    font-size: 18px;
+    color: #333333;
+}
+
+.container {
+    width: 100% !important;
+}
+```
+
+## More Information
+1. [CSS web resources - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/css-web-resources)
+
+# WR-006
+
+Keep HTML web resources lightweight, responsive, and well-structured.
+
+1. Always include a proper `<!DOCTYPE html>` declaration, a `<html lang="...">` attribute, and `<meta charset="utf-8">`.
+1. Keep the HTML structure minimal — avoid unnecessary wrapper elements and deeply nested DOM trees.
+1. Use responsive design techniques (relative units, media queries, or a lightweight CSS framework) so the resource renders correctly at different sizes.
+1. Load JavaScript and CSS from separate web resource files rather than inlining them in the HTML.
+1. Consider accessibility: use semantic HTML elements, provide `alt` attributes on images, and ensure sufficient color contrast.
+
+## Rationale
+
+1. A proper doctype and character set declaration ensure consistent rendering across all supported browsers.
+1. HTML web resources are often displayed inside iframes on forms and dashboards. Excessive DOM complexity increases rendering time within the already constrained iframe.
+1. Users may resize the form pane or access it from different screen sizes. Responsive design prevents clipped or broken layouts.
+1. Separating concerns (HTML, CSS, JS) improves cacheability and makes individual files easier to maintain and update independently.
+
+## Examples
+
+### Good
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'">
+    <link rel="stylesheet" href="contoso_/css/dashboard.css">
+    <title>Customer Dashboard</title>
+</head>
+<body>
+    <main id="csp-dashboard">
+        <h1>Customer Overview</h1>
+        <div id="csp-dashboard-content"></div>
+    </main>
+    <script src="contoso_/js/dashboard/main.js"></script>
+</body>
+</html>
+```
+
+### Bad
+
+```html
+<html>
+<body>
+<script>
+    // Hundreds of lines of inline JavaScript
+</script>
+<style>
+    /* Hundreds of lines of inline CSS */
+</style>
+<div><div><div><div><div>Deeply nested content</div></div></div></div></div>
+</body>
+</html>
+```
+
+## More Information
+1. [Webpage (HTML) web resources - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/webpage-html-web-resources)
+
+# WR-007
+
+Declare dependencies between web resources explicitly using the dependency configuration in the solution.
+
+1. Use the web resource dependency settings in the form editor or solution explorer to declare which web resources depend on others.
+1. Do not dynamically load web resources at runtime using custom script loaders unless there is no alternative.
+1. When a JavaScript library depends on a shared utility library, add the utility as a dependency so the platform loads it first.
+1. Before exporting a solution, use the **Dependency Checker** in Solution Explorer to verify that all required web resources are included.
+
+## Rationale
+
+1. Explicitly declared dependencies ensure the platform loads web resources in the correct order, preventing runtime errors caused by missing references.
+1. Dynamic script loading hides dependencies from the solution system. When the solution is exported and imported into another environment, dynamically loaded resources may be missing, causing silent failures.
+1. The Dependency Checker prevents broken solutions from being deployed to downstream environments by catching missing components before export.
+
+## Examples
+
+### Good
+
+- The form library list shows `contoso_/js/lib/utilities.js` loaded before `contoso_/js/account/formEvents.js`, because the dependency is declared in the form configuration.
+- The solution's Dependency Checker reports no missing components before export.
+
+### Bad
+
+- A script dynamically loads a utility library at runtime using a custom `loadScript()` function. The utility library is not included in the solution, and the script fails silently in the target environment after import.
+- Two JavaScript libraries are added to a form without specifying their load order, causing intermittent "function is not defined" errors.
+
+## More Information
+1. [Web resource dependencies - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/web-resource-dependencies)
+1. [Solution dependency management - Microsoft Learn](https://learn.microsoft.com/en-us/power-platform/alm/solution-dependency-management)
+
+# WR-008
+
+Periodically audit and remove unused web resources from the solution.
+
+1. Review the solution's web resources regularly and identify any that are no longer referenced by forms, dashboards, SiteMaps, or other web resources.
+1. Before deleting a web resource, verify that it is not referenced by any component using the **Show Dependencies** feature in Solution Explorer.
+1. Remove web resources that were added for testing or prototyping and are no longer needed.
+1. Document the audit in the project's change log or release notes.
+
+## Rationale
+
+1. Orphaned web resources increase solution size, making exports and imports slower and consuming unnecessary storage.
+1. Unused resources create confusion for developers who may waste time trying to understand their purpose or inadvertently modify them.
+1. Keeping the solution clean reduces the risk of accidentally deploying obsolete or conflicting code to production.
+
+## Examples
+
+### Good
+
+- A quarterly review identifies three JavaScript libraries that were replaced six months ago. They are verified as unused via **Show Dependencies** and removed from the solution.
+
+### Bad
+
+- A solution contains 40 web resources, but only 15 are actively used. The remaining 25 are leftovers from previous development cycles that no one has reviewed or cleaned up.
+- A developer deletes a web resource without checking dependencies, breaking a form that still references it.
+
+## More Information
+1. [View dependencies for a component - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/view-component-dependencies)
+
 # WR-009
 
-Use TypeScript for developing JavaScript web resources and use a build pipeline to transpile and minify the output.
+Use RESX web resources for multi-language support instead of hardcoding strings in HTML or JavaScript files.
 
-1. Write source code in TypeScript for type safety and better tooling support.
-1. Use a build tool such as Webpack, Vite, or Rollup to bundle and minify the output.
-1. Deploy only the minified, transpiled JavaScript file as the web resource — not the TypeScript source.
-1. Store the TypeScript source code in source control (e.g., Git) alongside the solution.
-1. Use type definitions for the Dataverse Client API (e.g., `@types/xrm`) for IntelliSense and compile-time validation.
+1. Create a default RESX file (e.g., `contoso_/resx/Strings.resx`) containing all user-facing strings.
+1. Create additional RESX files for each supported language using the locale code suffix (e.g., `contoso_/resx/Strings.1036.resx` for French).
+1. Use the `Xrm.Utility.getResourceString()` method to retrieve localized strings at runtime.
+1. Use the user's language setting (`Xrm.Utility.getGlobalContext().userSettings.languageId`) to determine which RESX file to load.
+1. Keep string keys consistent across all RESX files and use descriptive key names.
 
 ## Rationale
 
-1. TypeScript catches errors at compile time that would otherwise only surface at runtime, reducing bugs in production.
-1. Minified files are smaller and load faster, improving form performance.
-1. A build pipeline enforces consistent code quality through linting, type checking, and automated testing before deployment.
-1. Storing source code in version control enables collaboration, code reviews, and change tracking.
+1. Hardcoded strings force a code change and redeployment every time a translation needs to be added or updated.
+1. RESX files can be handed to translators without exposing application code.
+1. The platform's built-in `getResourceString()` method handles RESX parsing and fallback automatically, reducing custom code.
+1. Consistent keys across language files ensure that missing translations are immediately detectable.
 
 ## Examples
 
 ### Good
 
+```xml
+<!-- contoso_/resx/Strings.resx (default — English) -->
+<data name="greeting_message" xml:space="preserve">
+    <value>Welcome to the Customer Portal</value>
+</data>
+<data name="save_button_label" xml:space="preserve">
+    <value>Save</value>
+</data>
 ```
-Source code (in Git):
-  src/account/formEvents.ts
 
-Build output (deployed as web resource):
-  contoso_/scripts/account/formEvents.js  (minified, transpiled)
+```xml
+<!-- contoso_/resx/Strings.1036.resx (French) -->
+<data name="greeting_message" xml:space="preserve">
+    <value>Bienvenue sur le portail client</value>
+</data>
+<data name="save_button_label" xml:space="preserve">
+    <value>Enregistrer</value>
+</data>
+```
+
+```javascript
+// Retrieving a localized string at runtime
+var greeting = Xrm.Utility.getResourceString("contoso_/resx/Strings", "greeting_message");
 ```
 
 ### Bad
 
-- Writing JavaScript directly in the Dataverse web resource editor with no source control.
-- Deploying unminified TypeScript source files as web resources.
-- Multiple developers editing the same web resource directly in the browser without version control.
+```javascript
+// Hardcoded strings in JavaScript — no localization support
+var greeting = "Welcome to the Customer Portal";
+var saveLabel = "Save";
+```
+
+```html
+<!-- Hardcoded strings in HTML — requires code change for every language -->
+<h1>Welcome to the Customer Portal</h1>
+<button>Save</button>
+```
 
 ## More Information
-1. [TypeScript - Official Website](https://www.typescriptlang.org/)
-1. [@types/xrm - npm](https://www.npmjs.com/package/@types/xrm)
-1. [Use of webpack to bundle web resource files - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/best-practices/business-logic/use-webpack-to-bundle-web-resource-files)
-
-# WR-010
-
-Every web resource must have a display name and a description that explain its purpose and usage.
-
-1. Set a clear **Display Name** that describes what the web resource does.
-1. Write a **Description** that includes the entity or feature it supports, the events it handles, and any dependencies on other web resources.
-1. If the web resource is a shared library, list the web resources that depend on it.
-
-## Rationale
-
-1. Dataverse solutions can contain hundreds of web resources. Without display names and descriptions, it is difficult to determine the purpose of each resource.
-1. Descriptions reduce the risk of accidental modification or deletion by making the resource's usage and dependencies clear.
-1. Good metadata helps onboard new developers and simplifies solution maintenance.
-
-## Examples
-
-### Good
-
-- **Display Name**: _Account Form Events_
-- **Description**: _Handles OnLoad, OnSave, and OnChange events for the Account main form. Depends on contoso\_/scripts/lib/utilities.js. Registered on the Account Main Form._
-
-### Bad
-
-- **Display Name**: _Script1_
-- **Description**: _(empty)_
-
-## More Information
-1. [Create or edit web resources - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/create-edit-web-resources)
+1. [String (RESX) web resources - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/resx-web-resources)
+1. [Use RESX files to localize web resources - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/custom-html-resx-localization)
