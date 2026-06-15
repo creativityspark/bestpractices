@@ -335,37 +335,41 @@ Prefer out-of-the-box features (business rules, calculated fields, Power Automat
 
 # JS-008
 
-Follow a consistent naming convention for web resource files.
+Follow a consistent naming convention for web resource files. Create only one JavaScript file per table.
 
-1. Use the pattern `[prefix]_/scripts/[module]/[entity]_[purpose].js` (e.g., `csp_/scripts/sales/account_form.js`).
+1. Use the pattern `[prefix]_/js/[entity].js` (e.g., `csp_/js/account.js`).
+1. Create only one JavaScript web resource per table. All event handlers for a table's forms (OnLoad, OnChange, OnSave, ribbon commands) must be in a single file.
 1. Include the publisher prefix to avoid collisions across solutions.
-1. Use lowercase and underscores for the file name. Avoid spaces and special characters.
-1. Group related scripts into virtual folders using the `/` separator in the web resource name.
+1. Use lowercase for the file name. Avoid spaces and special characters.
+1. Shared utility functions that are not tied to a specific table should be placed in a single `[prefix]_/js/common.js` file.
 
 ## Rationale
 
-1. A consistent naming convention makes it easy to locate, filter, and manage web resources in a solution with dozens or hundreds of scripts.
-1. Virtual folders in the web resource name reflect the logical module structure, improving discoverability.
+1. A consistent naming convention makes it easy to locate and manage web resources in a solution.
+1. Having one file per table keeps all related logic together, making it easier to understand the full behavior of a table's forms at a glance.
+1. Multiple files per table lead to fragmented logic that is harder to maintain, debug, and trace when troubleshooting form events.
 1. Including the publisher prefix prevents name collisions when multiple solutions are installed in the same environment.
 
 ## Examples
 
 ### Good
 
-| Web Resource Name                     | Purpose                              |
-| ------------------------------------- | ------------------------------------ |
-| `csp_/scripts/sales/account_form.js`  | Account form event handlers          |
-| `csp_/scripts/sales/contact_form.js`  | Contact form event handlers          |
-| `csp_/scripts/shared/utils.js`        | Shared utility functions             |
-| `csp_/scripts/service/case_ribbon.js` | Case entity ribbon command handlers  |
+| Web Resource Name       | Purpose                                                  |
+| ----------------------- | -------------------------------------------------------- |
+| `csp_/js/account.js`   | All event handlers for the Account table forms           |
+| `csp_/js/contact.js`   | All event handlers for the Contact table forms           |
+| `csp_/js/case.js`      | All event handlers for the Case table forms              |
+| `csp_/js/common.js`    | Shared utility functions used across multiple tables     |
 
 ### Bad
 
-| Web Resource Name      | Problem                                                 |
-| ---------------------- | ------------------------------------------------------- |
-| `script1.js`           | No prefix, no context, impossible to identify purpose   |
-| `AccountFormScript.js` | Missing publisher prefix, no module grouping            |
-| `my scripts.js`        | Contains a space, no prefix, no structure               |
+| Web Resource Name              | Problem                                                        |
+| ------------------------------ | -------------------------------------------------------------- |
+| `script1.js`                   | No prefix, no context, impossible to identify purpose          |
+| `AccountFormScript.js`         | Missing publisher prefix                                       |
+| `csp_/js/account_form.js`     | Unnecessary suffix — there should be one file per table        |
+| `csp_/js/account_ribbon.js`   | Ribbon logic should be in the same `account.js` file           |
+| `my scripts.js`               | Contains a space, no prefix, no structure                      |
 
 ## More Information
 1. [Web resource naming conventions - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/web-resources)
@@ -554,3 +558,194 @@ function onLoad(executionContext) {
 
 ## More Information
 1. [formContext.ui.getFormType - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/reference/formcontext-ui/getformtype)
+
+# JS-013
+
+Document all functions using JSDoc syntax. Provide inline comments that describe the intent of the code.
+
+1. Every function must have a JSDoc block with `@param` and `@returns` tags describing the parameters and return value.
+1. Include a brief description of the function's purpose as the first line of the JSDoc block.
+1. Add inline comments to explain the *why* behind non-obvious logic. Do not comment what the code does when it is self-explanatory.
+1. Keep JSDoc blocks up to date when modifying function signatures or behavior.
+
+## Rationale
+
+1. JSDoc comments enable IDE features like auto-complete, inline documentation, and type checking, improving developer productivity.
+1. New developers can understand the purpose and expected inputs of a function without reading its full implementation.
+1. Inline comments explaining intent help future maintainers understand *why* a decision was made, not just *what* the code does.
+1. Consistent documentation reduces onboarding time and makes code reviews more efficient.
+
+## Examples
+
+### Good
+
+```javascript
+/**
+ * Sets the phone field as required when the contact method is Phone.
+ * @param {Object} executionContext - The execution context passed by the form event.
+ */
+Contoso.Contact.onContactMethodChange = function (executionContext) {
+    var formContext = executionContext.getFormContext();
+    var contactMethod = formContext.getAttribute("preferredcontactmethodcode").getValue();
+
+    // Phone = 2 in the Contact Method option set
+    var isPhone = contactMethod === 2;
+    formContext.getAttribute("telephone1").setRequiredLevel(
+        isPhone ? "required" : "none"
+    );
+};
+
+/**
+ * Retrieves the primary contact email for a given account.
+ * @param {string} accountId - The GUID of the account record.
+ * @returns {Promise<string|null>} The email address, or null if not found.
+ */
+Contoso.Account.getPrimaryContactEmail = async function (accountId) {
+    try {
+        var result = await Xrm.WebApi.retrieveRecord(
+            "account", accountId,
+            "?$select=_primarycontactid_value&$expand=primarycontactid($select=emailaddress1)"
+        );
+        return result.primarycontactid ? result.primarycontactid.emailaddress1 : null;
+    } catch (error) {
+        console.error("Failed to retrieve primary contact email: " + error.message);
+        return null;
+    }
+};
+```
+
+### Bad
+
+```javascript
+// No documentation — developers must read the entire function to understand it
+function onChange(executionContext) {
+    var formContext = executionContext.getFormContext();
+    var v = formContext.getAttribute("preferredcontactmethodcode").getValue();
+    if (v === 2) {
+        formContext.getAttribute("telephone1").setRequiredLevel("required");
+    } else {
+        formContext.getAttribute("telephone1").setRequiredLevel("none");
+    }
+}
+
+// Useless comments that repeat the code instead of explaining intent
+function setPhone(executionContext) {
+    var formContext = executionContext.getFormContext();
+    // Get the value
+    var val = formContext.getAttribute("telephone1").getValue();
+    // Set visible to true
+    formContext.getControl("telephone1").setVisible(true);
+}
+```
+
+## More Information
+1. [JSDoc documentation](https://jsdoc.app/)
+1. [Client scripting in model-driven apps - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/client-scripting)
+
+# JS-014
+
+Write client script code using TypeScript when possible. Transpile TypeScript to JavaScript for deployment as web resources.
+
+1. Use TypeScript (`.ts`) as the source language for all new client scripts.
+1. Install the `@types/xrm` package to get type definitions for the Dataverse Client API.
+1. Enable `strict` mode in `tsconfig.json` to catch type errors at compile time.
+1. Transpile TypeScript to ES5 or ES6 JavaScript and deploy only the compiled `.js` files as web resources.
+1. Keep TypeScript source files in version control. Never commit only the compiled output.
+
+## Rationale
+
+1. TypeScript provides compile-time type checking, catching common errors (null references, wrong argument types, misspelled property names) before deployment.
+1. The `@types/xrm` definitions provide auto-complete and inline documentation for all Dataverse Client API methods, reducing mistakes and development time.
+1. TypeScript's strict mode enforces null checks and explicit types, leading to more robust code.
+1. The compiled JavaScript output is fully compatible with the Dataverse web resource runtime — TypeScript adds safety without any runtime cost.
+
+## Examples
+
+### Good
+
+```typescript
+// account.ts — TypeScript source with type safety
+namespace Contoso.Account {
+    export function onLoad(executionContext: Xrm.Events.EventContext): void {
+        const formContext: Xrm.FormContext = executionContext.getFormContext();
+        const name: string | null = formContext.getAttribute("name").getValue();
+
+        if (name === null) {
+            formContext.getControl("name").setNotification(
+                "Account name is required.", "nameRequired"
+            );
+        }
+    }
+}
+```
+
+### Bad
+
+```javascript
+// account.js — plain JavaScript with no type safety
+function onLoad(executionContext) {
+    var formContext = executionContext.getFormContext();
+    // No type checking — typo in attribute name goes unnoticed until runtime
+    var name = formContext.getAttribute("nme").getValue();
+    if (name === null) {
+        formContext.getControl("name").setNotification(
+            "Account name is required.", "nameRequired"
+        );
+    }
+}
+```
+
+## More Information
+1. [@types/xrm - npm](https://www.npmjs.com/package/@types/xrm)
+1. [TypeScript documentation](https://www.typescriptlang.org/docs/)
+1. [Client scripting in model-driven apps - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/client-scripting)
+
+# JS-015
+
+Remove all `console.log`, `console.debug`, and `debugger` statements before deploying scripts to test or production environments.
+
+1. Do not leave `console.log`, `console.warn`, `console.debug`, or `console.error` calls in production code unless they are part of a deliberate logging strategy.
+1. Never leave `debugger` statements in committed code. They pause execution in the browser when DevTools are open, causing the application to freeze for end users.
+1. If runtime logging is needed in production, use a dedicated logging utility that can be enabled or disabled via a configuration flag.
+
+## Rationale
+
+1. `console.log` statements clutter the browser console, making it harder to diagnose real issues during support scenarios.
+1. `debugger` statements cause the browser to pause execution when DevTools are open. If an end user or support engineer opens DevTools, the application freezes unexpectedly.
+1. Excessive console output can impact performance in tight loops or frequently triggered events.
+1. Leaving debug artifacts in production code signals a lack of code review discipline and can expose internal logic details to end users.
+
+## Examples
+
+### Good
+
+```javascript
+Contoso.Account.onLoad = function (executionContext) {
+    var formContext = executionContext.getFormContext();
+    var status = formContext.getAttribute("statuscode").getValue();
+
+    if (status === Contoso.Account.StatusValues.ACTIVE) {
+        formContext.getControl("creditlimit").setVisible(true);
+    }
+};
+```
+
+### Bad
+
+```javascript
+function onLoad(executionContext) {
+    var formContext = executionContext.getFormContext();
+    var status = formContext.getAttribute("statuscode").getValue();
+
+    console.log("Status value: " + status); // Debug artifact left in production
+    debugger; // Freezes the browser when DevTools are open
+
+    if (status === 1) {
+        console.log("Setting credit limit visible"); // Unnecessary logging
+        formContext.getControl("creditlimit").setVisible(true);
+    }
+}
+```
+
+## More Information
+1. [Best practices for client scripting - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/client-scripting-best-practices)
