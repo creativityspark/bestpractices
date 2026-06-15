@@ -398,7 +398,7 @@ icoStatus.Color: If(ThisItem.Status = "Active", Green, Red)
 1. [Accessibility checker - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/accessibility-checker)
 1. [Web Content Accessibility Guidelines (WCAG) 2.1](https://www.w3.org/TR/WCAG21/)
 
-# CA-010: No Cross-Screen Control References
+# CA-010
 
 Never reference controls from one screen on another screen. Each screen's formulas must only reference controls that belong to that same screen.
 
