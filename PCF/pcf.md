@@ -646,3 +646,106 @@ this._container.appendChild(input);
 1. [Accessible Rich Internet Applications (ARIA) - MDN](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA)
 1. [Create accessible canvas apps - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/accessible-apps)
 1. [Best practices and guidance for code components - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/component-framework/code-components-best-practices)
+
+# PCF-013
+
+Make PCF controls easy to debug during development and after deployment. Use the local test harness during implementation, and use tools such as Fiddler or Requestly when troubleshooting deployed controls in Dataverse.
+
+1. Use `npm start` or `npm start watch` to run the browser test harness while developing the control.
+1. Use the test harness to exercise input properties, mock data, form factors, and container sizes before deploying.
+1. When an issue only reproduces after deployment, use tools such as Fiddler or Requestly to redirect the deployed control to your local build for debugging.
+1. Use browser developer tools together with these debugging flows to inspect DOM, network requests, and runtime errors.
+
+## Rationale
+
+1. The local test harness shortens the feedback loop and makes it easier to validate behavior without repeatedly packaging and deploying the control.
+1. Some scenarios only surface in Dataverse after deployment, especially when the control depends on host-specific behavior, feature usage, or real data flows.
+1. Redirecting deployed requests to a local build with Fiddler or Requestly allows you to diagnose real-environment issues without manually rebuilding and reimporting for every change.
+
+## Examples
+
+### Good
+
+```shell
+npm start watch
+```
+
+Use the test harness to validate different inputs and sizes before deployment, then use a request-mapping tool to debug a deployed control against your local bundle when needed.
+
+```text
+1. Run the control locally with the test harness.
+2. Reproduce environment-specific issues in Dataverse.
+3. Use Fiddler or Requestly to map the deployed bundle request to the local build output.
+4. Inspect the behavior with browser developer tools.
+```
+
+### Bad
+
+```text
+Deploy every small change to Dataverse and debug only there, without using the test harness.
+```
+
+```text
+Ignore tools like Fiddler or Requestly and treat deployed-only issues as impossible to debug locally.
+```
+
+## More Information
+
+1. [Debug code components - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/component-framework/debugging-custom-controls#debugging-after-deploying-into-microsoft-dataverse)
+1. [Create your first component - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/component-framework/implementing-controls-using-typescript)
+
+# PCF-014
+
+Always provide unit tests with PCF controls. Changes to a control must include automated tests that protect the component against regressions.
+
+1. Add unit tests for the control's rendering logic, behaviors, validation rules, and output generation.
+1. Run the unit test suite as part of local development and CI before packaging or deploying the control.
+1. Add regression tests whenever fixing a defect so the same issue cannot be reintroduced silently.
+1. Prefer tests that exercise real browser DOM behavior where possible, instead of relying only on shallow mocks.
+
+## Rationale
+
+1. PCF controls evolve over time, and without unit tests it is easy for small changes to break rendering, validation, or output behavior.
+1. Automated tests give fast feedback and reduce the cost of refactoring or extending existing controls.
+1. Regression tests preserve previously fixed behavior and make code reviews more reliable because reviewers can see that expected scenarios are covered.
+
+## Examples
+
+### Good
+
+```json
+{
+  "scripts": {
+    "test": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run"
+  }
+}
+```
+
+```typescript
+it("shows the validation message when submit is called with no file selected", () => {
+    const control = new fileUpload(context, htmlDivElement, () => {});
+    control.generate();
+    control.submit();
+
+    const information = document.getElementById(controls.information);
+    expect(information?.style.display).to.equal("block");
+});
+```
+
+### Bad
+
+```text
+Ship a PCF control with no automated tests and rely only on manual verification in the test harness.
+```
+
+```typescript
+// Fixing a bug without adding a regression test for the broken scenario
+public submit(): void {
+    this._notifyOutputChanged();
+}
+```
+
+## More Information
+
+1. [Creating Better PCF Component Part 2](https://temmyraharjo.wordpress.com/2020/11/23/creating-better-pcf-component-part-2/)
+1. [Debug code components - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/component-framework/debugging-custom-controls)
