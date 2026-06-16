@@ -37,6 +37,8 @@ The inclusion of an ID makes referencing and linking easier. You can use the rul
   - [Plugins](/Dataverse/Plugins.md)
   - [JavaScript Client Scripts](/Dataverse/Javascript.md)
   - [Web Resources](/Dataverse/Web-Resources.md)
+- PCF
+  - [PCF Controls](/PCF/pcf.md)
 - ALM
   - [Application Lifecycle Management](/ALM/ALM.md)
 
