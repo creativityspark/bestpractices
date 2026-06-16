@@ -4,43 +4,39 @@ Good practices for Dataverse C# Plugins.
 
 # PLG-001
 
-Plugin class names must follow the pattern:
+Plugin class names must use a namespace-based naming convention that describes the plugin's purpose. Do not hardcode table schema names, pipeline stages, or event names into the class name, since a single plugin class can be registered on multiple tables and stages, and its configuration may change over time.
+
+Follow this pattern:
 
 ```
-[Table Schema Name]_[Pipeline Stage][Event Name]_[Action/Purpose]
+[AppName].Plugins.[TableName (if table-specific)].[Action/Purpose]
 ```
 
-- **Table Schema Name**: The schema name of the table the plugin is registered against.
-- **Pipeline Stage**: A short code for the pipeline stage (`PreVal`, `PreOp`, `PostOp`).
-- **Event Name**: The SDK message name (`Create`, `Update`, `Delete`, `Retrieve`, etc.).
-- **Action/Purpose**: Brief text describing the purpose of the plugin.
-
-## Pipeline Stage Codes
-
-| Code    | Pipeline Stage  |
-| ------- | --------------- |
-| PreVal  | Pre-Validation  |
-| PreOp   | Pre-Operation   |
-| PostOp  | Post-Operation  |
+- **AppName**: The name of the application or solution (e.g., `CRM`, `Sales`, `FieldService`).
+- **Plugins**: A fixed namespace segment indicating the plugin layer.
+- **TableName** *(optional)*: Include the table name as a namespace segment only when the plugin is specific to a single table.
+- **Action/Purpose**: A descriptive class name that explains what the plugin does.
 
 ## Rationale
 
-1. Consistent naming makes it easy to identify what a plugin does at a glance when browsing plugin registrations or reviewing code.
-1. Including the table name and pipeline stage in the class name avoids confusion when multiple plugins are registered on the same table or event.
-1. The naming convention aligns with how plugin steps are displayed in the Plugin Registration Tool.
+1. Namespace-based naming keeps plugin classes organized and discoverable in large solutions with many plugins.
+1. Avoiding table schema names and pipeline stages in the class name allows the same plugin to be registered on multiple tables, events, or stages without the name becoming misleading.
+1. Plugin registration details (table, stage, event) are configured in the Plugin Registration Tool and can change independently of the code. The class name should describe *what* the plugin does, not *where* it is registered.
 
 ## Examples
 
 ### Good
 
-- `Account_PreOp_Update_ValidateEmail`
-- `Contact_PostOp_Create_SendWelcomeNotification`
-- `Order_PreVal_Delete_PreventActiveOrderDeletion`
+- `CRM.Plugins.Accounts.ValidateEmail` — a plugin under the CRM app namespace, specific to the Accounts table.
+- `CRM.Plugins.Contacts.SendWelcomeNotification` — specific to the Contacts table.
+- `CRM.Plugins.EnforceBusinessHours` — a cross-table plugin that applies to multiple tables.
+- `Sales.Plugins.Orders.PreventActiveDeletion` — under the Sales app namespace, specific to Orders.
 
 ### Bad
 
-- `Plugin1` — meaningless, provides no context about the table, stage, or purpose.
-- `AccountPlugin` — too generic; does not indicate the event, stage, or what it does.
+- `Account_PreOp_Update_ValidateEmail` — hardcodes the table schema, pipeline stage, and event into the name.
+- `Plugin1` — meaningless, provides no context about the purpose.
+- `AccountPlugin` — too generic; does not indicate what it does.
 - `DoStuff` — no naming structure whatsoever.
 
 ## More Information
@@ -220,16 +216,17 @@ public class AccountPostCreate : IPlugin
 
 # PLG-005
 
-Always check the execution depth to prevent infinite plugin loops.
+Design plugins to be idempotent instead of relying on execution depth checks.
 
-1. Check `IPluginExecutionContext.Depth` at the beginning of the plugin and return early if the depth exceeds the expected value.
-1. The appropriate depth threshold depends on your scenario, but a depth of 1 is typical for most plugins that should only execute on the original trigger.
+1. Ensure that running the plugin multiple times with the same input produces the same result without unwanted side effects.
+1. Before modifying a record, check whether the change is actually needed (e.g., compare current vs. desired values). Skip the update if the record is already in the correct state.
+1. Do not use `IPluginExecutionContext.Depth` as a control flow mechanism. Depth checks mask underlying design issues and can silently suppress legitimate nested executions.
 
 ## Rationale
 
-1. When a plugin modifies a record, it can trigger other plugins (or itself again) on the same or related tables, creating a recursive loop.
-1. Dataverse enforces a maximum execution depth (currently 8). Exceeding this limit terminates the pipeline with a runtime error, causing a poor user experience and potential data inconsistency.
-1. An early depth check avoids unnecessary processing and protects against infinite recursion.
+1. An idempotent plugin is safe to execute at any depth because it only makes changes when they are truly needed, naturally preventing infinite loops.
+1. Depth checks are fragile — they assume a specific call chain. When new plugins or workflows are added to the pipeline, the expected depth may change, causing the check to incorrectly skip or execute logic.
+1. Relying on depth checks can hide recursive update patterns that should be fixed at the design level rather than worked around at runtime.
 
 ## Examples
 
@@ -239,13 +236,22 @@ Always check the execution depth to prevent infinite plugin loops.
 public void Execute(IServiceProvider serviceProvider)
 {
     var context = (IPluginExecutionContext)serviceProvider.GetService(typeof(IPluginExecutionContext));
+    var service = ((IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory)))
+        .CreateOrganizationService(context.UserId);
 
-    if (context.Depth > 1)
+    var target = (Entity)context.InputParameters["Target"];
+    var current = service.Retrieve(target.LogicalName, target.Id, new ColumnSet("description"));
+
+    var currentDescription = current.GetAttributeValue<string>("description");
+    var desiredDescription = "Updated by plugin";
+
+    // Only update if the value is not already set — prevents re-triggering
+    if (currentDescription != desiredDescription)
     {
-        return; // Avoid recursive execution
+        var update = new Entity(target.LogicalName, target.Id);
+        update["description"] = desiredDescription;
+        service.Update(update);
     }
-
-    // Continue with business logic
 }
 ```
 
@@ -255,10 +261,17 @@ public void Execute(IServiceProvider serviceProvider)
 public void Execute(IServiceProvider serviceProvider)
 {
     var context = (IPluginExecutionContext)serviceProvider.GetService(typeof(IPluginExecutionContext));
+
+    // Fragile: assumes depth will always be 1 on the first trigger
+    if (context.Depth > 1)
+    {
+        return;
+    }
+
     var service = ((IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory)))
         .CreateOrganizationService(context.UserId);
 
-    // Updates the same record, which triggers this plugin again — infinite loop
+    // Unconditionally updates the record, which triggers this plugin again
     var target = (Entity)context.InputParameters["Target"];
     target["description"] = "Updated by plugin";
     service.Update(target);
