@@ -2,7 +2,7 @@
 
 Good practices for Power Automate flows.
 
-# PA-001: Naming
+# PA-001
 
 Cloud flow names must follow the pattern:
 
@@ -59,7 +59,7 @@ Cloud flow names must follow the pattern:
 1. [Matthew Devaney - Power Automate Coding Standards](https://www.matthewdevaney.com/power-automate-coding-standards-for-cloud-flows/)
 1. [Microsoft Power Platform Guidance - Naming Conventions](https://learn.microsoft.com/en-us/power-platform/guidance/adoption/naming-conventions)
 
-# PA-002: Description
+# PA-002
 
 All flows must have a description. The description should summarize the flow's purpose, the business process it supports, and any important details about its behavior.
 
@@ -88,7 +88,7 @@ All flows must have a description. The description should summarize the flow's p
 - _"Handles stuff"_ (vague, no useful information)
 - No description at all
 
-# PA-003: Trigger Names
+# PA-003
 
 Trigger names should be clear and descriptive to ensure that anyone reviewing the flow can quickly understand what initiates it.
 
@@ -116,7 +116,7 @@ Trigger names should be clear and descriptive to ensure that anyone reviewing th
 - `Manually trigger a flow` (default name, not descriptive)
 - `Recurrence` (default name, no indication of purpose)
 
-# PA-004: Action Names
+# PA-004
 
 All actions must be renamed from their default names to clear, descriptive names that explain what the action does.
 
@@ -152,7 +152,7 @@ All actions must be renamed from their default names to clear, descriptive names
 - `Condition` (default name, unclear what is being evaluated)
 - `HTTP` (default name, unclear what endpoint is being called)
 
-# PA-005: Variable Names
+# PA-005
 
 Variable names must use **camelCase** notation and be prefixed with a short type indicator to make the data type immediately obvious.
 
@@ -194,7 +194,7 @@ Variable names must use **camelCase** notation and be prefixed with a short type
 - `name` (no type prefix, ambiguous)
 - `n` (single character, meaningless)
 
-# PA-006: Connection Reference Names
+# PA-006
 
 Connection reference names must follow the pattern:
 
@@ -233,7 +233,7 @@ Connection reference names must follow the pattern:
 - `John's SharePoint` (personal account reference, no standard format)
 - `New Connection Reference` (default name, meaningless)
 
-# PA-007: Error Handling
+# PA-007
 
 All cloud flows must implement error handling using the **Scope-based Try-Catch-Finally** pattern.
 
@@ -279,7 +279,7 @@ Scope: Finally - Cleanup (Run after: Catch)
 ## More Information
 1. [Microsoft Learn - Power Automate Limits and Configuration](https://learn.microsoft.com/en-us/power-automate/limits-and-config)
 
-# PA-008: Initialize Variables at the Top
+# PA-008
 
 All variables must be initialized at the very beginning of the flow, before any other actions or logic.
 
@@ -318,7 +318,7 @@ Condition: Check Status
     └── No: ...
 ```
 
-# PA-009: Avoid Hardcoded Values
+# PA-009
 
 Avoid hardcoding values such as URLs, email addresses, IDs, or configuration settings directly in flow actions or expressions. Use **Environment Variables** instead.
 
@@ -347,13 +347,13 @@ Avoid hardcoding values such as URLs, email addresses, IDs, or configuration set
 - Hardcoding an email address: `support@contoso.com`
 - Hardcoding a record GUID: `a1b2c3d4-e5f6-7890-abcd-ef1234567890`
 
-# PA-010: Use Child Flows for Reusability
+# PA-010
 
 Extract reusable logic into **Child Flows** to avoid duplicating actions across multiple flows.
 
 1. A child flow should perform a single, well-defined task.
 1. Use clear input and output parameters to define the child flow's interface.
-1. Name child flows with the `CF -` prefix as defined in [PA-001](#pa-001-naming).
+1. Name child flows with the `CF -` prefix as defined in [PA-001](#pa-001).
 1. Child flows must be **solution-aware** so they can be deployed across environments.
 
 ## Rationale
@@ -377,7 +377,7 @@ Extract reusable logic into **Child Flows** to avoid duplicating actions across 
 - A single monolithic flow with 400+ actions that handles multiple unrelated processes.
 - Creating child flows for trivial single-action operations where the overhead is not justified.
 
-# PA-011: Add Notes to Complex Actions
+# PA-011
 
 Use the built-in **Notes** feature to document complex expressions, business logic, and non-obvious design decisions within the flow.
 
@@ -405,7 +405,7 @@ Use the built-in **Notes** feature to document complex expressions, business log
 - No notes anywhere in a flow with 50+ actions and complex expressions.
 - Adding obvious notes like _"This sends an email"_ on a `Send an email` action.
 
-# PA-012: Solution-Aware Flows
+# PA-012
 
 All cloud flows must be created inside a **Solution**. Avoid creating flows outside of solutions (known as "non-solution flows" or "My Flows").
 
@@ -436,7 +436,7 @@ All cloud flows must be created inside a **Solution**. Avoid creating flows outs
 ## More Information
 1. [Microsoft Learn - Solutions Overview](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/solutions-overview)
 
-# PA-013: Dataverse Trigger Configuration
+# PA-013
 
 Dataverse triggers must always be configured with the specific fields that should trigger the flow, and must include condition expressions to filter the triggering events.
 
@@ -469,7 +469,7 @@ Dataverse triggers must always be configured with the specific fields that shoul
 1. [Microsoft Learn - Dataverse Connector Triggers](https://learn.microsoft.com/en-us/connectors/commondataserviceforapps/#triggers)
 1. [Microsoft Learn - Limits of Triggers in Dataverse](https://learn.microsoft.com/en-us/power-automate/dataverse/trigger-limits)
 
-# PA-014: Dataverse Query Optimization
+# PA-014
 
 When querying Dataverse, minimize the number of columns and rows retrieved to optimize performance and reduce API consumption.
 
