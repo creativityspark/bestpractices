@@ -1,0 +1,429 @@
+topic: PCF Controls
+description: Good practices for Power Apps Component Framework (PCF) code components.
+rules:
+- id: PCF-001
+  title: Always deploy production builds of code components to Dataverse
+  description: Always deploy production builds of code components to Dataverse. Never deploy development builds to non-development environments.
+  guidelines:
+  - Build code components using npm run build -- --buildMode production or msbuild /p:configuration=Release before deploying.
+  - Development builds include unminified code, source maps, and debugging aids that increase bundle size significantly.
+  - Set up an automated build pipeline to ensure production builds are always used for deployment.
+  rationale:
+  - Development builds are significantly larger than production builds and adversely affect load times and overall performance.
+  - Large development bundles may be blocked from deployment due to exceeding size limits.
+  - Production builds apply minification, tree-shaking, and other optimizations that are essential for a good end-user experience.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: npm run build -- --buildMode production
+      language: shell
+    - description: Good example code snippet.
+      code: msbuild /p:configuration=Release
+      language: shell
+    bad:
+    - value: script
+      note: npm run build
+    - description: Bad example code snippet.
+      code: 'npm run build
+
+        # Then importing the solution without switching to production mode'
+      language: shell
+    - description: Bad example code snippet.
+      code: '# Missing --buildMode production flag
+
+        - script: npm run build'
+      language: yaml
+  references:
+  - title: Best practices and guidance for code components - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/code-components-best-practices
+  - title: Debugging custom controls - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/debugging-custom-controls
+- id: PCF-002
+  title: Always clean up resources inside the destroy method
+  description: Always clean up resources inside the destroy method. Remove event listeners, close WebSockets, and unmount React components to prevent memory leaks.
+  guidelines:
+  - Use the destroy method to close any open WebSocket connections.
+  - Remove event listeners that were added to elements outside the container element.
+  - If using React, call ReactDOM.unmountComponentAtNode inside the destroy method to properly tear down the React component tree.
+  - Clear any pending timers (setTimeout, setInterval) or animation frames.
+  rationale:
+  - Code components can be loaded and unloaded multiple times within a single browser session, especially in model-driven apps. Failing to clean up resources causes memory leaks that degrade performance over time.
+  - Orphaned event listeners continue to fire after the component is removed from the DOM, potentially causing errors or unexpected behavior.
+  - React components that are not properly unmounted will retain references to stale DOM nodes and state, leading to memory leaks and console errors.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "public destroy(): void {\n    window.removeEventListener(\"resize\", this._onResize);\n    clearInterval(this._pollingInterval);\n    ReactDOM.unmountComponentAtNode(this._container);\n}"
+      language: typescript
+    bad:
+    - description: Bad example code snippet.
+      code: "public destroy(): void {\n    // Empty destroy method \u2014 resources are never cleaned up\n}"
+      language: typescript
+    - description: Bad example code snippet.
+      code: "// Adding a global event listener without ever removing it\npublic init(context: ComponentFramework.Context<IInputs>): void {\n    window.addEventListener(\"resize\", this._onResize);\n}\n\npublic destroy(): void {\n    // Missing: window.removeEventListener(\"resize\", this._onResize);\n}"
+      language: typescript
+  references:
+  - title: Control.destroy - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/reference/control/destroy
+  - title: Best practices and guidance for code components - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/code-components-best-practices
+- id: PCF-003
+  title: Minimize calls to notifyOutputChanged
+  description: Minimize calls to notifyOutputChanged. Avoid calling it on every keystroke or mouse move event. Instead, debounce or trigger it when the user interaction completes, such as on blur or mouse-up events.
+  guidelines:
+  - Do not call notifyOutputChanged inside high-frequency event handlers such as onkeypress, onmousemove, or oninput.
+  - Use a debounce or throttle mechanism to batch rapid changes into a single notification.
+  - Prefer triggering notifyOutputChanged on events that signal the end of an interaction, such as onblur, onchange, or onmouseup.
+  rationale:
+  - Each call to notifyOutputChanged triggers the hosting context to call getOutputs and propagate changes to the parent context. Excessive calls create unnecessary processing overhead.
+  - In canvas apps, frequent output changes can trigger formula re-evaluation cascades, severely degrading app performance.
+  - Debouncing provides a smoother user experience by only committing the final value after the user finishes interacting.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "private _onInputBlur = (): void => {\n    this._value = this._inputElement.value;\n    this._notifyOutputChanged();\n};\n\npublic init(context: ComponentFramework.Context<IInputs>): void {\n    this._inputElement.addEventListener(\"blur\", this._onInputBlur);\n}"
+      language: typescript
+    - description: Good example code snippet.
+      code: "private _debouncedNotify = debounce(() => {\n    this._notifyOutputChanged();\n}, 300);\n\nprivate _onInput = (): void => {\n    this._value = this._inputElement.value;\n    this._debouncedNotify();\n};"
+      language: typescript
+    bad:
+    - description: Bad example code snippet.
+      code: "// Calling notifyOutputChanged on every keystroke\nprivate _onKeyPress = (): void => {\n    this._value = this._inputElement.value;\n    this._notifyOutputChanged();\n};"
+      language: typescript
+    - description: Bad example code snippet.
+      code: "// Calling notifyOutputChanged on mouse move\nprivate _onMouseMove = (event: MouseEvent): void => {\n    this._position = { x: event.clientX, y: event.clientY };\n    this._notifyOutputChanged();\n};"
+      language: typescript
+  references:
+  - title: Best practices and guidance for code components - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/code-components-best-practices
+- id: PCF-004
+  title: Always handle null or undefined property values in the updateView method
+  description: Always handle null or undefined property values in the updateView method. Data may not be ready when updateView is first called, and your component must gracefully handle this state.
+  guidelines:
+  - Check for null or undefined values on all bound properties before using them.
+  - Provide a visual loading indicator or a sensible default when data is not yet available.
+  - Expect that a subsequent updateView call will include the actual values once data is ready.
+  rationale:
+  - The hosting context may call updateView before the bound data has loaded, passing null values for properties that will eventually have data.
+  - Attempting to use null values without checking leads to runtime errors that break the component.
+  - Providing a loading state improves user experience by giving visual feedback that data is being fetched.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "public updateView(context: ComponentFramework.Context<IInputs>): void {\n    const value = context.parameters.inputValue.raw;\n\n    if (value === null || value === undefined) {\n        this._container.innerHTML = \"\";\n        this._container.appendChild(this._loadingSpinner);\n        return;\n    }\n\n    this._renderContent(value);\n}"
+      language: typescript
+    bad:
+    - description: Bad example code snippet.
+      code: "public updateView(context: ComponentFramework.Context<IInputs>): void {\n    // Directly using the value without null checking \u2014 will throw if null\n    const value = context.parameters.inputValue.raw;\n    this._container.innerText = value.toString();\n}"
+      language: typescript
+  references:
+  - title: Control.updateView - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/reference/control/updateview
+  - title: Best practices and guidance for code components - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/code-components-best-practices
+- id: PCF-005
+  title: Always scope CSS rules to your code component's container
+  description: Always scope CSS rules to your code component's container. Never use global CSS selectors that could affect other components or the host application.
+  guidelines:
+  - Use the automatically generated CSS class applied to your component's container DIV element to scope all styles.
+  - The scoped class follows the pattern Namespace.ComponentName.
+  - If using a third-party CSS framework, wrap it in a namespace or use a namespaced version.
+  - Avoid using overly broad selectors like div, input, or * without scoping them to your component.
+  rationale:
+  - Globally scoped CSS can unintentionally override styles of the host application (model-driven app, canvas app, or portal), causing layout or styling issues.
+  - Multiple code components on the same page may conflict with each other if they use global styles.
+  - Scoped CSS ensures your component is visually self-contained and predictable regardless of where it is rendered.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: ".SampleNamespace\\.LinearInputComponent .slider-control {\n    width: 100%;\n    height: 24px;\n}\n\n.SampleNamespace\\.LinearInputComponent .slider-label {\n    font-size: 14px;\n    color: #333;\n}"
+      language: css
+    bad:
+    - description: Bad example code snippet.
+      code: "/* Global selector \u2014 affects ALL inputs on the page */\ninput {\n    border: 2px solid blue;\n    font-size: 16px;\n}\n\n/* Overly broad selector \u2014 affects all divs */\ndiv {\n    padding: 10px;\n    margin: 5px;\n}"
+      language: css
+    - description: Bad example code snippet.
+      code: "/* Unscoped class name \u2014 may conflict with other components */\n.slider-control {\n    width: 100%;\n}"
+      language: css
+  references:
+  - title: Best practices and guidance for code components - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/code-components-best-practices
+- id: PCF-006
+  title: Avoid using innerHTML to render dynamic content
+  description: Avoid using innerHTML to render dynamic content. Use DOM APIs such as document.createElement, or use a framework like React to build the UI safely.
+  guidelines:
+  - Never assign user-provided or data-bound values directly to innerHTML.
+  - Use document.createElement and textContent for simple DOM construction.
+  - For complex UIs, use React or another framework that automatically escapes content and prevents XSS vulnerabilities.
+  - If HTML rendering is absolutely required, sanitize the content using a trusted library such as DOMPurify.
+  rationale:
+  - Setting innerHTML with unsanitized content exposes the component to Cross-Site Scripting (XSS) attacks, where malicious scripts can be injected and executed in the user's browser.
+  - Frameworks like React use a virtual DOM that automatically escapes string values, preventing injection attacks by default.
+  - DOM APIs like createElement and textContent are inherently safe because they do not parse HTML.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: 'const label = document.createElement("span");
+
+        label.textContent = context.parameters.displayText.raw ?? "";
+
+        this._container.appendChild(label);'
+      language: typescript
+    - description: Good example code snippet.
+      code: "const MyComponent: React.FC<{ text: string }> = ({ text }) => (\n    <div>{text}</div>\n);"
+      language: tsx
+    bad:
+    - description: Bad example code snippet.
+      code: "// Directly injecting data into innerHTML \u2014 XSS vulnerability\nthis._container.innerHTML =\n    `<span>${context.parameters.displayText.raw}</span>`;"
+      language: typescript
+    - description: Bad example code snippet.
+      code: '// User-controlled data rendered as HTML
+
+        this._container.innerHTML = userProvidedHtml;'
+      language: typescript
+  references:
+  - title: OWASP XSS Prevention Cheat Sheet
+    url: https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Scripting_Prevention_Cheat_Sheet.html
+  - title: Best practices and guidance for code components - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/code-components-best-practices
+- id: PCF-007
+  title: Use path-based imports when importing from Fluent UI React to reduce bundle size
+  description: Use path-based imports when importing from Fluent UI React to reduce bundle size. Avoid importing from the package root.
+  guidelines:
+  - Import individual components using their specific path, such as @fluentui/react/lib/Button.
+  - Avoid importing from the root @fluentui/react barrel export.
+  - 'Alternatively, configure tree-shaking in tsconfig.json by setting "module": "es2015" and "moduleResolution": "node".'
+  rationale:
+  - The PCF build toolchain does not enable tree-shaking by default. Importing from the root barrel export bundles the entire Fluent UI library, significantly increasing the component's size.
+  - Path-based imports ensure only the specific component code is included in the bundle, reducing load times.
+  - Smaller bundles improve performance, especially when multiple code components are loaded on the same page.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: 'import { PrimaryButton } from "@fluentui/react/lib/Button";
+
+        import { TextField } from "@fluentui/react/lib/TextField";
+
+        import { Dropdown } from "@fluentui/react/lib/Dropdown";'
+      language: typescript
+    bad:
+    - description: Bad example code snippet.
+      code: '// Imports the entire Fluent UI library into the bundle
+
+        import { PrimaryButton, TextField, Dropdown } from "@fluentui/react";'
+      language: typescript
+  references:
+  - title: Fluent UI - Advanced Usage
+    url: https://github.com/microsoft/fluentui/wiki/Advanced-Usage
+  - title: Best practices and guidance for code components - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/code-components-best-practices
+- id: PCF-008
+  title: Use the init method to request network resources such as metadata or configuration data
+  description: Use the init method to request network resources such as metadata or configuration data. Do not defer these requests to updateView.
+  guidelines:
+  - Initiate any required network calls (metadata, configuration, reference data) inside the init method.
+  - If the data has not yet returned when updateView is called, display a loading indicator.
+  - Store the results of network calls in instance variables for use in subsequent updateView calls.
+  rationale:
+  - The init method is called once when the component is first loaded, making it the ideal place for one-time setup and data fetching.
+  - Deferring network calls to updateView means they execute on every re-render, causing redundant requests and poor performance.
+  - Fetching data early in init reduces the time the user sees a loading state, since the request starts before the first render.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "public init(\n    context: ComponentFramework.Context<IInputs>,\n    notifyOutputChanged: () => void,\n    state: ComponentFramework.Dictionary\n): void {\n    this._notifyOutputChanged = notifyOutputChanged;\n    this._isLoading = true;\n\n    this._fetchMetadata(context).then((metadata) => {\n        this._metadata = metadata;\n        this._isLoading = false;\n        this._notifyOutputChanged();\n    });\n}\n\npublic updateView(context: ComponentFramework.Context<IInputs>): void {\n    if (this._isLoading) {\n        this._showLoadingIndicator();\n        return;\n    }\n    this._renderWithMetadata(this._metadata);\n}"
+      language: typescript
+    bad:
+    - description: Bad example code snippet.
+      code: "// Fetching data inside updateView \u2014 runs on every re-render\npublic updateView(context: ComponentFramework.Context<IInputs>): void {\n    fetch(\"/api/metadata\")\n        .then((response) => response.json())\n        .then((data) => {\n            this._renderWithMetadata(data);\n        });\n}"
+      language: typescript
+  references:
+  - title: Control.init - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/reference/control/init
+  - title: Best practices and guidance for code components - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/code-components-best-practices
+- id: PCF-009
+  title: Always check API availability before using platform-specific APIs
+  description: Always check API availability before using platform-specific APIs. Not all APIs are available in every host (model-driven apps, canvas apps, portals).
+  guidelines:
+  - Check whether an API exists on the context object before calling it.
+  - Provide a graceful fallback or inform the user when a required API is unavailable.
+  - Refer to the PCF API reference documentation for per-host availability.
+  rationale:
+  - The context.webAPI is not available in canvas apps. Calling it without a check will result in runtime errors.
+  - Code components are designed to work across multiple hosts (model-driven apps, canvas apps, and portals), each with different API support.
+  - Defensive checks future-proof the component against changes in API availability across platform updates.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "public updateView(context: ComponentFramework.Context<IInputs>): void {\n    if (context.webAPI) {\n        context.webAPI\n            .retrieveMultipleRecords(\"account\", \"?$top=10\")\n            .then((result) => this._renderRecords(result.entities));\n    } else {\n        this._renderFallbackMessage(\n            \"This component requires Web API access.\"\n        );\n    }\n}"
+      language: typescript
+    bad:
+    - description: Bad example code snippet.
+      code: "// Calling webAPI without checking availability \u2014 fails in canvas apps\npublic updateView(context: ComponentFramework.Context<IInputs>): void {\n    context.webAPI\n        .retrieveMultipleRecords(\"account\", \"?$top=10\")\n        .then((result) => this._renderRecords(result.entities));\n}"
+      language: typescript
+  references:
+  - title: Power Apps component framework API reference - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/reference/
+  - title: Best practices and guidance for code components - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/code-components-best-practices
+- id: PCF-010
+  title: Do not use window
+  description: Do not use window.localStorage or window.sessionStorage to persist data in code components. Use the framework-provided mechanisms instead.
+  guidelines:
+  - Avoid reading from or writing to window.localStorage and window.sessionStorage.
+  - Use bound properties and notifyOutputChanged to pass data back to the hosting context.
+  - If state persistence is needed, store data in Dataverse or use the state parameter of the init method for transient state.
+  rationale:
+  - Data stored in web storage is not secure and could be accessed by other scripts running on the same domain.
+  - Web storage is tied to the specific browser and device, so data stored there is not reliably available across sessions, devices, or users.
+  - The hosting context (model-driven apps, canvas apps) manages its own data flow. Bypassing it with web storage creates inconsistencies and makes the component harder to test and debug.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "// Using bound properties to persist data\npublic getOutputs(): IOutputs {\n    return {\n        savedValue: this._currentValue,\n    };\n}\n\n// Using the state parameter for transient state\npublic init(\n    context: ComponentFramework.Context<IInputs>,\n    notifyOutputChanged: () => void,\n    state: ComponentFramework.Dictionary\n): void {\n    if (state && state[\"lastViewedTab\"]) {\n        this._activeTab = state[\"lastViewedTab\"];\n    }\n}"
+      language: typescript
+    bad:
+    - description: Bad example code snippet.
+      code: "// Storing data in localStorage \u2014 insecure and unreliable\npublic init(\n    context: ComponentFramework.Context<IInputs>\n): void {\n    localStorage.setItem(\"myComponent_value\", this._currentValue);\n}\n\npublic updateView(context: ComponentFramework.Context<IInputs>): void {\n    this._currentValue = localStorage.getItem(\"myComponent_value\") ?? \"\";\n}"
+      language: typescript
+  references:
+  - title: Best practices and guidance for code components - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/code-components-best-practices
+- id: PCF-011
+  title: Bundle all required modules as part of your code component
+  description: Bundle all required modules as part of your code component. Do not rely on external <script> tags or globally loaded libraries.
+  guidelines:
+  - Install all dependencies via npm and import them in your TypeScript code.
+  - Do not assume that any external library is already loaded in the host application.
+  - Do not inject <script> or <link> tags into the document to load external resources.
+  rationale:
+  - Code components run in isolated contexts and cannot rely on global scripts being available on the page.
+  - Injecting <script> tags introduces unpredictable loading order, potential conflicts with other components, and security risks.
+  - Bundling all dependencies ensures the component works reliably in offline scenarios and across all host types (model-driven apps, canvas apps, portals).
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: npm install chart.js
+      language: shell
+    - description: Good example code snippet.
+      code: "import { Chart } from \"chart.js\";\n\npublic init(context: ComponentFramework.Context<IInputs>): void {\n    const canvas = document.createElement(\"canvas\");\n    this._container.appendChild(canvas);\n    this._chart = new Chart(canvas, { /* config */ });\n}"
+      language: typescript
+    bad:
+    - description: Bad example code snippet.
+      code: "// Injecting a script tag to load an external library\npublic init(context: ComponentFramework.Context<IInputs>): void {\n    const script = document.createElement(\"script\");\n    script.src = \"https://cdn.jsdelivr.net/npm/chart.js\";\n    document.head.appendChild(script);\n}"
+      language: typescript
+    - description: Bad example code snippet.
+      code: "// Assuming a globally available library\npublic init(context: ComponentFramework.Context<IInputs>): void {\n    // Chart is assumed to be available globally \u2014 will fail\n    const chart = new (window as any).Chart(canvas, { /* config */ });\n}"
+      language: typescript
+  references:
+  - title: Best practices and guidance for code components - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/code-components-best-practices
+- id: PCF-012
+  title: Ensure code components are accessible
+  description: Ensure code components are accessible. Provide keyboard navigation alternatives and use ARIA attributes so that screen readers can accurately describe the component's interface.
+  guidelines:
+  - Ensure all interactive elements can be reached and operated via keyboard (Tab, Enter, Escape, arrow keys).
+  - Add aria-label, aria-role, and other ARIA attributes to convey the component's structure and state to assistive technologies.
+  - Use semantic HTML elements (button, input, select) instead of generic div or span for interactive elements.
+  - Test with screen readers and browser accessibility inspection tools.
+  rationale:
+  - Power Apps is used in enterprise environments where accessibility compliance (WCAG) is often a legal requirement.
+  - Keyboard-only users and screen-reader users cannot interact with components that rely solely on mouse or touch events.
+  - Using semantic HTML and ARIA attributes allows assistive technologies to provide an accurate representation of the component, improving usability for all users.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "const button = document.createElement(\"button\");\nbutton.textContent = \"Submit\";\nbutton.setAttribute(\"aria-label\", \"Submit the form\");\nbutton.addEventListener(\"keydown\", (e) => {\n    if (e.key === \"Enter\" || e.key === \" \") {\n        this._onSubmit();\n    }\n});\nthis._container.appendChild(button);"
+      language: typescript
+    - description: Good example code snippet.
+      code: "<Dropdown\n    label=\"Select a country\"\n    ariaLabel=\"Country selector\"\n    options={this._countryOptions}\n    onChange={this._onCountryChange}\n/>"
+      language: tsx
+    bad:
+    - description: Bad example code snippet.
+      code: "// Using a div as a button \u2014 not keyboard accessible, no ARIA role\nconst fakeButton = document.createElement(\"div\");\nfakeButton.textContent = \"Submit\";\nfakeButton.onclick = () => this._onSubmit();\nthis._container.appendChild(fakeButton);"
+      language: typescript
+    - description: Bad example code snippet.
+      code: "// No ARIA attributes \u2014 screen readers cannot describe the control\nconst input = document.createElement(\"input\");\ninput.type = \"text\";\n// Missing: aria-label or associated label element\nthis._container.appendChild(input);"
+      language: typescript
+  references:
+  - title: Accessible Rich Internet Applications (ARIA) - MDN
+    url: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA
+  - title: Create accessible canvas apps - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/accessible-apps
+  - title: Best practices and guidance for code components - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/code-components-best-practices
+- id: PCF-013
+  title: Make PCF controls easy to debug during development and after deployment
+  description: Make PCF controls easy to debug during development and after deployment. Use the local test harness during implementation, and use tools such as Fiddler or Requestly when troubleshooting deployed controls in Dataverse.
+  guidelines:
+  - Use npm start or npm start watch to run the browser test harness while developing the control.
+  - Use the test harness to exercise input properties, mock data, form factors, and container sizes before deploying.
+  - When an issue only reproduces after deployment, use tools such as Fiddler or Requestly to redirect the deployed control to your local build for debugging.
+  - Use browser developer tools together with these debugging flows to inspect DOM, network requests, and runtime errors.
+  rationale:
+  - The local test harness shortens the feedback loop and makes it easier to validate behavior without repeatedly packaging and deploying the control.
+  - Some scenarios only surface in Dataverse after deployment, especially when the control depends on host-specific behavior, feature usage, or real data flows.
+  - Redirecting deployed requests to a local build with Fiddler or Requestly allows you to diagnose real-environment issues without manually rebuilding and reimporting for every change.
+  examples:
+    good:
+    - description: Run the control locally with the test harness.
+    - description: Reproduce environment-specific issues in Dataverse.
+    - description: Use Fiddler or Requestly to map the deployed bundle request to the local build output.
+    - description: Inspect the behavior with browser developer tools.
+    - description: Good example code snippet.
+      code: npm start watch
+      language: shell
+    - description: Good example code snippet.
+      code: '1. Run the control locally with the test harness.
+
+        2. Reproduce environment-specific issues in Dataverse.
+
+        3. Use Fiddler or Requestly to map the deployed bundle request to the local build output.
+
+        4. Inspect the behavior with browser developer tools.'
+      language: text
+    bad:
+    - description: Bad example code snippet.
+      code: Deploy every small change to Dataverse and debug only there, without using the test harness.
+      language: text
+    - description: Bad example code snippet.
+      code: Ignore tools like Fiddler or Requestly and treat deployed-only issues as impossible to debug locally.
+      language: text
+  references:
+  - title: Debug code components - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/debugging-custom-controls#debugging-after-deploying-into-microsoft-dataverse
+  - title: Create your first component - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/implementing-controls-using-typescript
+- id: PCF-014
+  title: Always provide unit tests with PCF controls
+  description: Always provide unit tests with PCF controls. Changes to a control must include automated tests that protect the component against regressions.
+  guidelines:
+  - Add unit tests for the control's rendering logic, behaviors, validation rules, and output generation.
+  - Run the unit test suite as part of local development and CI before packaging or deploying the control.
+  - Add regression tests whenever fixing a defect so the same issue cannot be reintroduced silently.
+  - Prefer tests that exercise real browser DOM behavior where possible, instead of relying only on shallow mocks.
+  rationale:
+  - PCF controls evolve over time, and without unit tests it is easy for small changes to break rendering, validation, or output behavior.
+  - Automated tests give fast feedback and reduce the cost of refactoring or extending existing controls.
+  - Regression tests preserve previously fixed behavior and make code reviews more reliable because reviewers can see that expected scenarios are covered.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "{\n  \"scripts\": {\n    \"test\": \"karma start karma.conf.js --browsers=FirefoxHeadless --single-run\"\n  }\n}"
+      language: json
+    - description: Good example code snippet.
+      code: "it(\"shows the validation message when submit is called with no file selected\", () => {\n    const control = new fileUpload(context, htmlDivElement, () => {});\n    control.generate();\n    control.submit();\n\n    const information = document.getElementById(controls.information);\n    expect(information?.style.display).to.equal(\"block\");\n});"
+      language: typescript
+    bad:
+    - description: Bad example code snippet.
+      code: Ship a PCF control with no automated tests and rely only on manual verification in the test harness.
+      language: text
+    - description: Bad example code snippet.
+      code: "// Fixing a bug without adding a regression test for the broken scenario\npublic submit(): void {\n    this._notifyOutputChanged();\n}"
+      language: typescript
+  references:
+  - title: Creating Better PCF Component Part 2
+    url: https://temmyraharjo.wordpress.com/2020/11/23/creating-better-pcf-component-part-2/
+  - title: Debug code components - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/debugging-custom-controls

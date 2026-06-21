@@ -1,0 +1,26 @@
+topic: Component Naming
+description: Good practices for Power Pages component naming. i.e., Web Pages, Web Templates, Basic Forms, Advanced Forms, etc.
+rules:
+- id: PPN-001
+  title: End-users access web pages for the portal
+  description: "End-users access web pages for the portal. These web pages are organized into a hierarchy as part of the solution architecture. As such, it makes sense to name portal components (such as web pages) using a hierarchical pattern. > Note: A portal component is any portal configuration table record. i.e. > > - Web Page > - Web Template > - Content Snippet Follow the below guidance when naming portal components: | Convention | Do \u2714  | Don't \u274C | |--|--|--| | Prefix vendor specific components with the vendor name/acronym. | VendorName | Contoso | | Prefix customer specific components with the customer name/acronym. | Contoso | VendorName | | Use forward slashes (/) as the delimiter of components in the hierarchy. | VendorName/FeatureOne | VendorName-FeatureOne | | Abbreviate component names without sacrificing clarity. | VendorName/FeatureOne | VendorName/TheVeryFirstFeature | | Do not use component type names in component names. | Web Page: VendorName/FeatureOne<br>Content\
+    \ Snippet: VendorName/FeatureOne/Title | Web Page: VendorName/FeatureOneWebPage<br>Content Snippet: VendorName/FeatureOne/TitleSnippet | | Child components should inherit their parent components name. | Parent: VendorName/FeatureOne<br>Child: VendorName/FeatureOne/ChildFeature | Parent: VendorName/FeatureOne<br>Child: VendorName/ChildFeature | | Other components types for the same feature should share names. | Web Page: VendorName/FeatureOne<br>Page Template: VendorName/FeatureOne<br>Web Template: VendorName/FeatureOne | Web Page: VendorName/FeatureOne<br>Page Template: VendorName/FirstFeature<br>Web Template: VendorName/Feature1Template | | Using PascalCase when naming hierarchy components. | VendorName/FeatureOne | VendorName/featureOne | | Do not use spaces or dashes (-). | VendorName/FeatureOne | VendorName-Feature One | | Extend the existing hierarchy instead of creating a new one. | Current: ../FeatureOne/ChildFeatureOne<br>New feature: ../FeatureOne/ChildFeatureTwo | Current:\
+    \ ../FeatureOne/ChildFeatureOne<br>New feature: ../FeatureOneChildFeatureTwo |"
+  guidelines:
+  - "End-users access web pages for the portal. These web pages are organized into a hierarchy as part of the solution architecture. As such, it makes sense to name portal components (such as web pages) using a hierarchical pattern. > Note: A portal component is any portal configuration table record. i.e. > > - Web Page > - Web Template > - Content Snippet Follow the below guidance when naming portal components: | Convention | Do \u2714  | Don't \u274C | |--|--|--| | Prefix vendor specific components with the vendor name/acronym. | VendorName | Contoso | | Prefix customer specific components with the customer name/acronym. | Contoso | VendorName | | Use forward slashes (/) as the delimiter of components in the hierarchy. | VendorName/FeatureOne | VendorName-FeatureOne | | Abbreviate component names without sacrificing clarity. | VendorName/FeatureOne | VendorName/TheVeryFirstFeature | | Do not use component type names in component names. | Web Page: VendorName/FeatureOne<br>Content Snippet:\
+    \ VendorName/FeatureOne/Title | Web Page: VendorName/FeatureOneWebPage<br>Content Snippet: VendorName/FeatureOne/TitleSnippet | | Child components should inherit their parent components name. | Parent: VendorName/FeatureOne<br>Child: VendorName/FeatureOne/ChildFeature | Parent: VendorName/FeatureOne<br>Child: VendorName/ChildFeature | | Other components types for the same feature should share names. | Web Page: VendorName/FeatureOne<br>Page Template: VendorName/FeatureOne<br>Web Template: VendorName/FeatureOne | Web Page: VendorName/FeatureOne<br>Page Template: VendorName/FirstFeature<br>Web Template: VendorName/Feature1Template | | Using PascalCase when naming hierarchy components. | VendorName/FeatureOne | VendorName/featureOne | | Do not use spaces or dashes (-). | VendorName/FeatureOne | VendorName-Feature One | | Extend the existing hierarchy instead of creating a new one. | Current: ../FeatureOne/ChildFeatureOne<br>New feature: ../FeatureOne/ChildFeatureTwo | Current: ../FeatureOne/ChildFeatureOne<br>New\
+    \ feature: ../FeatureOneChildFeatureTwo |"
+  rationale:
+  - Hierarchy of the portal structure is clear.
+  - Simple naming of source control files and folders.
+  examples:
+    good:
+    - value: Table Permissions
+      note: For this record type, it is best to provide a descriptive name.
+    - value: Millage may vary
+      note: Name is subjective and each record type should be evaluated based on what makes sense.
+    bad:
+    - description: Violates the rule requirements.
+  references:
+  - title: Microsoft Learn - Power Platform Documentation
+    url: https://learn.microsoft.com/en-us/power-platform/

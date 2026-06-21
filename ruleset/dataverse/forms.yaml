@@ -1,0 +1,131 @@
+topic: Forms
+description: Good practices for Dataverse Forms.
+rules:
+- id: FRM-001
+  title: Every table main form must have a hidden Admin tab containing all the system attributes...
+  description: Every table main form must have a hidden Admin tab containing all the system attributes, including state, status, owner, creation date, owning business unit, and modification dates. You can use a tool like Level up for Dynamics to make the tab visible and access the values. !Hidden Admin Tab !Hidden Admin Tab
+  guidelines:
+  - Every table main form must have a hidden Admin tab containing all the system attributes, including state, status, owner, creation date, owning business unit, and modification dates. You can use a tool like Level up for Dynamics to make the tab visible and access the values. !Hidden Admin Tab !Hidden Admin Tab
+  rationale:
+  - Testers and developers often need to access and update system attribute values. Having them in a hidden tab facilitates debugging and testing tasks.
+  - Keeping the tab hidden by default prevents end users from accidentally modifying system attributes.
+  examples:
+    good:
+    - description: Conforms to the rule requirements.
+    bad:
+    - description: Violates the rule requirements.
+  references:
+  - title: Microsoft Learn - Power Platform Documentation
+    url: https://learn.microsoft.com/en-us/power-platform/
+- id: FRM-002
+  title: Organize form content using tabs and sections with clear, descriptive names
+  description: Organize form content using tabs and sections with clear, descriptive names.
+  guidelines:
+  - Use tabs to represent major logical groupings of information (e.g., "General", "Details", "Related Records").
+  - Use sections within tabs to further organize related fields.
+  - Place the most frequently used fields and tabs first.
+  - Limit the number of tabs to 3-5 to avoid overwhelming users.
+  - Limit sections to 5-7 fields each to keep forms readable.
+  - Name tabs and sections using clear, user-friendly language. Avoid technical jargon.
+  rationale:
+  - Well-organized forms improve user productivity by reducing the time needed to find and fill in information.
+  - Logical grouping of fields reduces cognitive load and improves data entry accuracy.
+  - Too many tabs or fields on a single section creates a cluttered interface that overwhelms users.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "Tab: General\n  Section: Customer Information     \u2192 Name, Email, Phone\n  Section: Address                  \u2192 Street, City, Country\n\nTab: Order History\n  Section: Recent Orders            \u2192 Subgrid with last 10 orders"
+      language: Plain Text
+    bad:
+    - description: Bad example code snippet.
+      code: "Tab: Tab1\n  Section: Section1  \u2192 Name, Email, Phone, Street, City, Country,\n                        Order Date, Total, Status, Notes, Category,\n                        Priority, Source, Rating, ..."
+      language: Plain Text
+  references:
+  - title: Design productive main forms - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/design-productive-forms
+- id: FRM-003
+  title: Optimize form load performance by minimizing the number of controls and scripts loaded...
+  description: Optimize form load performance by minimizing the number of controls and scripts loaded on the form.
+  guidelines:
+  - Limit the number of subgrids on a single form. Each subgrid triggers an additional data query on load.
+  - Set non-essential tabs to expand only when clicked ("collapsed by default") to defer data loading.
+  - Avoid adding unnecessary web resources, timers, or custom controls that increase load time.
+  - Keep JavaScript event handlers lean and use asynchronous calls for any Web API operations.
+  - Minimize the number of business rules per form. Consolidate overlapping rules where possible.
+  rationale:
+  - Every control on a form contributes to load time. Subgrids, quick view forms, and web resources each trigger additional server requests.
+  - Deferring the loading of non-essential tabs significantly reduces initial form load time, especially on forms with many related records.
+  - Poorly optimized JavaScript or excessive business rules can block the form rendering pipeline and degrade the user experience.
+  examples:
+    good:
+    - description: A form with 2 subgrids in the "Related Records" tab, which is collapsed by default.
+    - description: JavaScript web resources loaded only on forms that require them, using asynchronous Xrm.WebApi calls.
+    bad:
+    - description: A form with 6 subgrids all visible on the first tab, causing 6+ simultaneous data queries on form load.
+    - description: A synchronous XMLHttpRequest call in the OnLoad event that blocks form rendering for several seconds.
+  references:
+  - title: Optimize form performance - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/optimize-form-performance
+- id: FRM-004
+  title: When using business rules on forms, set the scope appropriately and avoid duplicating l...
+  description: When using business rules on forms, set the scope appropriately and avoid duplicating logic.
+  guidelines:
+  - Set the scope to Table if the rule should apply across all forms, views, and server-side operations (e.g., imports, API calls).
+  - Set the scope to a specific Form only if the logic is unique to that form.
+  - Avoid duplicating the same logic in both business rules and JavaScript. Choose one approach and be consistent.
+  - 'Name business rules descriptively following a pattern like: [Table Name] - [Purpose].'
+  rationale:
+  - Table-scoped business rules enforce logic server-side, which means the rules apply even when records are created via imports, workflows, or API calls - not just the UI.
+  - Form-scoped rules only execute when a user opens that specific form, which can lead to inconsistent data if records are modified through other channels.
+  - Duplicating logic between business rules and JavaScript increases maintenance effort and creates a risk of conflicting behavior.
+  examples:
+    good:
+    - description: A business rule named Contact - Set Phone Required When Type Is Customer scoped to the Table level, ensuring the phone number is always required regardless of how the Contact is created.
+    bad:
+    - description: A business rule that hides a field, combined with a JavaScript OnLoad handler that also hides the same field, causing confusion about which one controls the behavior.
+    - description: A form-scoped business rule that sets a field as required, but records created via data import skip the rule entirely, resulting in incomplete data.
+  references:
+  - title: Create business rules - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/create-business-rules-recommendations-apply-logic-form
+- id: FRM-005
+  title: Use Quick View Forms to display related record information without requiring navigation...
+  description: Use Quick View Forms to display related record information without requiring navigation away from the current form.
+  guidelines:
+  - Design Quick View Forms to show only the most relevant summary fields from the related record.
+  - Keep Quick View Forms small - ideally 3-5 fields.
+  - Do not use Quick View Forms for data entry. They are read-only by design.
+  - Avoid placing multiple Quick View Forms on the same tab, as each one generates an additional data query.
+  rationale:
+  - Quick View Forms provide contextual information from related records directly on the parent form, reducing the need for users to navigate between records.
+  - Overloading Quick View Forms with too many fields defeats their purpose and impacts form load time.
+  - Each Quick View Form triggers a separate data retrieval call, so excessive use on a single form degrades performance.
+  examples:
+    good:
+    - description: A Quick View Form on the Case form showing the related Customer's name, phone number, and account tier - just enough context for the support agent.
+    bad:
+    - description: A Quick View Form on the Case form displaying 15+ fields from the Customer record, including fields that are rarely relevant to case handling.
+    - description: Three Quick View Forms on the same form tab, each loading data from different related tables simultaneously.
+  references:
+  - title: Create and edit quick view forms - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/create-edit-quick-view-forms
+- id: FRM-006
+  title: Every form must have a description that explains its purpose and intended audience
+  description: Every form must have a description that explains its purpose and intended audience.
+  guidelines:
+  - 'State the purpose: Explain what the form is used for in one or two sentences.'
+  - 'Identify the audience: Indicate which user roles or teams are expected to use this form.'
+  - 'Note special behavior: Mention any business rules, JavaScript handlers, or non-obvious behavior associated with the form.'
+  rationale:
+  - Dataverse tables can have multiple forms. Without descriptions, it is difficult to determine which form to assign to which security role or use case.
+  - Descriptions provide immediate context when managing forms in the solution, reducing the risk of accidental modifications to the wrong form.
+  - Documenting special behavior helps future developers understand the form's logic without having to inspect every event handler and business rule.
+  examples:
+    good:
+    - description: '"Main form for the Customer Service team. Displays case details, communication history, and SLA timers. Includes a business rule to enforce phone number when origin is Phone."'
+    - description: '"Quick create form for the Sales team. Captures essential lead information (name, email, source) for rapid entry during phone calls."'
+    bad:
+    - description: '"Main form" - meaningless, does not differentiate from other forms.'
+    - description: No description at all - administrators have no way to tell forms apart beyond their name.
+  references:
+  - title: Create and edit model-driven app forms - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/create-design-forms

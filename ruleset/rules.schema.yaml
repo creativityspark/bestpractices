@@ -1,0 +1,184 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "rules.schema.yaml"
+title: Power Platform best practices ruleset schema
+description: Schema for a YAML file that documents best practices for Power Platform development.
+type: object
+required:
+  - topic
+  - description
+  - rules
+properties:
+  topic:
+    type: string
+    description: The name of the topic covered by this best practices document.
+    examples:
+      - Plugins
+  description:
+    type: string
+    description: A short summary of what this best practices document covers.
+    examples:
+      - Good practices for Power Platform development.
+  rules:
+    type: array
+    description: The ordered list of best practice rules.
+    minItems: 1
+    items:
+      $ref: "#/$defs/rule"
+$defs:
+  rule:
+    type: object
+    description: A single best practice rule.
+    required:
+      - id
+      - title
+      - description
+      - guidelines
+      - rationale
+      - examples
+      - references
+    additionalProperties: false
+    properties:
+      id:
+        type: string
+        description: Unique identifier for the rule. Format is a prefix followed by a zero-padded three-digit number.
+        pattern: "^[A-Z]+-[0-9]{3}$"
+        examples:
+          - PLG-001
+      title:
+        type: string
+        description: Short human-readable summary of the rule. Written as an imperative statement.
+        examples:
+          - Use namespace-based naming conventions for plugin classes
+      description:
+        type: string
+        description: Full statement of the rule, providing complete context for developers.
+      guidelines:
+        type: array
+        description: Actionable steps developers must follow to comply with the rule.
+        minItems: 1
+        items:
+          type: string
+          description: A single actionable guideline in imperative form.
+      rationale:
+        type: array
+        description: Reasons explaining why the rule exists and the consequences of not following it.
+        minItems: 1
+        items:
+          type: string
+          description: A single rationale statement.
+      examples:
+        type: object
+        description: Illustrative examples showing compliant and non-compliant code or configurations.
+        required:
+          - good
+          - bad
+        additionalProperties: false
+        properties:
+          good:
+            type: array
+            description: Examples that comply with the rule.
+            minItems: 1
+            items:
+              $ref: "#/$defs/example"
+          bad:
+            type: array
+            description: Examples that violate the rule.
+            minItems: 1
+            items:
+              $ref: "#/$defs/example"
+      references:
+        type: array
+        description: External resources (e.g., Microsoft Learn articles) for further reading.
+        minItems: 1
+        items:
+          $ref: "#/$defs/reference"
+      # Optional fields for rules that benefit from extra structure
+      pattern:
+        type: string
+        description: >
+          A naming or structural pattern template associated with the rule, using square-bracket
+          placeholders for variable segments (e.g., [AppName].Plugins.[TableName].[Action]).
+      pattern_segments:
+        type: array
+        description: Descriptions of each segment in the pattern string.
+        items:
+          $ref: "#/$defs/pattern_segment"
+  example:
+    type: object
+    description: >
+      A single illustrative example. Must have at least one of: description, value, or code.
+      Use value + note for identifier/name examples; use description + code + language for code snippets;
+      use description alone for prose-only examples.
+    additionalProperties: false
+    anyOf:
+      - required: [description]
+      - required: [value]
+      - required: [code]
+    allOf:
+      - if:
+          required: [code]
+        then:
+          required: [language]
+    properties:
+      description:
+        type: string
+        description: Prose explanation of what the example demonstrates.
+      value:
+        type: string
+        description: >
+          A concrete identifier, class name, or short literal that is the subject of the example
+          (e.g., a fully-qualified plugin class name).
+      note:
+        type: string
+        description: >
+          A brief annotation clarifying why value is good or bad. Typically used together with value.
+      code:
+        type: string
+        description: >
+          A multi-line code snippet in the relevant programming language. Stored as a literal block
+          scalar in YAML.
+      language:
+        type: string
+        description: >
+          The programming or markup language used by the code snippet (for example, JavaScript or C#).
+  reference:
+    type: object
+    description: A link to an external documentation resource.
+    required:
+      - title
+      - url
+    additionalProperties: false
+    properties:
+      title:
+        type: string
+        description: Human-readable title of the linked resource.
+        examples:
+          - Write a plug-in - Microsoft Learn
+      url:
+        type: string
+        description: Fully-qualified URL of the resource.
+        format: uri
+        examples:
+          - https://learn.microsoft.com/en-us/power-apps/developer/data-platform/write-plug-in
+  pattern_segment:
+    type: object
+    description: Describes one variable segment in a naming or structural pattern.
+    required:
+      - name
+      - description
+    additionalProperties: false
+    properties:
+      name:
+        type: string
+        description: The placeholder name as it appears in the pattern (without brackets).
+        examples:
+          - AppName
+          - TableName
+      description:
+        type: string
+        description: Explanation of what this segment represents and how it should be filled.
+      optional:
+        type: boolean
+        description: >
+          When true, this segment may be omitted from the pattern. Defaults to false when absent.
+        default: false

@@ -1,0 +1,384 @@
+topic: JavaScript Client Scripts
+description: Good practices for Dataverse JavaScript client scripts in model-driven apps.
+rules:
+- id: JS-001
+  title: Use the formContext object obtained from the execution context parameter instead of the...
+  description: Use the formContext object obtained from the execution context parameter instead of the deprecated Xrm.Page global object.
+  guidelines:
+  - Always pass the executionContext parameter to your event handler functions.
+  - Obtain the form context by calling executionContext.getFormContext().
+  - Never reference Xrm.Page directly in new code.
+  - Migrate existing code that uses Xrm.Page to use formContext as soon as possible.
+  rationale:
+  - Xrm.Page has been deprecated since Dynamics 365 version 9.0 and may be removed in a future release.
+  - Using formContext makes your functions reusable across main forms, quick create forms, and dialogs.
+  - The execution context pattern is the only approach supported in the Unified Interface.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "function onLoad(executionContext) {\n    var formContext = executionContext.getFormContext();\n    var name = formContext.getAttribute(\"name\").getValue();\n}"
+      language: javascript
+    bad:
+    - description: Bad example code snippet.
+      code: "function onLoad() {\n    // Xrm.Page is deprecated and will be removed in a future release\n    var name = Xrm.Page.getAttribute(\"name\").getValue();\n}"
+      language: javascript
+  references:
+  - title: Client API form context - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/clientapi-form-context
+  - title: Xrm.Page deprecation - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/reference/xrm-page
+- id: JS-002
+  title: Organize your code using namespaces to avoid polluting the global scope
+  description: Organize your code using namespaces to avoid polluting the global scope.
+  guidelines:
+  - Wrap all functions in a namespace object using the var MyNamespace = MyNamespace || {}; pattern.
+  - Use a multi-level namespace that reflects the publisher, module, and entity (e.g., Contoso.Sales.Account).
+  - Register event handlers using the fully qualified namespace path (e.g., Contoso.Sales.Account.onLoad).
+  - Never define standalone global functions.
+  rationale:
+  - Model-driven apps load all registered web resources into the same global scope. Without namespaces, function name collisions can cause unexpected behavior.
+  - Namespaces make it clear which entity and module a function belongs to, improving readability and maintainability.
+  - The fully qualified name in event registration makes it easier to trace which script handles each event.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "var Contoso = Contoso || {};\nContoso.Account = Contoso.Account || {};\n\nContoso.Account.onLoad = function (executionContext) {\n    var formContext = executionContext.getFormContext();\n    // form logic here\n};\n\nContoso.Account.onSave = function (executionContext) {\n    var formContext = executionContext.getFormContext();\n    // save logic here\n};"
+      language: javascript
+    bad:
+    - description: Bad example code snippet.
+      code: "// Global functions risk naming collisions with other web resources\nfunction onLoad(executionContext) {\n    var formContext = executionContext.getFormContext();\n}\n\nfunction onSave(executionContext) {\n    var formContext = executionContext.getFormContext();\n}"
+      language: javascript
+  references:
+  - title: Organize your code - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/client-scripting-best-practices
+  - title: Client scripting in model-driven apps - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/client-scripting
+- id: JS-003
+  title: Use only supported Dataverse Client API methods
+  description: Use only supported Dataverse Client API methods. Never manipulate the DOM directly or use unsupported libraries like jQuery to interact with form controls.
+  guidelines:
+  - Use formContext.getAttribute() and formContext.getControl() to read and manipulate form data and controls.
+  - Never use document.getElementById(), document.querySelector(), or jQuery selectors to access form elements.
+  - Do not modify CSS classes, styles, or HTML attributes on form controls directly.
+  - Do not reference internal control IDs or class names, as these change without notice between platform updates.
+  rationale:
+  - Microsoft only supports interactions through the documented Client API. Any DOM manipulation is unsupported and can break silently after platform updates.
+  - The internal HTML structure of model-driven app forms changes frequently. Scripts relying on DOM elements will stop working without warning.
+  - Direct DOM manipulation can interfere with the platform's own rendering logic, causing visual glitches and data inconsistencies.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "function hideField(formContext) {\n    formContext.getControl(\"telephone1\").setVisible(false);\n}\n\nfunction setFieldValue(formContext) {\n    formContext.getAttribute(\"firstname\").setValue(\"John\");\n}\n\nfunction disableField(formContext) {\n    formContext.getControl(\"emailaddress1\").setDisabled(true);\n}"
+      language: javascript
+    bad:
+    - description: Bad example code snippet.
+      code: "function hideField() {\n    // Direct DOM manipulation is unsupported and will break\n    document.getElementById(\"telephone1\").style.display = \"none\";\n}\n\nfunction setFieldValue() {\n    // jQuery is not supported for form control interaction\n    $(\"#firstname\").val(\"John\");\n}\n\nfunction disableField() {\n    // Accessing internal DOM elements will fail after platform updates\n    document.querySelector(\"[data-id='emailaddress1']\").setAttribute(\"disabled\", \"true\");\n}"
+      language: javascript
+  references:
+  - title: Client API reference - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/reference
+  - title: Best practices for client scripting - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/client-scripting-best-practices
+- id: JS-004
+  title: Always use asynchronous API calls
+  description: Always use asynchronous API calls. Never use synchronous XMLHttpRequest or any blocking network call.
+  guidelines:
+  - Use Xrm.WebApi methods (retrieveRecord, retrieveMultipleRecords, createRecord, updateRecord, deleteRecord) which are asynchronous by default.
+  - Use async/await or .then() / .catch() to handle asynchronous results.
+  - Never pass false as the async parameter to XMLHttpRequest.open().
+  - For async OnSave handlers, return a Promise so the platform knows when your operation has completed.
+  rationale:
+  - Synchronous network calls block the browser's main thread, freezing the UI until the call completes. This creates a poor user experience.
+  - Synchronous XMLHttpRequest is deprecated in modern browsers and will be removed in future versions.
+  - The Dataverse platform is optimized for asynchronous operations. Synchronous calls bypass these optimizations and can cause timeouts.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "async function getAccountName(accountId) {\n    try {\n        var result = await Xrm.WebApi.retrieveRecord(\n            \"account\", accountId, \"?$select=name\"\n        );\n        return result.name;\n    } catch (error) {\n        console.error(error.message);\n    }\n}"
+      language: javascript
+    bad:
+    - description: Bad example code snippet.
+      code: "function getAccountName(accountId) {\n    // Synchronous XMLHttpRequest blocks the UI\n    var req = new XMLHttpRequest();\n    req.open(\"GET\",\n        Xrm.Utility.getGlobalContext().getClientUrl() +\n        \"/api/data/v9.2/accounts(\" + accountId + \")?$select=name\",\n        false // synchronous - NEVER do this\n    );\n    req.send();\n    return JSON.parse(req.responseText).name;\n}"
+      language: javascript
+  references:
+  - title: Xrm.WebApi - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/reference/xrm-webapi
+  - title: Async event handlers - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/async-event-handlers
+- id: JS-005
+  title: When using Xrm
+  description: When using Xrm.WebApi, retrieve only the columns you need by using the $select query option.
+  guidelines:
+  - Always specify a $select clause with only the fields your logic requires.
+  - Avoid calling retrieveRecord or retrieveMultipleRecords without $select, which returns all columns.
+  - When using $expand for related records, also apply $select on the expanded entity.
+  rationale:
+  - Retrieving all columns returns unnecessary data, increasing payload size and response time.
+  - Selecting only the required fields reduces memory consumption and improves performance, especially on mobile clients.
+  - Excessive data retrieval can contribute to API throttling when combined with multiple concurrent calls.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "// Retrieves only the name and account number\nXrm.WebApi.retrieveRecord(\n    \"account\", accountId,\n    \"?$select=name,accountnumber\"\n).then(function (result) {\n    console.log(result.name);\n});"
+      language: javascript
+    bad:
+    - description: Bad example code snippet.
+      code: "// Retrieves all columns \u2014 unnecessary data transfer\nXrm.WebApi.retrieveRecord(\n    \"account\", accountId\n).then(function (result) {\n    console.log(result.name);\n});"
+      language: javascript
+  references:
+  - title: Retrieve a table row using the Web API - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/retrieve-entity-using-web-api
+  - title: Query data using the Web API - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/query-data-web-api
+- id: JS-006
+  title: Implement proper error handling in all asynchronous operations
+  description: Implement proper error handling in all asynchronous operations. Provide user-friendly feedback when errors occur.
+  guidelines:
+  - Use .catch() on every Promise chain or wrap async/await calls in try/catch blocks.
+  - Display meaningful error messages to users using Xrm.Navigation.openAlertDialog.
+  - In async OnSave handlers, call eventArgs.preventDefault() inside the catch block to prevent saving with invalid or incomplete data.
+  - Do not silently swallow errors.
+  rationale:
+  - Unhandled promise rejections can cause scripts to fail silently, leaving the user unaware that an operation did not complete.
+  - Without preventDefault() in an OnSave error handler, the record may be saved in an inconsistent state.
+  - Clear error messages help users and support teams diagnose issues faster.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "async function onSave(executionContext) {\n    var eventArgs = executionContext.getEventArgs();\n    try {\n        var result = await Xrm.WebApi.retrieveRecord(\n            \"account\", accountId, \"?$select=creditlimit\"\n        );\n        if (result.creditlimit < 0) {\n            eventArgs.preventDefault();\n            Xrm.Navigation.openAlertDialog({\n                text: \"Credit limit must be a positive value.\"\n            });\n        }\n    } catch (error) {\n        eventArgs.preventDefault();\n        Xrm.Navigation.openAlertDialog({\n            text: \"An error occurred while validating: \" + error.message\n        });\n    }\n}"
+      language: javascript
+    bad:
+    - description: Bad example code snippet.
+      code: "async function onSave(executionContext) {\n    // No error handling \u2014 if the API call fails, the record saves with invalid data\n    var result = await Xrm.WebApi.retrieveRecord(\n        \"account\", accountId, \"?$select=creditlimit\"\n    );\n    if (result.creditlimit < 0) {\n        executionContext.getEventArgs().preventDefault();\n    }\n}"
+      language: javascript
+  references:
+  - title: Async event handlers - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/async-event-handlers
+  - title: Xrm.Navigation - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/reference/xrm-navigation
+- id: JS-007
+  title: Prefer out-of-the-box features (business rules, calculated fields, Power Automate) over...
+  description: Prefer out-of-the-box features (business rules, calculated fields, Power Automate) over client scripts when they can achieve the same result.
+  guidelines:
+  - Use business rules for simple field visibility, requirement levels, and default value logic.
+  - Use calculated or rollup columns for derived values that do not require user interaction.
+  - Use Power Automate or plug-ins for server-side logic that must execute regardless of how the record is modified.
+  - Reserve client scripting for complex scenarios that cannot be achieved declaratively.
+  rationale:
+  - Business rules and calculated fields are easier to maintain and do not require development skills to modify.
+  - Client scripts only execute when a user interacts with the form. Logic implemented only in scripts is bypassed by imports, API calls, workflows, and plug-ins.
+  - Reducing the number of custom scripts lowers the maintenance burden and the risk of upgrade-related issues.
+  examples:
+    good:
+    - description: A business rule sets the Phone field as required when the Contact Method is "Phone". No script is needed.
+    - description: A calculated column computes the total order amount from line items. The value is always correct regardless of how the record is updated.
+    bad:
+    - description: A JavaScript OnLoad handler hides a field based on a simple condition that could be handled by a business rule.
+    - description: A client script recalculates a total on every field change, but the total is incorrect when records are created via data import because the script never runs.
+  references:
+  - title: Create business rules - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/create-business-rules-recommendations-apply-logic-form
+  - title: Define calculated columns - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/define-calculated-fields
+- id: JS-008
+  title: Follow a consistent naming convention for web resource files
+  description: Follow a consistent naming convention for web resource files. Create only one JavaScript file per table.
+  guidelines:
+  - Use the pattern [prefix]/js/[entity].js (e.g., csp/js/account.js).
+  - Create only one JavaScript web resource per table. All event handlers for a table's forms (OnLoad, OnChange, OnSave, ribbon commands) must be in a single file.
+  - Include the publisher prefix to avoid collisions across solutions.
+  - Use lowercase for the file name. Avoid spaces and special characters.
+  - Shared utility functions that are not tied to a specific table should be placed in a single [prefix]_/js/common.js file.
+  rationale:
+  - A consistent naming convention makes it easy to locate and manage web resources in a solution.
+  - Having one file per table keeps all related logic together, making it easier to understand the full behavior of a table's forms at a glance.
+  - Multiple files per table lead to fragmented logic that is harder to maintain, debug, and trace when troubleshooting form events.
+  - Including the publisher prefix prevents name collisions when multiple solutions are installed in the same environment.
+  examples:
+    good:
+    - description: Conforms to the rule requirements.
+    bad:
+    - description: Violates the rule requirements.
+  references:
+  - title: Web resource naming conventions - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/web-resources
+- id: JS-009
+  title: Register scripts only on the forms and events where they are needed
+  description: Register scripts only on the forms and events where they are needed. Do not load scripts globally if they are only used by a single entity or form.
+  guidelines:
+  - Add web resource libraries only to the forms that require them.
+  - Register event handlers (OnLoad, OnChange, OnSave) only for the specific fields and events your logic targets.
+  - Pass the execution context as the first parameter when registering event handlers.
+  - If a script is only needed for a specific form, do not add it to all forms of that entity.
+  rationale:
+  - Loading unnecessary scripts increases form load time because the browser must download, parse, and execute each web resource.
+  - Event handlers that run on every form load without a clear purpose add processing overhead and increase the risk of errors.
+  - Targeting scripts precisely makes the system easier to debug, because developers can quickly identify which scripts affect a given form.
+  examples:
+    good:
+    - description: The account_form.js web resource is added only to the Account main form and registered for the OnLoad event with "Pass execution context as first parameter" enabled.
+    - description: The contactphonevalidation.js script is registered on the OnChange event of the telephone1 field only.
+    bad:
+    - description: A large utility library is added to every form in the solution, even though only one form uses it.
+    - description: An OnLoad handler is registered on all entity forms "just in case", adding unnecessary processing on every form open.
+  references:
+  - title: Add script to a form event - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/events-forms-grids
+- id: JS-010
+  title: Avoid hard-coding entity names, field names, GUIDs, or option set values in your scripts
+  description: Avoid hard-coding entity names, field names, GUIDs, or option set values in your scripts. Use constants or configuration data.
+  guidelines:
+  - Define entity names, field logical names, and option set values as constants at the top of your namespace.
+  - Never hard-code record GUIDs. Look up records dynamically or use alternate keys.
+  - If your logic depends on environment-specific values (e.g., a team ID or queue ID), retrieve them at runtime or store them in a configuration entity.
+  rationale:
+  - Hard-coded values make scripts fragile. If a field is renamed, an option set value changes, or the script is moved to a different environment, the script breaks.
+  - GUIDs differ between development, test, and production environments. Hard-coded GUIDs will fail in at least one environment.
+  - Centralizing constants at the top of the file makes the script easier to review and update.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "var Contoso = Contoso || {};\nContoso.Account = Contoso.Account || {};\n\n// Constants\nContoso.Account.Fields = {\n    STATUS: \"statuscode\",\n    CATEGORY: \"accountcategorycode\",\n    CREDIT_LIMIT: \"creditlimit\"\n};\n\nContoso.Account.StatusValues = {\n    ACTIVE: 1,\n    INACTIVE: 2\n};\n\nContoso.Account.onLoad = function (executionContext) {\n    var formContext = executionContext.getFormContext();\n    var status = formContext.getAttribute(Contoso.Account.Fields.STATUS).getValue();\n    if (status === Contoso.Account.StatusValues.ACTIVE) {\n        formContext.getControl(Contoso.Account.Fields.CREDIT_LIMIT).setVisible(true);\n    }\n};"
+      language: javascript
+    bad:
+    - description: Bad example code snippet.
+      code: "function onLoad(executionContext) {\n    var formContext = executionContext.getFormContext();\n    // Hard-coded field names and option set values scattered throughout\n    var status = formContext.getAttribute(\"statuscode\").getValue();\n    if (status === 1) {\n        formContext.getControl(\"creditlimit\").setVisible(true);\n    }\n}"
+      language: javascript
+  references:
+  - title: Client scripting in model-driven apps - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/client-scripting
+- id: JS-011
+  title: Use setNotification and clearNotification on controls to display inline validation mess...
+  description: Use setNotification and clearNotification on controls to display inline validation messages instead of alert dialogs for field-level validation.
+  guidelines:
+  - Call formContext.getControl("fieldname").setNotification("message", "uniqueId") to show a validation error next to the field.
+  - Call formContext.getControl("fieldname").clearNotification("uniqueId") when the validation error is resolved.
+  - Reserve Xrm.Navigation.openAlertDialog for critical errors or informational messages that are not tied to a specific field.
+  rationale:
+  - Inline notifications provide immediate visual feedback next to the relevant field, making it clear what needs to be corrected.
+  - Alert dialogs interrupt the user's workflow and are disruptive when used for simple validation errors.
+  - A field with an active notification prevents the record from being saved, enforcing data quality without additional OnSave logic.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "Contoso.Contact.onPhoneChange = function (executionContext) {\n    var formContext = executionContext.getFormContext();\n    var phone = formContext.getAttribute(\"telephone1\").getValue();\n\n    if (phone && !/^\\d{10}$/.test(phone)) {\n        formContext.getControl(\"telephone1\")\n            .setNotification(\"Phone number must be 10 digits.\", \"phoneValidation\");\n    } else {\n        formContext.getControl(\"telephone1\")\n            .clearNotification(\"phoneValidation\");\n    }\n};"
+      language: javascript
+    bad:
+    - description: Bad example code snippet.
+      code: "function onPhoneChange(executionContext) {\n    var formContext = executionContext.getFormContext();\n    var phone = formContext.getAttribute(\"telephone1\").getValue();\n\n    if (phone && !/^\\d{10}$/.test(phone)) {\n        // Alert dialogs are disruptive for field-level validation\n        Xrm.Navigation.openAlertDialog({\n            text: \"Phone number must be 10 digits.\"\n        });\n    }\n}"
+      language: javascript
+  references:
+  - title: Control.setNotification - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/reference/controls/setnotification
+  - title: Control.clearNotification - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/reference/controls/clearnotification
+- id: JS-012
+  title: Check the form type before executing logic that should only run on specific form modes...
+  description: Check the form type before executing logic that should only run on specific form modes (create, update, read-only).
+  guidelines:
+  - Use formContext.ui.getFormType() to determine the current form mode.
+  - Gate logic that should only run during record creation (type 1) or update (type 2) using an explicit check.
+  - Avoid running initialization logic on read-only or disabled forms where it is unnecessary.
+  rationale:
+  - Logic that sets default values should only run on create forms. Running it on update forms would overwrite existing data.
+  - Skipping unnecessary logic on read-only forms improves load performance.
+  - Explicitly checking the form type makes the script's intent clear and prevents subtle bugs.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "Contoso.Case.onLoad = function (executionContext) {\n    var formContext = executionContext.getFormContext();\n    var formType = formContext.ui.getFormType();\n\n    // 1 = Create\n    if (formType === 1) {\n        formContext.getAttribute(\"prioritycode\").setValue(2); // Normal\n    }\n};"
+      language: javascript
+    bad:
+    - description: Bad example code snippet.
+      code: "function onLoad(executionContext) {\n    var formContext = executionContext.getFormContext();\n    // Sets default priority on every form open, overwriting existing values on updates\n    formContext.getAttribute(\"prioritycode\").setValue(2);\n}"
+      language: javascript
+  references:
+  - title: formContext.ui.getFormType - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/reference/formcontext-ui/getformtype
+- id: JS-013
+  title: Document all functions using JSDoc syntax
+  description: Document all functions using JSDoc syntax. Provide inline comments that describe the intent of the code.
+  guidelines:
+  - Every function must have a JSDoc block with @param and @returns tags describing the parameters and return value.
+  - Include a brief description of the function's purpose as the first line of the JSDoc block.
+  - Add inline comments to explain the *why* behind non-obvious logic. Do not comment what the code does when it is self-explanatory.
+  - Keep JSDoc blocks up to date when modifying function signatures or behavior.
+  rationale:
+  - JSDoc comments enable IDE features like auto-complete, inline documentation, and type checking, improving developer productivity.
+  - New developers can understand the purpose and expected inputs of a function without reading its full implementation.
+  - Inline comments explaining intent help future maintainers understand *why* a decision was made, not just *what* the code does.
+  - Consistent documentation reduces onboarding time and makes code reviews more efficient.
+  examples:
+    good:
+    - description: Sets the phone field as required when the contact method is Phone.
+    - description: '@param {Object} executionContext - The execution context passed by the form event.'
+    - description: Retrieves the primary contact email for a given account.
+    - description: '@param {string} accountId - The GUID of the account record.'
+    - description: '@returns {Promise<string|null>} The email address, or null if not found.'
+    - description: Good example code snippet.
+      code: "/**\n * Sets the phone field as required when the contact method is Phone.\n * @param {Object} executionContext - The execution context passed by the form event.\n */\nContoso.Contact.onContactMethodChange = function (executionContext) {\n    var formContext = executionContext.getFormContext();\n    var contactMethod = formContext.getAttribute(\"preferredcontactmethodcode\").getValue();\n\n    // Phone = 2 in the Contact Method option set\n    var isPhone = contactMethod === 2;\n    formContext.getAttribute(\"telephone1\").setRequiredLevel(\n        isPhone ? \"required\" : \"none\"\n    );\n};\n\n/**\n * Retrieves the primary contact email for a given account.\n * @param {string} accountId - The GUID of the account record.\n * @returns {Promise<string|null>} The email address, or null if not found.\n */\nContoso.Account.getPrimaryContactEmail = async function (accountId) {\n    try {\n        var result = await Xrm.WebApi.retrieveRecord(\n            \"account\", accountId,\n\
+        \            \"?$select=_primarycontactid_value&$expand=primarycontactid($select=emailaddress1)\"\n        );\n        return result.primarycontactid ? result.primarycontactid.emailaddress1 : null;\n    } catch (error) {\n        console.error(\"Failed to retrieve primary contact email: \" + error.message);\n        return null;\n    }\n};"
+      language: javascript
+    bad:
+    - description: Bad example code snippet.
+      code: "// No documentation \u2014 developers must read the entire function to understand it\nfunction onChange(executionContext) {\n    var formContext = executionContext.getFormContext();\n    var v = formContext.getAttribute(\"preferredcontactmethodcode\").getValue();\n    if (v === 2) {\n        formContext.getAttribute(\"telephone1\").setRequiredLevel(\"required\");\n    } else {\n        formContext.getAttribute(\"telephone1\").setRequiredLevel(\"none\");\n    }\n}\n\n// Useless comments that repeat the code instead of explaining intent\nfunction setPhone(executionContext) {\n    var formContext = executionContext.getFormContext();\n    // Get the value\n    var val = formContext.getAttribute(\"telephone1\").getValue();\n    // Set visible to true\n    formContext.getControl(\"telephone1\").setVisible(true);\n}"
+      language: javascript
+  references:
+  - title: JSDoc documentation
+    url: https://jsdoc.app/
+  - title: Client scripting in model-driven apps - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/client-scripting
+- id: JS-014
+  title: Write client script code using TypeScript when possible
+  description: Write client script code using TypeScript when possible. Transpile TypeScript to JavaScript for deployment as web resources.
+  guidelines:
+  - Use TypeScript (.ts) as the source language for all new client scripts.
+  - Install the @types/xrm package to get type definitions for the Dataverse Client API.
+  - Enable strict mode in tsconfig.json to catch type errors at compile time.
+  - Transpile TypeScript to ES5 or ES6 JavaScript and deploy only the compiled .js files as web resources.
+  - Keep TypeScript source files in version control. Never commit only the compiled output.
+  rationale:
+  - TypeScript provides compile-time type checking, catching common errors (null references, wrong argument types, misspelled property names) before deployment.
+  - The @types/xrm definitions provide auto-complete and inline documentation for all Dataverse Client API methods, reducing mistakes and development time.
+  - TypeScript's strict mode enforces null checks and explicit types, leading to more robust code.
+  - The compiled JavaScript output is fully compatible with the Dataverse web resource runtime - TypeScript adds safety without any runtime cost.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "// account.ts \u2014 TypeScript source with type safety\nnamespace Contoso.Account {\n    export function onLoad(executionContext: Xrm.Events.EventContext): void {\n        const formContext: Xrm.FormContext = executionContext.getFormContext();\n        const name: string | null = formContext.getAttribute(\"name\").getValue();\n\n        if (name === null) {\n            formContext.getControl(\"name\").setNotification(\n                \"Account name is required.\", \"nameRequired\"\n            );\n        }\n    }\n}"
+      language: typescript
+    bad:
+    - description: Bad example code snippet.
+      code: "// account.js \u2014 plain JavaScript with no type safety\nfunction onLoad(executionContext) {\n    var formContext = executionContext.getFormContext();\n    // No type checking \u2014 typo in attribute name goes unnoticed until runtime\n    var name = formContext.getAttribute(\"nme\").getValue();\n    if (name === null) {\n        formContext.getControl(\"name\").setNotification(\n            \"Account name is required.\", \"nameRequired\"\n        );\n    }\n}"
+      language: javascript
+  references:
+  - title: '@types/xrm - npm'
+    url: https://www.npmjs.com/package/@types/xrm
+  - title: TypeScript documentation
+    url: https://www.typescriptlang.org/docs/
+  - title: Client scripting in model-driven apps - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/client-scripting
+- id: JS-015
+  title: Remove all console
+  description: Remove all console.log, console.debug, and debugger statements before deploying scripts to test or production environments.
+  guidelines:
+  - Do not leave console.log, console.warn, console.debug, or console.error calls in production code unless they are part of a deliberate logging strategy.
+  - Never leave debugger statements in committed code. They pause execution in the browser when DevTools are open, causing the application to freeze for end users.
+  - If runtime logging is needed in production, use a dedicated logging utility that can be enabled or disabled via a configuration flag.
+  rationale:
+  - console.log statements clutter the browser console, making it harder to diagnose real issues during support scenarios.
+  - debugger statements cause the browser to pause execution when DevTools are open. If an end user or support engineer opens DevTools, the application freezes unexpectedly.
+  - Excessive console output can impact performance in tight loops or frequently triggered events.
+  - Leaving debug artifacts in production code signals a lack of code review discipline and can expose internal logic details to end users.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "Contoso.Account.onLoad = function (executionContext) {\n    var formContext = executionContext.getFormContext();\n    var status = formContext.getAttribute(\"statuscode\").getValue();\n\n    if (status === Contoso.Account.StatusValues.ACTIVE) {\n        formContext.getControl(\"creditlimit\").setVisible(true);\n    }\n};"
+      language: javascript
+    bad:
+    - description: Bad example code snippet.
+      code: "function onLoad(executionContext) {\n    var formContext = executionContext.getFormContext();\n    var status = formContext.getAttribute(\"statuscode\").getValue();\n\n    console.log(\"Status value: \" + status); // Debug artifact left in production\n    debugger; // Freezes the browser when DevTools are open\n\n    if (status === 1) {\n        console.log(\"Setting credit limit visible\"); // Unnecessary logging\n        formContext.getControl(\"creditlimit\").setVisible(true);\n    }\n}"
+      language: javascript
+  references:
+  - title: Best practices for client scripting - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/client-scripting-best-practices

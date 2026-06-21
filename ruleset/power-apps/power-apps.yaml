@@ -1,0 +1,40 @@
+topic: Canvas Apps
+description: Good practices for Power Apps Canvas Apps.
+rules:
+- id: CA-010
+  title: Never reference controls from one screen on another screen
+  description: Never reference controls from one screen on another screen. Each screen's formulas must only reference controls that belong to that same screen.
+  guidelines:
+  - Do not reference a control on scrHome from a formula on scrDetails or any other screen.
+  - Use variables (Set(), UpdateContext()) or collections to pass data between screens instead of directly referencing controls.
+  - Pass values via Navigate() context parameters when navigating from one screen to another.
+  rationale:
+  - Cross-screen control references create hidden dependencies between screens, making the app fragile and difficult to maintain.
+  - Power Apps does not guarantee that controls on other screens are initialized or hold the expected value when accessed from a different screen, leading to unpredictable behavior.
+  - Referencing controls across screens prevents Power Apps from unloading inactive screens from memory, increasing memory consumption and degrading performance.
+  - Using variables to pass data makes the data flow explicit and easier to trace during debugging.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: '// On scrHome: navigate and pass the selected order via context variable
+
+        Navigate(scrDetails, ScreenTransition.None, {locSelectedOrder: galOrders.Selected})
+
+
+        // On scrDetails: use the context variable, not the gallery control from scrHome
+
+        lblOrderTitle.Text: locSelectedOrder.Title
+
+        lblOrderStatus.Text: locSelectedOrder.Status'
+      language: Plain Text
+    bad:
+    - description: Bad example code snippet.
+      code: '// On scrDetails: directly referencing a gallery on scrHome
+
+        lblOrderTitle.Text: scrHome.galOrders.Selected.Title
+
+        lblOrderStatus.Text: scrHome.galOrders.Selected.Status'
+      language: Plain Text
+  references:
+  - title: Microsoft Learn - Power Platform Documentation
+    url: https://learn.microsoft.com/en-us/power-platform/

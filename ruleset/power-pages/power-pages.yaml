@@ -1,0 +1,221 @@
+topic: Power Pages
+description: Good practices for Power Pages site development and configuration.
+rules:
+- id: PP-001
+  title: Always configure table permissions for every Dataverse table exposed on the portal
+  description: Always configure table permissions for every Dataverse table exposed on the portal. Use the most restrictive scope that satisfies the business requirement.
+  guidelines:
+  - Enable table permissions on every table surfaced through entity lists, basic forms, or advanced forms.
+  - Prefer Contact or Self scope over Global scope for user-facing data.
+  - Grant only the operations that are needed (Read, Create, Write, Delete, Append, Append To).
+  - Never grant Global scope with full CRUD permissions to the Anonymous Users web role.
+  rationale:
+  - Table permissions are the primary data-security mechanism in Power Pages. If they are not configured, data may be exposed to unauthorized users.
+  - Using the narrowest scope ensures that users can only access records that belong to them or their account, following the principle of least privilege.
+  - Overly broad permissions increase the risk of data leakage and non-compliance with privacy regulations.
+  examples:
+    good:
+    - description: Conforms to the rule requirements.
+    bad:
+    - description: Violates the rule requirements.
+  references:
+  - title: Table permissions in Power Pages - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-pages/security/table-permissions
+  - title: Power Pages security - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-pages/security/power-pages-security
+- id: PP-002
+  title: Define granular web roles that map to distinct user personas
+  description: Define granular web roles that map to distinct user personas. Assign table permissions, page permissions, and site settings through web roles rather than directly to users.
+  guidelines:
+  - Create a separate web role for each user persona (e.g., Customer, Partner, Internal Reviewer).
+  - Avoid creating a single "super user" role that grants access to everything.
+  - Assign web roles to contacts explicitly through business logic or administrative processes, not as blanket defaults for all authenticated users.
+  - Periodically review web role assignments to remove access that is no longer needed.
+  rationale:
+  - Web roles are the foundation of the Power Pages security model. Well-defined roles make it easy to understand and audit who has access to what.
+  - A single overly permissive role leads to security issues and makes it difficult to restrict access later without breaking functionality.
+  - Explicit role assignment prevents new users from automatically inheriting permissions they should not have.
+  examples:
+    good:
+    - description: A Customer web role with Read and Create permissions on the Case table (Contact scope).
+    - description: A Partner web role with Read permissions on the Product Catalog table (Global scope) and Write permissions on the Partner Application table (Contact scope).
+    - description: A Site Administrator web role assigned only to a small group of internal users.
+    bad:
+    - description: A single Authenticated User web role that grants Read, Write, and Delete on all tables with Global scope.
+    - description: A Customer web role that is automatically assigned to every registered user without validation.
+  references:
+  - title: Create web roles for Power Pages - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-pages/security/create-web-roles
+  - title: Power Pages security - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-pages/security/power-pages-security
+- id: PP-003
+  title: Keep Liquid templates focused on presentation logic
+  description: Keep Liquid templates focused on presentation logic. Avoid embedding complex business logic or heavy data processing in Liquid code.
+  guidelines:
+  - Use Liquid for data shaping and rendering, not for calculations or business rules.
+  - Modularize templates using {% include %} to promote reusability and readability.
+  - Use whitespace control tags ({%- and -%}) to minimize unnecessary whitespace in rendered output.
+  - Always check for null values before accessing object properties to prevent rendering errors.
+  - Escape user-generated content with {{ variable | escape }} to prevent cross-site scripting (XSS).
+  rationale:
+  - Liquid is interpreted at runtime on every page load. Complex logic in Liquid increases server-side rendering time and degrades performance.
+  - Business logic belongs in Dataverse plugins or Power Automate flows where it can be tested, versioned, and reused independently.
+  - Modular templates are easier to maintain, debug, and review during code reviews.
+  - Unescaped user content in templates can introduce XSS vulnerabilities.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "{%- fetchxml recent_cases -%}\n  <fetch top=\"5\">\n    <entity name=\"incident\">\n      <attribute name=\"title\" />\n      <attribute name=\"createdon\" />\n      <order attribute=\"createdon\" descending=\"true\" />\n      <filter type=\"and\">\n        <condition attribute=\"statecode\" operator=\"eq\" value=\"0\" />\n      </filter>\n    </entity>\n  </fetch>\n{%- endfetchxml -%}\n\n<ul>\n  {% for case in recent_cases.results.entities %}\n    <li>{{ case.title | escape }} - {{ case.createdon | date: \"yyyy-MM-dd\" }}</li>\n  {% endfor %}\n</ul>"
+      language: liquid
+    bad:
+    - description: Bad example code snippet.
+      code: "<!-- Heavy business logic in Liquid -->\n{% assign total = 0 %}\n{% for item in order_items %}\n  {% assign line_total = item.quantity | times: item.unit_price %}\n  {% assign discount = line_total | times: item.discount_percent | divided_by: 100 %}\n  {% assign total = total | plus: line_total | minus: discount %}\n{% endfor %}\n<!-- Unescaped user content -->\n<p>{{ user.fullname }}</p>"
+      language: liquid
+  references:
+  - title: Liquid overview - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-pages/configure/liquid/liquid-overview
+  - title: Work with Liquid templates - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-pages/configure/liquid/liquid-types
+- id: PP-004
+  title: Enable header and footer output caching to improve portal performance
+  description: 'Enable header and footer output caching to improve portal performance. This caching mechanism applies specifically to the header and footer web templates, which are rendered on every page and can become a performance bottleneck on high-traffic sites. > Note: This rule covers header and footer output caching. For broader page-level caching strategies, consider implementing caching at the CDN or reverse-proxy level as part of your infrastructure design.'
+  guidelines:
+  - Set the site setting Header/OutputCache/Enabled to true and Footer/OutputCache/Enabled to true.
+  - Set Header/OutputCache/Duration and Footer/OutputCache/Duration to a value in seconds that reflects how frequently the header and footer content changes.
+  - Avoid placing highly dynamic or user-specific content directly in header or footer web templates when caching is enabled.
+  - If personalized elements (e.g., user name, notifications) must appear in the header, load them asynchronously via JavaScript after the cached header has rendered.
+  rationale:
+  - The header and footer web templates are rendered on every single page of the portal. Without caching, the Liquid code in these templates executes on every request, adding unnecessary overhead.
+  - Caching headers and footers significantly reduces server-side rendering time, especially when they contain FetchXML queries, content snippets, or complex Liquid logic.
+  - Placing dynamic per-user content in cached headers or footers causes all users to see the same cached output, leading to incorrect information being displayed.
+  examples:
+    good:
+    - description: Conforms to the rule requirements.
+    bad:
+    - description: Violates the rule requirements.
+  references:
+  - title: Enable header and footer output caching - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-pages/configure/enable-header-footer-output-caching
+- id: PP-005
+  title: Configure forms with proper validation and table permissions
+  description: Configure forms with proper validation and table permissions. Use basic forms for simple data entry and advanced forms for multi-step processes.
+  guidelines:
+  - Always pair forms with table permissions that enforce the correct scope and operations for the target table.
+  - Enable field-level validation (required fields, data types, ranges) to ensure data quality.
+  - Use advanced forms (multi-step forms) when the data collection process has a logical workflow with multiple stages.
+  - Avoid exposing system fields or sensitive columns on portal forms (e.g., ownerid, createdby, modifiedby, statecode, statuscode, internal pricing fields, or security-related columns such as password hashes).
+  - Set the form mode (Insert, Edit, Read Only) explicitly and do not rely on default behavior.
+  rationale:
+  - Forms without table permissions allow any authenticated user (or anonymous user) to submit or read data without restriction.
+  - Client-side validation alone is insufficient; table permissions enforce security on the server side.
+  - Exposing unnecessary fields increases the attack surface and may leak internal information.
+  - Explicit form modes prevent accidental data modifications.
+  examples:
+    good:
+    - description: A Contact Us basic form in Insert mode paired with table permissions granting Create-only access to the Inquiry table for Anonymous Users.
+    - value: An Application Form implemented as an advanced form with three steps
+      note: "Personal Details \u2192 Upload Documents \u2192 Review & Submit. Each step validates required fields before allowing progression."
+    bad:
+    - description: A basic form for the Account table in Edit mode with no table permissions configured, allowing any user to modify any account record.
+    - description: A single-step form that collects 30+ fields across unrelated categories, resulting in poor user experience and high abandonment rates.
+  references:
+  - title: Basic forms in Power Pages - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-pages/configure/basic-forms
+  - title: Multistep forms in Power Pages - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-pages/getting-started/multistep-forms
+- id: PP-006
+  title: Minimize custom JavaScript on portal pages
+  description: Minimize custom JavaScript on portal pages. When JavaScript is necessary, follow secure coding practices and keep scripts maintainable.
+  guidelines:
+  - Use out-of-the-box Power Pages features (form metadata, entity lists, content snippets) before resorting to custom JavaScript.
+  - Never hard-code Dataverse record GUIDs, URLs, or environment-specific values in JavaScript files.
+  - Store reusable scripts as web files and reference them consistently across pages.
+  - Avoid inline <script> blocks in web templates where possible; use external web files instead.
+  - Do not store sensitive logic (e.g., security checks, pricing calculations) in client-side scripts, as they can be inspected and modified by users.
+  rationale:
+  - Excessive JavaScript increases page load time and introduces maintenance overhead that is harder to track than server-side configuration.
+  - Hard-coded GUIDs and URLs break when the solution is migrated to another environment.
+  - Client-side code is fully visible to users and should never be relied upon for security or business-critical calculations.
+  - Centralizing scripts in web files allows for versioning, caching, and consistent deployment.
+  examples:
+    good:
+    - description: Using the form metadata Required property to enforce mandatory fields instead of writing JavaScript to add validation.
+    - description: Storing a utility script as a web file at /js/custom-validation.js and referencing it in the page template.
+    bad:
+    - description: A 500-line inline <script> block in a web template that hard-codes entity GUIDs and environment URLs.
+    - description: Client-side JavaScript that hides the "Delete" button instead of using table permissions to revoke the Delete operation.
+  references:
+  - title: Add custom JavaScript to Power Pages - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-pages/configure/add-custom-javascript
+- id: PP-007
+  title: Manage Power Pages configuration as code using the Power Platform CLI
+  description: Manage Power Pages configuration as code using the Power Platform CLI. Store portal artifacts in source control and deploy through automated pipelines.
+  guidelines:
+  - Use pac paportal download to extract portal configuration to a local folder and commit it to source control.
+  - Use pac paportal upload to deploy portal changes from source control to the target environment.
+  - Maintain separate environments for Development, Test, and Production.
+  - Never make configuration changes directly in the Production environment.
+  - Integrate portal deployment steps into your CI/CD pipeline (Azure DevOps, GitHub Actions, or similar).
+  - Parameterize environment-specific values (URLs, connection strings, feature flags) so they are not hard-coded in portal artifacts.
+  rationale:
+  - Without source control, it is impossible to track who changed what and when, making troubleshooting and rollbacks difficult.
+  - Manual deployments are error-prone and unrepeatable. Automated pipelines ensure consistent, auditable deployments.
+  - Direct changes in Production bypass testing and peer review, increasing the risk of introducing defects.
+  - Environment-specific values baked into portal code cause failures when promoting between environments.
+  examples:
+    good:
+    - description: Portal artifacts are stored in a Git repository with a clear folder structure matching the pac paportal download output.
+    - value: A CI/CD pipeline runs on every pull request merge
+      note: it downloads the latest portal configuration, applies it to the Test environment, and runs smoke tests before promoting to Production.
+    bad:
+    - description: Developers edit web templates directly in the Production Power Pages Design Studio without any change tracking.
+    - description: Portal configuration is shared between developers via email or file shares with no version history.
+  references:
+  - title: Power Pages ALM overview - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-pages/configure/portals-alm
+  - title: Power Platform CLI overview - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction
+- id: PP-008
+  title: Restrict anonymous access to the minimum set of pages and data required for unauthentic...
+  description: Restrict anonymous access to the minimum set of pages and data required for unauthenticated users. Explicitly review every permission granted to the Anonymous Users web role.
+  guidelines:
+  - Only grant the Anonymous Users web role access to public-facing content such as the home page, knowledge base, or contact forms.
+  - Never grant Write or Delete table permissions to the Anonymous Users role unless there is a justified and reviewed business need (e.g., anonymous form submission).
+  - Use page permissions to restrict which pages are visible to unauthenticated visitors.
+  - Periodically audit anonymous access settings to ensure no unintended data exposure.
+  rationale:
+  - The Anonymous Users web role applies to every visitor who has not logged in. Broad permissions on this role expose data to the entire internet.
+  - Anonymous Write or Delete permissions can be exploited for spam, data pollution, or denial-of-service attacks.
+  - As the site evolves, new pages or tables may inadvertently inherit anonymous access if defaults are too permissive.
+  examples:
+    good:
+    - description: The Anonymous Users web role has Read-only access to the Knowledge Article table (Global scope) and no access to any other tables.
+    - description: A public Contact Us form grants the Anonymous Users role Create-only access to the Inquiry table, with no Read, Write, or Delete permissions.
+    bad:
+    - description: The Anonymous Users web role has Global Read access to the Contact, Account, and Case tables, exposing customer data to anyone.
+    - description: No page permissions configured, so all portal pages are visible to unauthenticated users including administrative dashboards.
+  references:
+  - title: Power Pages security - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-pages/security/power-pages-security
+- id: PP-009
+  title: Use content snippets for reusable text, labels, and messages that appear across multipl...
+  description: Use content snippets for reusable text, labels, and messages that appear across multiple pages. Avoid duplicating the same content in multiple web templates.
+  guidelines:
+  - Create content snippets for any text that appears on more than one page (e.g., footer disclaimers, cookie notices, error messages).
+  - Use descriptive names that follow a consistent naming convention (see PPN-001).
+  - Leverage content snippets for multi-language support by providing translated values for each enabled language.
+  - Do not use content snippets for large blocks of HTML or complex Liquid logic; use web templates instead.
+  rationale:
+  - Content snippets provide a single source of truth for repeated text, making updates easier and ensuring consistency across the site.
+  - Translators can manage content snippets directly without modifying web templates, simplifying localization workflows.
+  - Duplicating content in multiple templates leads to inconsistencies when one instance is updated but others are forgotten.
+  examples:
+    good:
+    - description: A content snippet named VendorName/Footer/Disclaimer containing the legal disclaimer text, referenced in the footer web template with {% snippet 'VendorName/Footer/Disclaimer' %}.
+    - description: A content snippet named VendorName/Errors/GenericMessage used across all error pages to display a consistent user-friendly error message.
+    bad:
+    - description: The same disclaimer text copy-pasted into five different web templates. When the legal team updates the text, only two of the five templates are updated.
+    - description: A content snippet containing 200 lines of HTML and Liquid code that should be a web template instead.
+  references:
+  - title: Content snippets in Power Pages - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-pages/configure/customize-content-snippets

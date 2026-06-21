@@ -1,0 +1,327 @@
+topic: Application Lifecycle Management (ALM)
+description: Good practices for Power Platform Application Lifecycle Management.
+rules:
+- id: ALM-001
+  title: Establish a minimum of three separate environments - Development, Test, and Production...
+  description: Establish a minimum of three separate environments - Development, Test, and Production - to support a healthy application lifecycle.
+  guidelines:
+  - Create dedicated Development environments where makers build and test in isolation using unmanaged solutions.
+  - Create a Test/QA environment for user acceptance testing and integration validation using managed solutions.
+  - Maintain a locked-down Production environment that only receives tested, approved managed solutions.
+  - Apply Data Loss Prevention (DLP) policies appropriate to each environment, with the most restrictive policies in Production.
+  - Restrict system administrator roles in Production to a small group of authorized personnel.
+  rationale:
+  - Without environment separation, changes made during development can accidentally affect live users and production data.
+  - A dedicated test environment allows stakeholders to validate changes before they reach production, catching bugs and regressions early.
+  - Restricting Production access reduces the risk of unauthorized or untested changes being deployed directly.
+  - DLP policies that match the environment's purpose prevent accidental data exposure - Development environments may need more flexibility, while Production needs strict controls.
+  examples:
+    good:
+    - value: Three environments configured
+      note: Contoso-Dev, Contoso-Test, Contoso-Prod.
+    - description: Developers work only in Contoso-Dev, solutions are promoted as managed to Contoso-Test, and after UAT sign-off, deployed as managed to Contoso-Prod.
+    - description: DLP policies in Production block all non-approved connectors.
+    bad:
+    - description: A single environment used for development, testing, and production simultaneously.
+    - description: Developers making changes directly in the Production environment.
+    - description: No DLP policies configured, allowing any connector to be used in Production.
+  references:
+  - title: Overview of ALM with Microsoft Power Platform - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/alm/overview-alm
+  - title: Environments overview - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/admin/environments-overview
+  - title: Data loss prevention policies - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/admin/wp-data-loss-prevention
+- id: ALM-002
+  title: Always deploy managed solutions to Test, UAT, and Production environments
+  description: Always deploy managed solutions to Test, UAT, and Production environments. Reserve unmanaged solutions exclusively for Development.
+  guidelines:
+  - Export solutions as managed when deploying to any environment beyond Development.
+  - Never import unmanaged solutions into Production or Test environments.
+  - Use solution upgrades (not delete-and-reimport) to update managed solutions in target environments.
+  - Keep the unmanaged (source) version of every solution in your Development environment and source control for future modifications.
+  rationale:
+  - Managed solutions lock components, preventing accidental modifications in Production that bypass your ALM process.
+  - Unmanaged solutions do not clean up when removed - deleting an unmanaged solution leaves all its components behind, creating untracked customizations.
+  - 'Managed solutions support clean uninstall: removing a managed solution removes all of its components, making rollback straightforward.'
+  - The upgrade mechanism for managed solutions allows incremental updates while preserving data and removing deprecated components.
+  examples:
+    good:
+    - description: Solution exported as managed from Dev and imported into Test for validation.
+    - description: After UAT sign-off, the same managed solution is imported into Production.
+    - description: An updated version is deployed using the Upgrade option, which removes deprecated components automatically.
+    bad:
+    - value: An unmanaged solution imported into Production so a developer can "quickly fix something."
+    - description: Deleting a managed solution and reimporting a new version instead of using the upgrade process, which causes data loss.
+    - description: Customizations made directly in Production outside of any solution, creating untracked changes.
+  references:
+  - title: Managed and unmanaged solutions - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/alm/solution-concepts-alm
+  - title: Apply solution upgrade or update - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/alm/update-solutions-alm
+- id: ALM-003
+  title: Create a dedicated solution publisher with a short, unique prefix and apply consistent...
+  description: Create a dedicated solution publisher with a short, unique prefix and apply consistent naming conventions to all solutions.
+  guidelines:
+  - Use a publisher prefix of 3 to 5 lowercase characters that represents your organization or project (e.g., contoso, adw).
+  - Never use the default publisher (CDS Default Publisher with prefix cr), as it is shared and cannot be changed later.
+  - Use the same publisher across all environments (Dev, Test, Prod) to ensure consistency during deployments.
+  - Name solutions clearly using a pattern like PublisherPrefixSolutionPurpose (e.g., ContosoSalesOperations).
+  - Apply semantic versioning (Major.Minor.Build.Revision) to all solutions.
+  rationale:
+  - The publisher prefix is permanently prepended to all custom tables, columns, and components. Choosing a meaningful prefix avoids confusion and conflicts with other publishers or ISV solutions.
+  - The default publisher is shared across the organization - using it means your components mix with others, making it impossible to distinguish ownership.
+  - A consistent publisher across environments ensures that solution imports are recognized as updates rather than new solutions.
+  - Semantic versioning provides a clear history of changes and makes it easy to identify which version is deployed in each environment.
+  examples:
+    good:
+    - value: Publisher
+      note: 'Contoso Ltd, prefix: contoso, deployed consistently in Dev, Test, and Prod.'
+    - value: Solution name
+      note: Contoso_HROnboarding, version 1.2.0.0.
+    - value: All custom tables use the contoso prefix
+      note: contosoEmployee, contoso_OnboardingTask.
+    bad:
+    - description: Using the default CDS Default Publisher with prefix cr for production solutions.
+    - description: Publisher prefix mycompanyglobaltradingsolutions - too long, making schema names unreadable.
+    - description: Solution version left at 1.0.0.0 across all deployments with no version history.
+    - description: Different publishers used in Dev and Prod, causing import conflicts.
+  references:
+  - title: Create a solution publisher - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/create-solution#create-a-solution-publisher
+  - title: Solution publisher prefix - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/data-platform/introduction-solutions#solution-publisher
+- id: ALM-004
+  title: Use environment variables to store configuration values that differ between environment...
+  description: Use environment variables to store configuration values that differ between environments instead of hardcoding them in apps, flows, or plugins.
+  guidelines:
+  - Create environment variables for URLs, feature flags, email addresses, thresholds, and any value that changes across Dev, Test, and Production.
+  - Always add environment variables to your solution so they are transported with it during deployments.
+  - Reference the environment variable in your apps and flows rather than typing the value directly.
+  - Set environment-specific current values in each target environment after importing the solution.
+  - Mark environment variables that hold secrets or sensitive data as the Secret data type.
+  rationale:
+  - Hardcoded values require editing the app or flow and republishing every time you move between environments, which is error-prone and breaks automation.
+  - Environment variables allow the same solution to be deployed to multiple environments without modification - only the current value changes per environment.
+  - Secret environment variables are encrypted and not displayed in the UI, providing a basic level of protection for sensitive configuration.
+  - Including environment variables in the solution ensures they are tracked, versioned, and deployed together with the components that depend on them.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: '// Environment variable: contoso_SharePointSiteUrl
+
+        // Dev value:  https://contoso-dev.sharepoint.com/sites/hr
+
+        // Test value: https://contoso-test.sharepoint.com/sites/hr
+
+        // Prod value: https://contoso.sharepoint.com/sites/hr
+
+
+        // In a Power Automate flow, the SharePoint action references
+
+        // the environment variable instead of a hardcoded URL.'
+      language: Plain Text
+    bad:
+    - description: Bad example code snippet.
+      code: '// URL hardcoded directly in a Power Automate flow action:
+
+        // Site Address: https://contoso.sharepoint.com/sites/hr
+
+        //
+
+        // When deployed to Test, the flow still points to Production SharePoint,
+
+        // causing test data to be written to the live site.'
+      language: Plain Text
+    - description: Bad example code snippet.
+      code: '// API key pasted directly into an HTTP action:
+
+        // Authorization: Bearer sk-abc123secretkey
+
+        //
+
+        // The secret is visible to anyone who can edit the flow
+
+        // and is exported with the solution in plain text.'
+      language: Plain Text
+  references:
+  - title: Environment variables overview - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/environmentvariables
+  - title: Use environment variables in solutions - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/environmentvariables#use-environment-variables-in-solutions
+- id: ALM-005
+  title: Use connection references in solutions instead of embedding connections directly, so th...
+  description: Use connection references in solutions instead of embedding connections directly, so that flows and apps can be rebound to environment-specific connections during deployment.
+  guidelines:
+  - Create connection references in your solution before building flows or apps that use connectors.
+  - Reference the connection reference in every flow action and app data source instead of using a direct connection.
+  - During managed solution import in a target environment, map each connection reference to an existing connection owned by a service account or appropriate user.
+  - Use service principal connections for non-interactive flows to avoid dependency on individual user accounts.
+  rationale:
+  - Without connection references, imported flows fail because the embedded connection belongs to the developer's account, which does not exist or is not authorized in the target environment.
+  - Connection references decouple the connector identity from the solution, allowing different credentials in Dev, Test, and Production.
+  - Service principal connections ensure flows continue to run even when individual employees leave the organization or change roles.
+  - Connection references are the only supported mechanism for ALM-friendly connector management in Power Platform solutions.
+  examples:
+    good:
+    - description: A solution contains a connection reference contoso_SharePointConnection of type SharePoint.
+    - description: All flows in the solution use contoso_SharePointConnection for their SharePoint actions.
+    - description: When importing to Production, the admin maps contoso_SharePointConnection to a service account's SharePoint connection.
+    bad:
+    - description: A flow uses a direct connection tied to developer@contoso.com. When imported to Production, the flow fails because that user has no permissions in Production.
+    - description: Multiple flows each create their own connection during import, resulting in dozens of orphaned connections with no clear ownership.
+    - description: A flow runs under a departing employee's connection. When their account is disabled, all dependent flows stop working.
+  references:
+  - title: Connection references overview - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/create-connection-reference
+  - title: Use service principal with connection references - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/admin/power-automate-authentication#use-service-principal-based-authentication
+- id: ALM-006
+  title: Store all solution artifacts in source control (Git) to enable version history, collabo...
+  description: Store all solution artifacts in source control (Git) to enable version history, collaboration, code reviews, and automated pipelines.
+  guidelines:
+  - Use the Power Platform CLI (pac solution clone and pac solution unpack) to decompose solutions into source-friendly individual files.
+  - Store the unpacked solution files in a Git repository (Azure DevOps or GitHub).
+  - Adopt a branching strategy (e.g., trunk-based development or GitFlow) suitable for your team size.
+  - Require pull requests with peer review before merging changes to the main branch.
+  - Include all custom code (plugins, PCF controls, web resources) alongside the unpacked solution in the same repository.
+  rationale:
+  - Without source control, there is no history of what changed, when, or by whom - making it impossible to audit, compare, or roll back changes.
+  - Unpacking solutions into individual files makes diffs meaningful and enables line-level code reviews of configuration changes.
+  - Branching strategies allow multiple developers to work in parallel without overwriting each other's changes.
+  - Pull request reviews catch issues before they are merged, improving solution quality and spreading knowledge across the team.
+  examples:
+    good:
+    - description: Developer creates a feature branch, makes changes in Dev, exports and unpacks the solution, commits, and opens a pull request.
+    - description: A reviewer inspects the diff to verify only intended changes are included.
+    - description: Good example code snippet.
+      code: "Repository structure:\n\u251C\u2500\u2500 src/\n\u2502   \u2514\u2500\u2500 ContosoHR/\n\u2502       \u251C\u2500\u2500 Entities/\n\u2502       \u2502   \u251C\u2500\u2500 contoso_Employee/\n\u2502       \u2502   \u2514\u2500\u2500 contoso_OnboardingTask/\n\u2502       \u251C\u2500\u2500 Workflows/\n\u2502       \u251C\u2500\u2500 CanvasApps/\n\u2502       \u251C\u2500\u2500 PluginAssemblies/\n\u2502       \u2514\u2500\u2500 Solution.xml\n\u251C\u2500\u2500 pipelines/\n\u2502   \u2514\u2500\u2500 build-and-deploy.yml\n\u2514\u2500\u2500 README.md"
+      language: Plain Text
+    bad:
+    - description: Solution .zip files emailed between team members or stored on a shared drive with names like Solutionv2final_FINAL.zip.
+    - description: No version history - when something breaks, there is no way to determine what changed or revert to a previous state.
+    - description: All developers working in the same Dev environment with no branching, overwriting each other's changes.
+  references:
+  - title: Source control with solution files - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/alm/use-source-control-solution-files
+  - title: Power Platform CLI - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/developer/cli/introduction
+  - title: ALM developer guide - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/alm/alm-for-developers
+- id: ALM-007
+  title: Automate solution export, packing, validation, and import using CI/CD pipelines instead...
+  description: Automate solution export, packing, validation, and import using CI/CD pipelines instead of performing manual deployments.
+  guidelines:
+  - Use Power Platform Build Tools for Azure DevOps or GitHub Actions for Power Platform to build your pipelines.
+  - Use service principal authentication (not personal accounts) for pipeline connections to Power Platform environments.
+  - 'Structure pipelines with distinct stages: Build (export, unpack, validate), Test (deploy managed to Test, run tests), and Release (deploy managed to Production with approvals).'
+  - Include approval gates before Production deployments to enforce sign-off from stakeholders.
+  - Store pipeline definitions in source control alongside your solution.
+  rationale:
+  - Manual deployments are error-prone - steps may be skipped, the wrong solution version may be imported, or environment variables may be misconfigured.
+  - Automated pipelines ensure every deployment follows the same validated process, reducing human error and increasing reliability.
+  - Service principals provide stable, auditable authentication that does not depend on individual user accounts or require interactive sign-in.
+  - Approval gates enforce governance and prevent untested changes from reaching Production.
+  examples:
+    good:
+    - value: stage
+      note: Build
+    - value: job
+      note: ExportAndPack
+    - value: task
+      note: PowerPlatformToolInstaller@2
+    - value: task
+      note: PowerPlatformExportSolution@2
+    - value: task
+      note: PowerPlatformChecker@2
+    - value: stage
+      note: DeployToTest
+    - value: deployment
+      note: DeployTest
+    - value: task
+      note: PowerPlatformImportSolution@2
+    - value: stage
+      note: DeployToProd
+    - value: deployment
+      note: DeployProd
+    - value: task
+      note: PowerPlatformImportSolution@2
+    - description: Good example code snippet.
+      code: "# Azure DevOps pipeline (simplified)\nstages:\n  - stage: Build\n    jobs:\n      - job: ExportAndPack\n        steps:\n          - task: PowerPlatformToolInstaller@2\n          - task: PowerPlatformExportSolution@2\n            inputs:\n              SolutionName: ContosoHR\n              Managed: true\n          - task: PowerPlatformChecker@2\n            inputs:\n              FilesToAnalyze: '$(Build.ArtifactStagingDirectory)/*.zip'\n\n  - stage: DeployToTest\n    dependsOn: Build\n    jobs:\n      - deployment: DeployTest\n        environment: Contoso-Test\n        strategy:\n          runOnce:\n            deploy:\n              steps:\n                - task: PowerPlatformImportSolution@2\n                  inputs:\n                    SolutionInputFile: '$(Pipeline.Workspace)/**/ContosoHR_managed.zip'\n\n  - stage: DeployToProd\n    dependsOn: DeployToTest\n    jobs:\n      - deployment: DeployProd\n        environment: Contoso-Prod  # has approval gate configured\n\
+        \        strategy:\n          runOnce:\n            deploy:\n              steps:\n                - task: PowerPlatformImportSolution@2\n                  inputs:\n                    SolutionInputFile: '$(Pipeline.Workspace)/**/ContosoHR_managed.zip'"
+      language: yaml
+    bad:
+    - description: A developer manually exports a solution from Dev, downloads the .zip, and imports it into Production from the browser.
+    - description: Pipeline authenticates using a developer's personal credentials - when the developer changes their password, all pipelines break.
+    - value: No approval gates
+      note: a pipeline automatically deploys to Production after a commit, with no human review.
+  references:
+  - title: Power Platform Build Tools for Azure DevOps - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/alm/devops-build-tools
+  - title: GitHub Actions for Power Platform - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/alm/devops-github-actions
+  - title: Use service principal authentication - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/admin/create-users-assign-online-security-roles#create-an-application-user
+- id: ALM-008
+  title: Integrate the Power Platform Solution Checker into your CI/CD pipeline to automatically...
+  description: Integrate the Power Platform Solution Checker into your CI/CD pipeline to automatically validate solutions for best practice violations, performance issues, and security concerns before deployment.
+  guidelines:
+  - Add the Solution Checker task to your build pipeline and run it on every build or pull request.
+  - Configure the pipeline to fail on critical or high-severity issues so that problematic solutions are not deployed.
+  - Export checker reports as pipeline artifacts for audit and troubleshooting.
+  - Review and resolve all warnings regularly, not just critical errors.
+  rationale:
+  - The Solution Checker detects common problems - such as missing plugin registration steps, non-delegable queries, and accessibility violations - that are difficult to catch during manual review.
+  - Running the checker automatically on every build ensures consistent quality enforcement without relying on individuals to remember to run it.
+  - Failing the build on critical issues prevents known problems from reaching Test or Production environments.
+  - Archived reports provide an audit trail showing the quality state of every deployed version.
+  examples:
+    good:
+    - value: task
+      note: PowerPlatformChecker@2
+    - description: Pipeline fails when a critical issue is detected, blocking deployment until the issue is fixed.
+    - description: Checker report is saved as a build artifact and reviewed by the team.
+    - description: Good example code snippet.
+      code: "# Solution Checker step in Azure DevOps pipeline\n- task: PowerPlatformChecker@2\n  inputs:\n    PowerPlatformSPN: 'ServiceConnection'\n    FilesToAnalyze: '$(Build.ArtifactStagingDirectory)/ContosoHR_managed.zip'\n    RuleSet: 'Solution Checker'\n    ErrorLevel: 'HighIssueCount'\n    ErrorThreshold: '0'    # Fail on any high-severity issue\n    FailOnPowerAppsCheckerAnalysis: true"
+      language: yaml
+    bad:
+    - description: Solution Checker is never run - issues are discovered by users in Production.
+    - description: Checker is configured but its results are ignored - the pipeline always proceeds regardless of findings.
+    - description: Checker is only run manually by one team member before major releases, missing issues in intermediate deployments.
+  references:
+  - title: Power Platform Checker - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/alm/checker-api/overview
+  - title: Use Solution Checker in pipelines - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/alm/devops-build-tools#solution-checker
+- id: ALM-009
+  title: Apply semantic versioning to every solution and increment the version number with each...
+  description: Apply semantic versioning to every solution and increment the version number with each deployment to maintain a clear release history.
+  guidelines:
+  - Use the format Major.Minor.Build.Revision (e.g., 1.0.0.0).
+  - Increment Major for breaking changes or large feature releases.
+  - Increment Minor for new features that are backward-compatible.
+  - Increment Build for bug fixes and patches.
+  - Never deploy two different builds with the same version number.
+  - Automate version incrementing in your CI/CD pipeline to avoid manual mistakes.
+  rationale:
+  - Without versioning, there is no way to determine which version of a solution is deployed in a given environment or to compare differences between deployments.
+  - Semantic versioning communicates the scope and risk of a change at a glance - a major version bump signals breaking changes, while a build increment signals a safe patch.
+  - 'Unique version numbers per deployment enable rollback: if a deployment causes issues, you can identify exactly which version to revert to.'
+  - Automated version incrementing eliminates the common mistake of forgetting to update the version, which can cause import failures or confusion.
+  examples:
+    good:
+    - description: 1.0.0.0 - Initial release.
+    - description: 1.1.0.0 - New feature added (leave approval workflow).
+    - description: 1.1.1.0 - Bug fix (corrected email notification template).
+    - description: 2.0.0.0 - Major redesign with schema changes (requires data migration).
+    - description: Version is incremented automatically by the CI/CD pipeline on each build.
+    bad:
+    - description: Every deployment uses version 1.0.0.0 - no way to distinguish releases.
+    - value: Version numbers are incremented randomly with no pattern
+      note: "1.0.0.0 \u2192 3.5.0.0 \u2192 2.1.0.0."
+    - description: Version is updated manually and sometimes forgotten, causing import warnings or failures in the target environment.
+  references:
+  - title: Solution versioning - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/alm/update-solutions-alm
+  - title: Semantic Versioning specification
+    url: https://semver.org/

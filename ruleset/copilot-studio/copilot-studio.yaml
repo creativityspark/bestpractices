@@ -1,0 +1,320 @@
+topic: Copilot Studio
+description: Good practices for Microsoft Copilot Studio agent development.
+rules:
+- id: CS-001
+  title: All topics must use a consistent naming convention that indicates the topic's category...
+  description: All topics must use a consistent naming convention that indicates the topic's category and purpose.
+  guidelines:
+  - Use a Verb-Noun structure for topic names that clearly describes the intent (e.g., Reset Password, Check Order Status).
+  - Use a category prefix to group related topics (e.g., HR - Request Leave, IT - Reset Password, Sales - Get Quote).
+  - Reserve a consistent suffix for sub-topics or dialogs (e.g., - Confirmation, - Error Handling).
+  - Rename all topics immediately after creation - never leave default names like Topic 1 or Untitled.
+  - Keep names concise but descriptive enough to identify the topic's purpose at a glance.
+  rationale:
+  - Default names like Topic 1 provide no context and make it difficult to manage agents with many topics.
+  - A Verb-Noun structure makes intent immediately clear when browsing the topic list.
+  - Category prefixes enable quick filtering and grouping in the authoring canvas, especially in agents with dozens of topics.
+  - Consistent naming reduces confusion when multiple makers collaborate on the same agent.
+  examples:
+    good:
+    - value: HR - Request Leave - clear category and action
+    - value: IT - Reset Password - grouped under IT, describes the intent
+    - value: Order - Check Status - grouped under Orders, specific action
+    - value: Order - Cancel Order - Confirmation - sub-topic clearly linked to parent
+    bad:
+    - value: Topic 1 - default name, no context
+    - value: Help - too vague, could match anything
+    - value: Password - no action described, unclear intent
+    - value: doStuff - meaningless and inconsistent format
+  references:
+  - title: Create and edit topics in Copilot Studio - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-create-edit-topics
+  - title: Microsoft Copilot Studio implementation guidance - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/overview
+- id: CS-002
+  title: Design trigger phrases that are specific, varied, and non-overlapping across topics to...
+  description: Design trigger phrases that are specific, varied, and non-overlapping across topics to ensure accurate intent matching.
+  guidelines:
+  - "Provide at least 5\u201310 trigger phrases per topic, covering different ways a user might express the same intent."
+  - Use specific and detailed phrases rather than single words or generic terms.
+  - Avoid overlapping trigger phrases between topics - each phrase should clearly map to one topic only.
+  - Regularly test trigger phrases using the Test bot pane to verify correct topic routing.
+  - Review conversation analytics to identify misrouted queries and adjust trigger phrases accordingly.
+  rationale:
+  - Too few trigger phrases reduce the agent's ability to recognize user intent, leading to unnecessary fallback responses.
+  - Generic or single-word triggers (e.g., "help", "status") match too broadly and cause the wrong topic to fire.
+  - Overlapping phrases between topics create ambiguity that degrades the conversational experience.
+  - Testing and analytics reveal real-world phrasing that users employ, helping you refine triggers over time.
+  examples:
+    good:
+    - value: '"I need to reset my password"'
+    - value: '"How do I change my password?"'
+    - value: '"My password expired, what do I do?"'
+    - value: '"I forgot my password"'
+    - value: '"Can you help me reset my login credentials?"'
+    - value: '"Password reset request"'
+    - description: Good example code snippet.
+      code: '// Topic: IT - Reset Password
+
+        Trigger phrases:
+
+        - "I need to reset my password"
+
+        - "How do I change my password?"
+
+        - "My password expired, what do I do?"
+
+        - "I forgot my password"
+
+        - "Can you help me reset my login credentials?"
+
+        - "Password reset request"'
+      language: Plain Text
+    bad:
+    - value: '"password"          // Too vague, overlaps with other password-related topics'
+    - value: '"help"              // Matches almost anything'
+    - value: '"reset"             // Could apply to many unrelated topics'
+    - value: '"I forgot my password"   // Same phrase already in Reset Password topic'
+    - value: '"Can''t log in"           // Ambiguous, could be either topic'
+    - description: Bad example code snippet.
+      code: '// Topic: IT - Reset Password
+
+        Trigger phrases:
+
+        - "password"          // Too vague, overlaps with other password-related topics
+
+        - "help"              // Matches almost anything
+
+        - "reset"             // Could apply to many unrelated topics
+
+
+        // Topic: IT - Unlock Account (overlapping triggers)
+
+        Trigger phrases:
+
+        - "I forgot my password"   // Same phrase already in Reset Password topic
+
+        - "Can''t log in"           // Ambiguous, could be either topic'
+      language: Plain Text
+  references:
+  - title: Best practices for topic trigger phrases - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/trigger-phrases-best-practices
+  - title: Analyze bot performance - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-overview
+- id: CS-003
+  title: Customize the fallback and error system topics to provide a helpful experience when the...
+  description: Customize the fallback and error system topics to provide a helpful experience when the agent cannot understand or process a user request.
+  guidelines:
+  - Customize the Fallback system topic with a friendly message that acknowledges the misunderstanding and suggests alternative actions or topics.
+  - After two or three consecutive fallback triggers, offer to escalate the user to a human agent or provide a support contact.
+  - Customize the Error system topic to display a clear, non-technical message when a system error occurs.
+  - Log errors to a data source (e.g., Dataverse or SharePoint) using Power Automate for troubleshooting and trend analysis.
+  - Use multiple message variations in fallback responses to avoid repetition fatigue.
+  rationale:
+  - The default fallback message is generic and does not guide users toward resolution, leading to frustration and abandonment.
+  - Infinite fallback loops without an escalation path trap users in a dead-end conversation, damaging trust in the agent.
+  - Technical error messages confuse non-technical users and expose implementation details that could be a security concern.
+  - Error logging enables proactive identification of recurring issues and drives continuous improvement.
+  examples:
+    good:
+    - value: Check your order status
+    - value: Reset your password
+    - value: Contact support"
+    - description: Good example code snippet.
+      code: "// Fallback topic \u2014 first attempt\n\"I'm sorry, I didn't quite catch that. Could you try rephrasing your question?\nHere are some things I can help with:\n- Check your order status\n- Reset your password\n- Contact support\"\n\n// Fallback topic \u2014 after 2 failed attempts\n\"It looks like I'm having trouble understanding your request.\nWould you like me to connect you with a support agent?\"\n\n// Error topic\n\"Something went wrong on my end. Please try again in a moment.\nIf the issue continues, contact support at support@contoso.com.\""
+      language: Plain Text
+    bad:
+    - description: Bad example code snippet.
+      code: "// Default fallback with no guidance\n\"I didn't understand that.\"\n\n// Infinite loop with no escalation\n\"Sorry, I don't know that. Please try again.\"\n// (repeated indefinitely with no alternative path)\n\n// Technical error exposed to user\n\"Error: HTTP 500 \u2014 Internal Server Error in flow Run_GetOrderDetails.\""
+      language: Plain Text
+  references:
+  - title: Configure the fallback topic - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-system-fallback-topic
+  - title: Manage system topics - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-system-topics
+- id: CS-004
+  title: Configure knowledge sources carefully and apply appropriate guardrails when enabling ge...
+  description: Configure knowledge sources carefully and apply appropriate guardrails when enabling generative answers.
+  guidelines:
+  - Ensure knowledge source documents are well-structured with clear headings, bullet points, and concise paragraphs to maximize extraction quality.
+  - Keep knowledge sources up to date - schedule regular reviews to remove outdated or inaccurate content.
+  - Restrict the scope of generative answers to your approved knowledge sources rather than allowing the agent to answer from general knowledge.
+  - Add a disclaimer to generative responses in sensitive or regulated domains (e.g., legal, medical, financial) to indicate that the answer is AI-generated.
+  - Review the conversation transcripts regularly to identify cases where generative answers were inaccurate or off-topic, and update the knowledge sources accordingly.
+  rationale:
+  - Poorly structured documents produce fragmented or inaccurate generative responses because the AI cannot reliably extract coherent answers.
+  - Outdated knowledge sources lead to incorrect answers that erode user trust and can cause business harm.
+  - Unrestricted generative answers increase the risk of hallucinated or off-topic responses that do not reflect your organization's information.
+  - Disclaimers manage user expectations and provide legal protection in regulated industries.
+  - Continuous review closes the feedback loop, ensuring the agent improves over time.
+  examples:
+    good:
+    - description: Knowledge sources use clear Markdown headings and short paragraphs optimized for AI extraction.
+    - description: Generative answers are scoped to an internal SharePoint site and a curated FAQ document.
+    - value: A disclaimer is appended
+      note: '"This answer was generated from our knowledge base. Please verify with official documentation."'
+    - description: Monthly reviews of conversation transcripts identify two new frequently asked questions that are added to the FAQ.
+    bad:
+    - description: A 200-page unstructured PDF is uploaded as a knowledge source, producing unreliable generative answers.
+    - description: Knowledge source documents have not been updated in over a year, and the agent gives outdated policy information.
+    - description: Generative answers are enabled without scope restrictions, causing the agent to answer questions outside its domain with fabricated information.
+    - description: No disclaimer is provided for AI-generated legal or compliance guidance.
+  references:
+  - title: Use knowledge sources for generative answers - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/nlu-boost-conversations
+  - title: Manage knowledge sources - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/manage-knowledge-sources
+- id: CS-005
+  title: Enable end-user authentication and follow security best practices when connecting your...
+  description: Enable end-user authentication and follow security best practices when connecting your agent to external systems and data.
+  guidelines:
+  - Enable user authentication in the agent settings and require users to sign in before accessing sensitive data or performing actions.
+  - Use Microsoft Entra ID (Azure AD) with Single Sign-On (SSO) for agents deployed in Microsoft Teams or organizational channels.
+  - Use the on-behalf-of authentication flow when calling APIs or Power Automate flows so that actions execute under the authenticated user's identity.
+  - Never hard-code credentials, API keys, or secrets in topics or flows - store them in Azure Key Vault or environment variables.
+  - Apply the principle of least privilege when configuring connector permissions and API access for the agent.
+  rationale:
+  - Without authentication, the agent cannot identify the user, making personalized responses and secure data access impossible.
+  - SSO provides a seamless experience for users in Teams and eliminates the need for separate login prompts.
+  - On-behalf-of flows ensure that data access respects the user's own permissions, preventing privilege escalation.
+  - Hard-coded secrets can be exposed through solution exports, version history, or accidental sharing, creating a security vulnerability.
+  - Overly permissive connections increase the blast radius if the agent or its connections are compromised.
+  examples:
+    good:
+    - description: Authentication is enabled with Microsoft Entra ID; users sign in via SSO when they open the agent in Teams.
+    - description: A Power Automate flow retrieves the user's pending approvals using the authenticated user's token, so each user only sees their own data.
+    - description: API keys for a third-party service are stored in Azure Key Vault and referenced via environment variables in the solution.
+    bad:
+    - description: The agent is published without authentication, allowing anonymous users to access internal HR data.
+    - description: A Power Automate flow runs under a service account with global admin permissions to retrieve employee records, ignoring individual user permissions.
+    - description: An API key is pasted directly into a topic's HTTP request action and is visible in the solution export.
+  references:
+  - title: Configure user authentication in Copilot Studio - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/configuration-end-user-authentication
+  - title: Configure single sign-on for Copilot Studio - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/configure-sso
+- id: CS-006
+  title: Use solution-based development and environment separation to manage your agent through...
+  description: Use solution-based development and environment separation to manage your agent through development, testing, and production stages.
+  guidelines:
+  - Develop agents inside a managed solution - never build directly in the default environment or outside a solution.
+  - 'Maintain at least three environments: Development, Test/UAT, and Production.'
+  - Use Azure DevOps or GitHub Actions pipelines to automate solution export, import, and deployment across environments.
+  - Increment the solution version with every deployment so that changes are traceable and rollbacks are possible.
+  - Use environment variables for configuration values that differ between environments (e.g., URLs, connection references, feature flags).
+  rationale:
+  - Building outside a solution makes it impossible to reliably move agents between environments, leading to manual and error-prone deployments.
+  - Environment separation prevents untested changes from reaching end users and protects production stability.
+  - Automated pipelines reduce human error in the deployment process and provide an auditable deployment history.
+  - Solution versioning enables rollback to a known-good state if a deployment introduces issues.
+  - Hard-coded environment-specific values break when a solution is imported into a different environment.
+  examples:
+    good:
+    - description: The agent and all its dependencies (topics, flows, connection references, environment variables) are packaged in a solution named ContosoITHelpDesk.
+    - description: A GitHub Actions pipeline exports the solution from Dev, imports it into Test, and after approval, promotes it to Production.
+    - description: Environment variables evServiceNowUrl and evApprovalEmailGroup are configured per environment.
+    bad:
+    - description: The agent is built in the default environment with no solution, and topics are manually recreated in production.
+    - description: Changes are tested in production because there is only one environment.
+    - value: A flow contains a hard-coded URL https
+      note: //dev-api.contoso.com that fails when imported to the production environment.
+  references:
+  - title: Export and import agents using solutions - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-export-import-bots
+  - title: Application lifecycle management with Power Platform - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/alm/overview-alm
+- id: CS-007
+  title: Establish a thorough testing strategy and use built-in analytics to continuously improv...
+  description: Establish a thorough testing strategy and use built-in analytics to continuously improve your agent's performance.
+  guidelines:
+  - Use the Test bot pane during development to verify every topic's conversation path, including branching and error scenarios.
+  - Create a test script that covers all topics, edge cases, and expected fallback scenarios, and run it before every deployment.
+  - Monitor the Analytics dashboard regularly to track resolution rate, escalation rate, abandonment rate, and customer satisfaction (CSAT).
+  - Review conversation transcripts weekly to identify misunderstood intents, missing topics, and areas for improvement.
+  - Set up alerts or dashboards for critical metrics (e.g., sudden increase in fallback rate or error rate) to catch regressions early.
+  rationale:
+  - Untested conversation paths lead to broken experiences that users encounter in production, damaging trust and increasing support costs.
+  - A structured test script ensures consistent coverage and prevents regressions when topics are added or modified.
+  - Analytics provide data-driven insight into how users interact with the agent and where the experience breaks down.
+  - Transcript reviews reveal real user language and uncover gaps that analytics alone cannot surface.
+  - Proactive monitoring catches issues before they affect a large number of users.
+  examples:
+    good:
+    - description: A test script documents 50+ test scenarios, including happy paths, edge cases, and fallback triggers, and is executed before every release.
+    - description: The analytics dashboard is reviewed weekly; a drop in resolution rate from 85% to 70% triggers an investigation and topic updates.
+    - description: Conversation transcripts reveal that users frequently ask about "PTO balance" but no topic exists - a new topic is created.
+    bad:
+    - description: Topics are published without testing; users discover that a critical branch leads to a dead end.
+    - description: Analytics are never reviewed; the agent's fallback rate has been 40% for months without anyone noticing.
+    - description: Conversation transcripts are enabled but never read, missing opportunities to improve the agent.
+  references:
+  - title: Test your agent - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-test-bot
+  - title: Analyze agent performance - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-overview
+  - title: Export conversation transcripts - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-sessions-transcripts
+- id: CS-008
+  title: Plan your deployment channels carefully and design the conversational experience to mat...
+  description: Plan your deployment channels carefully and design the conversational experience to match each channel's capabilities.
+  guidelines:
+  - Identify and prioritize the target channels (Microsoft Teams, web chat, mobile, custom) before designing the conversation flow.
+  - Test the agent on every target channel before going live - message formatting, adaptive cards, and authentication behave differently across channels.
+  - Write a clear and helpful greeting message that sets expectations about what the agent can do.
+  - Use quick replies and suggested actions to guide users through common paths and reduce free-text input.
+  - Keep messages concise - avoid walls of text, and split long responses across multiple messages when necessary.
+  rationale:
+  - Conversation flows designed for web chat may not render correctly in Teams or other channels due to differences in card support, message length, and authentication.
+  - Testing on the actual channel prevents formatting issues, broken links, or authentication failures from reaching production users.
+  - A well-crafted greeting reduces fallback rates by immediately telling users what the agent can help with.
+  - Quick replies and suggested actions lower the barrier to interaction and reduce the chance of misunderstood free-text input.
+  - Long, unbroken messages are difficult to read in chat interfaces and lead to users skipping important information.
+  examples:
+    good:
+    - value: "\U0001F511 Password resets"
+    - value: "\U0001F4BB Software requests"
+    - value: "\U0001F3AB Ticket status"
+    - description: Good example code snippet.
+      code: "// Greeting message\n\"Hi! I'm the Contoso IT Help Desk assistant. I can help you with:\n- \U0001F511 Password resets\n- \U0001F4BB Software requests\n- \U0001F3AB Ticket status\n\nWhat would you like help with?\"\n\n// Suggested actions after a response\n[Reset Password] [Check Ticket Status] [Talk to an Agent]"
+      language: Plain Text
+    bad:
+    - description: Bad example code snippet.
+      code: "// No greeting \u2014 agent starts silently and waits for input\n(blank)\n\n// Wall of text with no formatting or guidance\n\"Welcome to the Contoso IT support bot. This bot can help you with password resets,\nsoftware installation requests, hardware requests, VPN issues, email configuration,\nprinter setup, account unlocking, MFA enrollment, and many other IT-related tasks.\nPlease type your question below and we will try to help you as best we can.\nIf we cannot help you, we will transfer you to an agent.\""
+      language: Plain Text
+  references:
+  - title: Publish your agent to multiple channels - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/publication-fundamentals-publish-channels
+  - title: Configure the greeting topic - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-system-topics
+- id: CS-009
+  title: Apply responsible AI principles and configure content moderation to ensure your agent p...
+  description: Apply responsible AI principles and configure content moderation to ensure your agent produces safe, accurate, and appropriate responses.
+  guidelines:
+  - Enable content moderation to filter harmful, offensive, or inappropriate content from both user inputs and agent responses.
+  - Define clear behavioral guardrails by configuring the agent's system message to specify what the agent should and should not discuss.
+  - Avoid having the agent provide advice on high-risk topics (e.g., medical diagnosis, legal counsel, financial advice) without explicit disclaimers and links to qualified professionals.
+  - Regularly audit agent responses through transcript reviews to identify instances of inaccurate, biased, or inappropriate content.
+  - Include a feedback mechanism (e.g., thumbs up/down) so users can flag problematic responses.
+  rationale:
+  - Without content moderation, the agent may generate or repeat harmful content, exposing the organization to reputational and legal risk.
+  - Behavioral guardrails prevent the agent from going off-topic or providing responses outside its intended scope.
+  - AI-generated advice on regulated topics can cause real harm if users act on inaccurate information without consulting a professional.
+  - Regular audits catch issues that automated filters miss and ensure the agent meets organizational standards over time.
+  - User feedback provides a direct signal about response quality and helps prioritize improvements.
+  examples:
+    good:
+    - value: Content moderation is enabled; the agent refuses to engage with abusive or harmful input and responds with
+      note: '"I''m here to help with IT support questions. Let me know how I can assist you."'
+    - value: The system message instructs the agent
+      note: '"You are an IT help desk assistant. Only answer questions related to IT support. Do not provide medical, legal, or financial advice."'
+    - value: When asked a medical question, the agent responds
+      note: '"I''m not able to help with medical questions. Please consult a healthcare professional."'
+    bad:
+    - description: Content moderation is disabled; the agent responds to abusive messages or generates inappropriate content.
+    - description: No behavioral guardrails are set; the agent answers questions about any topic, including areas where inaccurate answers could cause harm.
+    - description: The agent provides detailed financial investment advice with no disclaimer, exposing the organization to liability.
+  references:
+  - title: Responsible AI FAQ for Copilot Studio - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/responsible-ai-overview
+  - title: Microsoft Responsible AI principles
+    url: https://www.microsoft.com/en-us/ai/responsible-ai

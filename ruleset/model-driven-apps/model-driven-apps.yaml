@@ -1,0 +1,240 @@
+topic: General
+description: Good practices for Model Driven Apps.
+rules:
+- id: MDA-001
+  title: Create separate Model Driven Apps for each distinct user role or business function inst...
+  description: Create separate Model Driven Apps for each distinct user role or business function instead of building a single app for all users.
+  guidelines:
+  - Identify the key personas (e.g., Sales, Customer Service, Back Office) and create a dedicated app for each.
+  - Include only the tables, forms, views, and dashboards that are relevant to the target audience.
+  - Assign the app to the appropriate security roles so that users only see the app designed for them.
+  - Use a meaningful app name and icon that clearly conveys the app's purpose.
+  rationale:
+  - A single app containing every table and dashboard overwhelms users with information they do not need, reducing productivity.
+  - Smaller, role-specific apps load faster because they contain fewer components.
+  - Restricting app access by security role enforces the principle of least privilege and reduces the risk of unauthorized data access.
+  - Tailored apps are easier to maintain because changes to one role's experience do not impact others.
+  examples:
+    good:
+    - description: A "Customer Service Hub" app containing Cases, Knowledge Articles, and Queues - tailored for support agents.
+    - description: A "Sales Operations" app containing Leads, Opportunities, and Quotes - tailored for the sales team.
+    - description: A "Back Office Administration" app containing configuration tables, security roles, and audit logs - tailored for system administrators.
+    bad:
+    - description: A single "CRM App" that includes every table in the system, forcing sales reps to scroll past support tables and admin settings to find what they need.
+    - description: One app shared across all roles with no security role restrictions, giving every user access to every feature.
+  references:
+  - title: Model-driven app overview - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/model-driven-app-overview
+  - title: Control access to model-driven apps with security roles - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/model-driven-app-share
+- id: MDA-002
+  title: Design the sitemap navigation with logical grouping, clear labels, and minimal nesting
+  description: Design the sitemap navigation with logical grouping, clear labels, and minimal nesting.
+  guidelines:
+  - Group related tables under meaningful areas and groups (e.g., "Sales" containing Leads, Opportunities, and Accounts).
+  - Place the most frequently used items first in each group.
+  - Avoid nesting more than two levels deep.
+  - Use descriptive labels instead of internal jargon or abbreviations.
+  - Assign icons to each sitemap entry for faster visual recognition.
+  rationale:
+  - A well-organized sitemap reduces the time users spend searching for the right table or dashboard.
+  - Deep nesting makes navigation confusing and increases the number of clicks to reach common tasks.
+  - Clear labels reduce training needs and help new users onboard faster.
+  - Icons provide visual cues that improve navigation speed, especially on smaller screens.
+  examples:
+    good:
+    - value: Leads
+    - value: Opportunities
+    - value: Quotes
+    - value: Accounts
+    - value: Contacts
+    - value: Active Cases
+    - value: Knowledge Articles
+    - description: Good example code snippet.
+      code: "Area: Sales\n  Group: Pipeline\n    - Leads\n    - Opportunities\n    - Quotes\n  Group: Customers\n    - Accounts\n    - Contacts\n\nArea: Service\n  Group: Cases\n    - Active Cases\n    - Knowledge Articles"
+      language: Plain Text
+    bad:
+    - value: tbl_lead
+    - value: tbl_opp
+    - value: tbl_quot
+    - value: tbl_acc
+    - value: tbl_cont
+    - value: tbl_case
+    - value: tbl_ka
+    - value: tbl_ord
+    - value: tbl_inv
+    - description: Bad example code snippet.
+      code: "Area: Area1\n  Group: Group1\n    Subarea: Subgroup1\n      - tbl_lead\n      - tbl_opp\n      - tbl_quot\n      - tbl_acc\n      - tbl_cont\n      - tbl_case\n      - tbl_ka\n      - tbl_ord\n      - tbl_inv"
+      language: Plain Text
+  references:
+  - title: Create a model-driven app site map - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/create-site-map-app
+  - title: UI/UX design components for model-driven apps - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/dynamics365/guidance/develop/ui-ux-component-details-model-driven-apps
+- id: MDA-003
+  title: Design system views to be focused, performant, and aligned with how users consume data
+  description: Design system views to be focused, performant, and aligned with how users consume data.
+  guidelines:
+  - Display only the columns that users need in each view. Avoid adding every column to a single view.
+  - Set appropriate default sorting and filtering so the most relevant records appear first.
+  - Create purpose-specific views (e.g., "My Active Cases", "Cases Due Today") instead of relying solely on generic views.
+  - Limit views to 6-8 columns to keep them readable without horizontal scrolling.
+  - Avoid using complex calculated or rollup columns in high-traffic views, as they can degrade query performance.
+  rationale:
+  - Views with too many columns load more data than necessary, increasing query time and degrading user experience.
+  - Purpose-specific views help users find the right records faster and reduce the need for manual filtering.
+  - Calculated and rollup columns require additional server processing at query time, which can cause slow load times on views accessed frequently.
+  - Consistent, well-designed views reduce user errors and the need for ad-hoc Advanced Find queries.
+  examples:
+    good:
+    - description: Conforms to the rule requirements.
+    bad:
+    - description: Violates the rule requirements.
+  references:
+  - title: Create or edit a model-driven app view - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/create-edit-views
+  - title: Optimize form performance - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/optimize-form-performance
+- id: MDA-004
+  title: Design dashboards to surface actionable insights, not just raw data
+  description: Design dashboards to surface actionable insights, not just raw data.
+  guidelines:
+  - Include only charts and lists that drive decisions or highlight areas requiring attention.
+  - Create role-specific dashboards instead of a single all-purpose dashboard.
+  - Limit the number of components per dashboard to 4-6 to avoid visual clutter and slow load times.
+  - Use interactive dashboards when users need to filter and drill down into data directly from the dashboard.
+  - Set the most relevant dashboard as the default for each security role.
+  rationale:
+  - Dashboards overloaded with charts and lists become noise rather than insight, reducing their value.
+  - Each component on a dashboard triggers a separate data query. Too many components degrade load time.
+  - Interactive dashboards allow users to act on data without navigating away, improving productivity.
+  - Role-specific dashboards ensure users see KPIs relevant to their job function.
+  examples:
+    good:
+    - value: 'A "Service Manager Dashboard" with:'
+    - value: Chart
+      note: Cases by Priority (last 30 days)
+    - value: Chart
+      note: Average Resolution Time (trend)
+    - value: List
+      note: Cases Escalated Today
+    - value: List
+      note: SLA Violations This Week
+    bad:
+    - description: A single "Main Dashboard" with 10+ charts and lists covering Sales, Service, Marketing, and Admin data - used by everyone regardless of role.
+    - description: A dashboard with lists showing all records (unfiltered), providing no insight beyond what a view already offers.
+  references:
+  - title: Create or edit a model-driven app dashboard - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/create-edit-dashboards
+- id: MDA-005
+  title: Follow client scripting best practices when writing JavaScript for Model Driven Apps
+  description: Follow client scripting best practices when writing JavaScript for Model Driven Apps.
+  guidelines:
+  - Use namespaces to avoid global variable conflicts. Define all functions under a project-specific namespace (e.g., Contoso.Account).
+  - Always use executionContext.getFormContext() instead of the deprecated Xrm.Page.
+  - Use async/await with Xrm.WebApi for all data operations. Never use synchronous XMLHttpRequest calls.
+  - Register event handlers using their fully qualified namespace (e.g., Contoso.Account.onLoad) instead of anonymous functions.
+  - Handle errors using try/catch blocks and display user-friendly messages via Xrm.Navigation.openAlertDialog.
+  - Pass executionContext as the first parameter to all event handler functions.
+  rationale:
+  - Global variables can conflict with other scripts or future platform updates, causing unpredictable behavior.
+  - Xrm.Page is deprecated and may be removed in future updates. getFormContext() is the supported replacement.
+  - Synchronous calls block the UI thread, causing the form to freeze during data operations.
+  - Named functions registered via their namespace are easier to debug, trace, and manage across forms.
+  - Unhandled errors in client scripts can silently fail or produce confusing browser errors for end users.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "var Contoso = Contoso || {};\nContoso.Account = {\n    onLoad: async function (executionContext) {\n        \"use strict\";\n        var formContext = executionContext.getFormContext();\n        try {\n            var result = await Xrm.WebApi.retrieveRecord(\n                \"account\",\n                formContext.data.entity.getId(),\n                \"?$select=name,revenue\"\n            );\n            // Process result\n        } catch (error) {\n            Xrm.Navigation.openAlertDialog({ text: error.message });\n        }\n    }\n};"
+      language: javascript
+    bad:
+    - description: Bad example code snippet.
+      code: "// No namespace \u2014 pollutes global scope\nfunction onLoad() {\n    // Uses deprecated Xrm.Page\n    var name = Xrm.Page.getAttribute(\"name\").getValue();\n\n    // Synchronous XMLHttpRequest \u2014 blocks the UI\n    var xhr = new XMLHttpRequest();\n    xhr.open(\"GET\", \"/api/data/v9.2/accounts\", false);\n    xhr.send();\n}"
+      language: javascript
+  references:
+  - title: Client scripting in model-driven apps - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/client-scripting
+  - title: Xrm.WebApi reference - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/reference/xrm-webapi
+  - title: Best practices for client scripting - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/best-practices/business-logic/interact-http-https-resources-asynchronously
+- id: MDA-006
+  title: Create custom security roles following the principle of least privilege instead of modi...
+  description: Create custom security roles following the principle of least privilege instead of modifying out-of-the-box roles.
+  guidelines:
+  - Clone the out-of-the-box role that most closely matches the required access, then customize the clone.
+  - Grant only the minimum table and field permissions needed for each role.
+  - Use field security profiles for sensitive fields (e.g., salary, SSN) that should be restricted even within a role.
+  - Assign security roles via Azure AD security groups or Dataverse teams rather than directly to individual users.
+  - Test every custom security role in a non-production environment with a dedicated test user before deploying to production.
+  rationale:
+  - Modifying out-of-the-box roles can be overwritten during platform updates, causing unexpected permission changes.
+  - Excessive permissions violate the principle of least privilege and increase the surface area for data breaches or accidental modifications.
+  - Assigning roles via security groups simplifies user management and ensures consistency when onboarding or offboarding users.
+  - Untested security roles can inadvertently grant or restrict access, leading to production issues that are difficult to diagnose.
+  examples:
+    good:
+    - description: Clone the "Customer Service Representative" role, remove access to financial tables, and name it "Tier 1 Support Agent".
+    - description: Create a field security profile to restrict the credit_limit column on the Account table to the Finance team only.
+    - description: Assign the "Sales Representative" role to the "Sales Team" Azure AD security group.
+    bad:
+    - description: Granting the "System Administrator" role to all users to avoid access-related support tickets.
+    - description: Editing the out-of-the-box "Salesperson" role directly instead of cloning it, risking changes being overwritten on platform updates.
+    - description: Assigning security roles to individual users one by one, making it difficult to track who has what access.
+  references:
+  - title: Security roles and privileges - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/admin/security-roles-privileges
+  - title: Field security profiles - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/admin/field-level-security
+- id: MDA-007
+  title: Package all customizations in managed solutions and follow a structured solution strategy
+  description: Package all customizations in managed solutions and follow a structured solution strategy.
+  guidelines:
+  - Use a consistent publisher prefix across all solutions in the organization.
+  - Separate customizations into layered solutions (e.g., Core, Feature, App) to enable independent deployment and rollback.
+  - Never make unmanaged customizations directly in production. All changes must flow through the development environment and be deployed as managed solutions.
+  - Use environment variables for settings that differ across environments (e.g., API URLs, connection references).
+  - Store solution exports in source control (e.g., Git) and automate deployments via CI/CD pipelines.
+  rationale:
+  - Unmanaged customizations in production cannot be cleanly upgraded or rolled back, leading to environment drift and support issues.
+  - Layered solutions allow teams to deploy and update features independently without affecting the core data model or other features.
+  - A consistent publisher prefix prevents naming conflicts and makes it easy to identify which components belong to your organization.
+  - Environment variables eliminate the need to manually reconfigure settings after each deployment, reducing errors and deployment time.
+  - Source control and CI/CD ensure traceability, repeatability, and the ability to revert to a known good state.
+  examples:
+    good:
+    - description: Good example code snippet.
+      code: "Solution: Contoso Core (contoso_core)\n  \u2192 Tables, fields, relationships, option sets\n\nSolution: Contoso Sales App (contoso_sales)\n  \u2192 Sales-specific forms, views, dashboards, sitemap\n\nSolution: Contoso Service App (contoso_service)\n  \u2192 Service-specific forms, views, dashboards, sitemap"
+      language: Plain Text
+    bad:
+    - description: All customizations in a single monolithic solution that takes 30+ minutes to import and cannot be partially rolled back.
+    - description: Making quick fixes directly in the production environment as unmanaged customizations, bypassing the development and testing process.
+    - description: Different developers using different publisher prefixes, resulting in mixed prefixes across tables and fields.
+  references:
+  - title: Solutions overview - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/solutions-overview
+  - title: ALM best practices - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-platform/alm/overview-alm
+  - title: Use environment variables in solutions - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/environmentvariables
+- id: MDA-008
+  title: Every Model Driven App must have a description that explains its purpose, target audien...
+  description: Every Model Driven App must have a description that explains its purpose, target audience, and scope.
+  guidelines:
+  - 'State the purpose: Explain what the app is for in one or two sentences.'
+  - 'Identify the audience: Specify which security roles or teams are expected to use this app.'
+  - 'Define the scope: List the key tables, dashboards, and business processes included in the app.'
+  rationale:
+  - Organizations often have multiple Model Driven Apps. Without descriptions, administrators cannot easily determine which app serves which purpose.
+  - Descriptions help during onboarding, making it clear which app a new user should access based on their role.
+  - Clear scope documentation prevents duplication of features across apps and supports governance decisions.
+  examples:
+    good:
+    - description: '"Customer Service Hub for the Tier 1 and Tier 2 support teams. Includes Cases, Knowledge Articles, Queues, and the Case Resolution dashboard. Assigned to the Customer Service Representative and Customer Service Manager security roles."'
+    - description: '"Sales Operations app for the inside sales team. Covers Leads, Opportunities, Quotes, and the Sales Pipeline dashboard. Restricted to the Sales Representative and Sales Manager roles."'
+    bad:
+    - description: '"App 1" - provides no context about the app''s purpose or audience.'
+    - description: No description at all - administrators must open and inspect the app to understand what it contains.
+  references:
+  - title: Create a model-driven app - Microsoft Learn
+    url: https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/build-first-model-driven-app
