@@ -1,6 +1,6 @@
 param(
 	[string]$rulesetRoot = (Join-Path (Split-Path -Parent $PSScriptRoot) "ruleset"),
-	[string]$htmlRoot = (Join-Path (Split-Path -Parent $PSScriptRoot) "html-cards"),
+	[string]$htmlRoot = (Join-Path (Split-Path -Parent $PSScriptRoot) "html"),
 	[string]$templateFile = (Join-Path $PSScriptRoot "html-card.liquid"),
 	[string]$renderScript = (Join-Path $PSScriptRoot "render-template.ps1")
 )

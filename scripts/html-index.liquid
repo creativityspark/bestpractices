@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ title }}</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			background: #ffffff;
+			margin: 0;
+			padding: 0;
+			color: #1b2a4a;
+		}
+
+		.page {
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.page-header {
+			background: #1b2a4a;
+			padding: 24px 32px;
+		}
+
+		.page-header .header-title {
+			font-size: 14px;
+			font-weight: 600;
+			color: #b0c4de;
+			margin-bottom: 2px;
+		}
+
+		.page-header .header-subtitle {
+			font-size: 12px;
+			color: #8fa4c8;
+			margin-bottom: 16px;
+		}
+
+		.page-header .page-title {
+			font-size: 30px;
+			font-weight: 700;
+			color: #ffffff;
+			margin-bottom: 8px;
+		}
+
+		.page-header .page-description {
+			max-width: 760px;
+			font-size: 14px;
+			line-height: 1.6;
+			color: #d7e3f4;
+		}
+
+		.page-body {
+			padding: 32px;
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+		}
+
+		.ruleset-card {
+			border: 1px solid #e0e0e0;
+			border-radius: 12px;
+			overflow: hidden;
+			background: #ffffff;
+			box-shadow: 0 8px 24px rgba(27, 42, 74, 0.06);
+		}
+
+		.ruleset-card-header {
+			padding: 20px 24px;
+			background: #f8fafc;
+			border-bottom: 1px solid #e7edf6;
+		}
+
+		.ruleset-card-title {
+			font-size: 22px;
+			font-weight: 700;
+			color: #1b2a4a;
+			margin-bottom: 8px;
+		}
+
+		.ruleset-card-description {
+			font-size: 14px;
+			line-height: 1.6;
+			color: #51627f;
+		}
+
+		.rules-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+			gap: 16px;
+			padding: 24px;
+		}
+
+		.rule-link {
+			display: block;
+			text-decoration: none;
+			border: 1px solid #e0e0e0;
+			border-radius: 10px;
+			padding: 18px;
+			background: #ffffff;
+			transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+		}
+
+		.rule-link:hover {
+			transform: translateY(-2px);
+			border-color: #0078d4;
+			box-shadow: 0 10px 24px rgba(0, 120, 212, 0.12);
+		}
+
+		.rule-id {
+			display: inline-block;
+			background: #0078d4;
+			color: #ffffff;
+			font-size: 12px;
+			font-weight: 700;
+			padding: 6px 10px;
+			border-radius: 4px;
+			margin-bottom: 12px;
+		}
+
+		.rule-title {
+			font-size: 15px;
+			font-weight: 700;
+			color: #1b2a4a;
+			line-height: 1.5;
+		}
+
+		.page-footer {
+			padding: 16px 32px;
+			text-align: center;
+			font-size: 12px;
+			color: #888;
+			border-top: 1px solid #e0e0e0;
+			margin-top: auto;
+		}
+
+		.page-footer a {
+			color: #0078d4;
+			text-decoration: none;
+			font-weight: 600;
+		}
+
+		.page-footer a:hover {
+			text-decoration: underline;
+		}
+
+		@media (max-width: 768px) {
+			.page-header,
+			.page-body,
+			.page-footer {
+				padding-left: 20px;
+				padding-right: 20px;
+			}
+
+			.rules-grid {
+				padding: 20px;
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="page">
+		<div class="page-header">
+			<div class="header-title">Power Platform Best Practices</div>
+			<div class="header-subtitle">HTML Card Index</div>
+			<div class="page-title">{{ title }}</div>
+			<div class="page-description">{{ subtitle }}</div>
+		</div>
+
+		<div class="page-body">
+			{% for ruleset in rulesets %}
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">{{ ruleset.topic }}</div>
+					<div class="ruleset-card-description">{{ ruleset.description }}</div>
+				</div>
+				<div class="rules-grid">
+					{% for rule in ruleset.rules %}
+					<a class="rule-link" href="{{ rule.href }}">
+						<span class="rule-id">{{ rule.id }}</span>
+						<div class="rule-title">{{ rule.title }}</div>
+					</a>
+					{% endfor %}
+				</div>
+			</section>
+			{% endfor %}
+		</div>
+
+		<div class="page-footer">
+			Created with ❤️ by <a href="https://creativityspark.es">Creativity Spark</a>
+		</div>
+	</div>
+</body>
+</html>
