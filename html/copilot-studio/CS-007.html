@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS-007 - Establish a thorough testing strategy and use built-in analytics to continuously improv...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .card {
+            width: 100%;
+            background: #ffffff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .card-header {
+            background: #1b2a4a;
+            padding: 24px 32px;
+        }
+
+        .card-header .header-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #b0c4de;
+            margin-bottom: 2px;
+        }
+
+        .card-header .header-subtitle {
+            font-size: 12px;
+            color: #8fa4c8;
+            margin-bottom: 16px;
+        }
+
+        .card-header .title-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .card-header .title-row a {
+            text-decoration: none;
+        }
+
+        .card-header .rule-id {
+            background: #0078d4;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .card-header .rule-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Footer */
+        .card-footer {
+            padding: 16px 32px;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            border-top: 1px solid #e0e0e0;
+            margin-top: auto;
+        }
+
+        .card-footer a {
+            color: #0078d4;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .card-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Body */
+        .card-body {
+            padding: 32px;
+        }
+
+        /* Navigation buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+
+        .nav-buttons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+            color: #555;
+            text-decoration: none;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .nav-buttons a:hover {
+            background: #f0f0f0;
+            border-color: #0078d4;
+            color: #0078d4;
+        }
+
+        .nav-buttons a.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* The Rule */
+        .rule-statement {
+            border-left: 4px solid #0078d4;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            background: #f8fafc;
+        }
+
+        .rule-statement p {
+            font-size: 15px;
+            font-weight: 600;
+            font-style: italic;
+            color: #1b2a4a;
+            line-height: 1.5;
+        }
+
+        /* Rationale grid */
+        .rationale-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .rationale-grid .step-card {
+            background: #f8fafc;
+            border-color: #27ae60;
+        }
+
+        /* How to Apply grid */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .step-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .step-card .step-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .step-card .step-icon {
+            width: 32px;
+            height: 32px;
+            background: #0078d4;
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step-card .step-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .step-card .step-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1b2a4a;
+        }
+
+        .step-card .step-description {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* Examples section */
+        .examples-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            overflow: hidden;
+        }
+
+        .example-box {
+            border-radius: 8px;
+            padding: 20px;
+            border: 2px solid;
+        }
+
+        .example-box.do {
+            border-color: #27ae60;
+            background: #f0faf4;
+        }
+
+        .example-box.dont {
+            border-color: #c0392b;
+            background: #fdf4f3;
+        }
+
+        .example-box .example-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .example-box .example-icon {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .example-box.do .example-icon {
+            color: #27ae60;
+        }
+
+        .example-box.dont .example-icon {
+            color: #c0392b;
+        }
+
+        .example-box .example-label {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .example-box.do .example-label {
+            color: #27ae60;
+        }
+
+        .example-box.dont .example-label {
+            color: #c0392b;
+        }
+
+        .example-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .example-box ul li {
+            font-size: 13px;
+            color: #333;
+            padding: 5px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .example-box ul li .icon {
+            flex-shrink: 0;
+            font-weight: 700;
+            font-size: 12px;
+            margin-top: 1px;
+        }
+
+        .example-box.do ul li .icon {
+            color: #27ae60;
+        }
+
+        .example-box.dont ul li .icon {
+            color: #c0392b;
+        }
+
+        .example-box ul li .text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .example-box ul li .text code {
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .example-box ul li .text .reason {
+            font-size: 11px;
+            color: #777;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <!-- Header -->
+        <div class="card-header">
+            <div class="header-title">Power Platform Best Practices</div>
+            <div class="header-subtitle">Copilot Studio / copilot-studio</div>
+            <div class="title-row">
+                <a href="#"><span class="rule-id">CS-007</span></a>
+                <a href="#"><span class="rule-title">Establish a thorough testing strategy and use built-in analytics to continuously improv...</span></a>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+            <!-- Navigation -->
+            <div class="nav-buttons">
+                <a href="./CS-006.html" title="Go to the previous rule" class=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 18l-6-6l6-6"/></svg></a>
+                <a href="./CS-008.html" title="Go to the next rule" class=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 18l6-6l-6-6"/></svg></a>
+            </div>
+
+            <!-- The Rule -->
+            <div class="rule-statement">
+                <p>Establish a thorough testing strategy and use built-in analytics to continuously improve your agent's performance.</p>
+            </div>
+
+            <!-- How to Apply -->
+            <div class="steps-grid">
+                
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-icon">1</div>
+                        <div class="step-title">Guideline 1</div>
+                    </div>
+                    <div class="step-description">Use the Test bot pane during development to verify every topic's conversation path, including branching and error scenarios.</div>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-icon">2</div>
+                        <div class="step-title">Guideline 2</div>
+                    </div>
+                    <div class="step-description">Create a test script that covers all topics, edge cases, and expected fallback scenarios, and run it before every deployment.</div>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-icon">3</div>
+                        <div class="step-title">Guideline 3</div>
+                    </div>
+                    <div class="step-description">Monitor the Analytics dashboard regularly to track resolution rate, escalation rate, abandonment rate, and customer satisfaction (CSAT).</div>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-icon">4</div>
+                        <div class="step-title">Guideline 4</div>
+                    </div>
+                    <div class="step-description">Review conversation transcripts weekly to identify misunderstood intents, missing topics, and areas for improvement.</div>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-icon">5</div>
+                        <div class="step-title">Guideline 5</div>
+                    </div>
+                    <div class="step-description">Set up alerts or dashboards for critical metrics (e.g., sudden increase in fallback rate or error rate) to catch regressions early.</div>
+                </div>
+                
+            </div>
+
+            <!-- Rationale -->
+            <div class="rationale-grid">
+                
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-icon">1</div>
+                        <div class="step-title">Rationale 1</div>
+                    </div>
+                    <div class="step-description">Untested conversation paths lead to broken experiences that users encounter in production, damaging trust and increasing support costs.</div>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-icon">2</div>
+                        <div class="step-title">Rationale 2</div>
+                    </div>
+                    <div class="step-description">A structured test script ensures consistent coverage and prevents regressions when topics are added or modified.</div>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-icon">3</div>
+                        <div class="step-title">Rationale 3</div>
+                    </div>
+                    <div class="step-description">Analytics provide data-driven insight into how users interact with the agent and where the experience breaks down.</div>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-icon">4</div>
+                        <div class="step-title">Rationale 4</div>
+                    </div>
+                    <div class="step-description">Transcript reviews reveal real user language and uncover gaps that analytics alone cannot surface.</div>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-icon">5</div>
+                        <div class="step-title">Rationale 5</div>
+                    </div>
+                    <div class="step-description">Proactive monitoring catches issues before they affect a large number of users.</div>
+                </div>
+                
+            </div>
+
+            <!-- Examples -->
+            <div class="examples-grid">
+                <div class="example-box do">
+                    <div class="example-header">
+                        <span class="example-icon">&#10003;</span>
+                        <span class="example-label">Do</span>
+                    </div>
+                    <ul>
+                        
+                        <li>
+                            <span class="icon">&#10003;</span>
+                            <span class="text">
+                                
+                                <code>A test script documents 50+ test scenarios, including happy paths, edge cases, and fallback triggers, and is executed before every release.</code>
+                                
+                                
+                                
+                            </span>
+                        </li>
+                        
+                        <li>
+                            <span class="icon">&#10003;</span>
+                            <span class="text">
+                                
+                                <code>The analytics dashboard is reviewed weekly; a drop in resolution rate from 85% to 70% triggers an investigation and topic updates.</code>
+                                
+                                
+                                
+                            </span>
+                        </li>
+                        
+                        <li>
+                            <span class="icon">&#10003;</span>
+                            <span class="text">
+                                
+                                <code>Conversation transcripts reveal that users frequently ask about "PTO balance" but no topic exists - a new topic is created.</code>
+                                
+                                
+                                
+                            </span>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <div class="example-box dont">
+                    <div class="example-header">
+                        <span class="example-icon">&#10007;</span>
+                        <span class="example-label">Don't</span>
+                    </div>
+                    <ul>
+                        
+                        <li>
+                            <span class="icon">&#10007;</span>
+                            <span class="text">
+                                
+                                <code>Topics are published without testing; users discover that a critical branch leads to a dead end.</code>
+                                
+                                
+                                
+                            </span>
+                        </li>
+                        
+                        <li>
+                            <span class="icon">&#10007;</span>
+                            <span class="text">
+                                
+                                <code>Analytics are never reviewed; the agent's fallback rate has been 40% for months without anyone noticing.</code>
+                                
+                                
+                                
+                            </span>
+                        </li>
+                        
+                        <li>
+                            <span class="icon">&#10007;</span>
+                            <span class="text">
+                                
+                                <code>Conversation transcripts are enabled but never read, missing opportunities to improve the agent.</code>
+                                
+                                
+                                
+                            </span>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+            
+
+            
+            <div class="step-card" style="margin-top: 24px;">
+                <div class="step-header">
+                    <div class="step-icon">i</div>
+                    <div class="step-title">More Information</div>
+                </div>
+                <div class="step-description">
+                    <ul>
+                        
+                        <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-test-bot" target="_blank" rel="noopener noreferrer">Test your agent - Microsoft Learn</a></li>
+                        
+                        <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-overview" target="_blank" rel="noopener noreferrer">Analyze agent performance - Microsoft Learn</a></li>
+                        
+                        <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-sessions-transcripts" target="_blank" rel="noopener noreferrer">Export conversation transcripts - Microsoft Learn</a></li>
+                        
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer">
+            Created with ❤️ by <a href="https://creativityspark.es">Creativity Spark</a>
+        </div>
+    </div>
+</body>
+</html>
+

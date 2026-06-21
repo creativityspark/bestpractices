@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Power Platform Best Practices</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			background: #ffffff;
+			margin: 0;
+			padding: 0;
+			color: #1b2a4a;
+		}
+
+		.page {
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.page-header {
+			background: #1b2a4a;
+			padding: 24px 32px;
+		}
+
+		.page-header .header-title {
+			font-size: 14px;
+			font-weight: 600;
+			color: #b0c4de;
+			margin-bottom: 2px;
+		}
+
+		.page-header .header-subtitle {
+			font-size: 12px;
+			color: #8fa4c8;
+			margin-bottom: 16px;
+		}
+
+		.page-header .page-title {
+			font-size: 30px;
+			font-weight: 700;
+			color: #ffffff;
+			margin-bottom: 8px;
+		}
+
+		.page-header .page-description {
+			max-width: 760px;
+			font-size: 14px;
+			line-height: 1.6;
+			color: #d7e3f4;
+		}
+
+		.page-body {
+			padding: 32px;
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+		}
+
+		.ruleset-card {
+			border: 1px solid #e0e0e0;
+			border-radius: 12px;
+			overflow: hidden;
+			background: #ffffff;
+			box-shadow: 0 8px 24px rgba(27, 42, 74, 0.06);
+		}
+
+		.ruleset-card-header {
+			padding: 20px 24px;
+			background: #f8fafc;
+			border-bottom: 1px solid #e7edf6;
+		}
+
+		.ruleset-card-title {
+			font-size: 22px;
+			font-weight: 700;
+			color: #1b2a4a;
+			margin-bottom: 8px;
+		}
+
+		.ruleset-card-description {
+			font-size: 14px;
+			line-height: 1.6;
+			color: #51627f;
+		}
+
+		.rules-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+			gap: 16px;
+			padding: 24px;
+		}
+
+		.rule-link {
+			display: block;
+			text-decoration: none;
+			border: 1px solid #e0e0e0;
+			border-radius: 10px;
+			padding: 18px;
+			background: #ffffff;
+			transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+		}
+
+		.rule-link:hover {
+			transform: translateY(-2px);
+			border-color: #0078d4;
+			box-shadow: 0 10px 24px rgba(0, 120, 212, 0.12);
+		}
+
+		.rule-id {
+			display: inline-block;
+			background: #0078d4;
+			color: #ffffff;
+			font-size: 12px;
+			font-weight: 700;
+			padding: 6px 10px;
+			border-radius: 4px;
+			margin-bottom: 12px;
+		}
+
+		.rule-title {
+			font-size: 15px;
+			font-weight: 700;
+			color: #1b2a4a;
+			line-height: 1.5;
+		}
+
+		.page-footer {
+			padding: 16px 32px;
+			text-align: center;
+			font-size: 12px;
+			color: #888;
+			border-top: 1px solid #e0e0e0;
+			margin-top: auto;
+		}
+
+		.page-footer a {
+			color: #0078d4;
+			text-decoration: none;
+			font-weight: 600;
+		}
+
+		.page-footer a:hover {
+			text-decoration: underline;
+		}
+
+		@media (max-width: 768px) {
+			.page-header,
+			.page-body,
+			.page-footer {
+				padding-left: 20px;
+				padding-right: 20px;
+			}
+
+			.rules-grid {
+				padding: 20px;
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="page">
+		<div class="page-header">
+			<div class="header-title">Power Platform Best Practices</div>
+			<div class="header-subtitle">HTML Card Index</div>
+			<div class="page-title">Power Platform Best Practices</div>
+			<div class="page-description">Index of all generated HTML rule cards</div>
+		</div>
+
+		<div class="page-body">
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">Application Lifecycle Management (ALM)</div>
+					<div class="ruleset-card-description">Good practices for Power Platform Application Lifecycle Management.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./alm/ALM-001.html">
+						<span class="rule-id">ALM-001</span>
+						<div class="rule-title">Establish a minimum of three separate environments - Development, Test, and Production...</div>
+					</a>
+					
+					<a class="rule-link" href="./alm/ALM-002.html">
+						<span class="rule-id">ALM-002</span>
+						<div class="rule-title">Always deploy managed solutions to Test, UAT, and Production environments</div>
+					</a>
+					
+					<a class="rule-link" href="./alm/ALM-003.html">
+						<span class="rule-id">ALM-003</span>
+						<div class="rule-title">Create a dedicated solution publisher with a short, unique prefix and apply consistent...</div>
+					</a>
+					
+					<a class="rule-link" href="./alm/ALM-004.html">
+						<span class="rule-id">ALM-004</span>
+						<div class="rule-title">Use environment variables to store configuration values that differ between environment...</div>
+					</a>
+					
+					<a class="rule-link" href="./alm/ALM-005.html">
+						<span class="rule-id">ALM-005</span>
+						<div class="rule-title">Use connection references in solutions instead of embedding connections directly, so th...</div>
+					</a>
+					
+					<a class="rule-link" href="./alm/ALM-006.html">
+						<span class="rule-id">ALM-006</span>
+						<div class="rule-title">Store all solution artifacts in source control (Git) to enable version history, collabo...</div>
+					</a>
+					
+					<a class="rule-link" href="./alm/ALM-007.html">
+						<span class="rule-id">ALM-007</span>
+						<div class="rule-title">Automate solution export, packing, validation, and import using CI/CD pipelines instead...</div>
+					</a>
+					
+					<a class="rule-link" href="./alm/ALM-008.html">
+						<span class="rule-id">ALM-008</span>
+						<div class="rule-title">Integrate the Power Platform Solution Checker into your CI/CD pipeline to automatically...</div>
+					</a>
+					
+					<a class="rule-link" href="./alm/ALM-009.html">
+						<span class="rule-id">ALM-009</span>
+						<div class="rule-title">Apply semantic versioning to every solution and increment the version number with each...</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">Cloud Flows</div>
+					<div class="ruleset-card-description">Good practices for Power Automate flows.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./power-automate/PA-001.html">
+						<span class="rule-id">PA-001</span>
+						<div class="rule-title">Name cloud flows using the standard pattern</div>
+					</a>
+					
+					<a class="rule-link" href="./power-automate/PA-002.html">
+						<span class="rule-id">PA-002</span>
+						<div class="rule-title">Add meaningful descriptions to all flows</div>
+					</a>
+					
+					<a class="rule-link" href="./power-automate/PA-003.html">
+						<span class="rule-id">PA-003</span>
+						<div class="rule-title">Give triggers clear descriptive names</div>
+					</a>
+					
+					<a class="rule-link" href="./power-automate/PA-004.html">
+						<span class="rule-id">PA-004</span>
+						<div class="rule-title">Rename actions with clear descriptive names</div>
+					</a>
+					
+					<a class="rule-link" href="./power-automate/PA-005.html">
+						<span class="rule-id">PA-005</span>
+						<div class="rule-title">Name variables with typed camelCase</div>
+					</a>
+					
+					<a class="rule-link" href="./power-automate/PA-006.html">
+						<span class="rule-id">PA-006</span>
+						<div class="rule-title">Name connection references using the standard pattern</div>
+					</a>
+					
+					<a class="rule-link" href="./power-automate/PA-007.html">
+						<span class="rule-id">PA-007</span>
+						<div class="rule-title">Implement scope-based try-catch-finally error handling</div>
+					</a>
+					
+					<a class="rule-link" href="./power-automate/PA-008.html">
+						<span class="rule-id">PA-008</span>
+						<div class="rule-title">Initialize all variables at the start of the flow</div>
+					</a>
+					
+					<a class="rule-link" href="./power-automate/PA-009.html">
+						<span class="rule-id">PA-009</span>
+						<div class="rule-title">Use environment variables instead of hardcoded values</div>
+					</a>
+					
+					<a class="rule-link" href="./power-automate/PA-010.html">
+						<span class="rule-id">PA-010</span>
+						<div class="rule-title">Extract reusable logic into child flows</div>
+					</a>
+					
+					<a class="rule-link" href="./power-automate/PA-011.html">
+						<span class="rule-id">PA-011</span>
+						<div class="rule-title">Use notes to document complex logic</div>
+					</a>
+					
+					<a class="rule-link" href="./power-automate/PA-012.html">
+						<span class="rule-id">PA-012</span>
+						<div class="rule-title">Create all cloud flows inside solutions</div>
+					</a>
+					
+					<a class="rule-link" href="./power-automate/PA-013.html">
+						<span class="rule-id">PA-013</span>
+						<div class="rule-title">Filter Dataverse triggers by columns and conditions</div>
+					</a>
+					
+					<a class="rule-link" href="./power-automate/PA-014.html">
+						<span class="rule-id">PA-014</span>
+						<div class="rule-title">Minimize Dataverse query columns and rows</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">Canvas Apps</div>
+					<div class="ruleset-card-description">Good practices for Power Apps Canvas Apps.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./power-apps/CA-010.html">
+						<span class="rule-id">CA-010</span>
+						<div class="rule-title">Never reference controls from one screen on another screen</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">PCF Controls</div>
+					<div class="ruleset-card-description">Good practices for Power Apps Component Framework (PCF) code components.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./pcf/PCF-001.html">
+						<span class="rule-id">PCF-001</span>
+						<div class="rule-title">Always deploy production builds of code components to Dataverse</div>
+					</a>
+					
+					<a class="rule-link" href="./pcf/PCF-002.html">
+						<span class="rule-id">PCF-002</span>
+						<div class="rule-title">Always clean up resources inside the destroy method</div>
+					</a>
+					
+					<a class="rule-link" href="./pcf/PCF-003.html">
+						<span class="rule-id">PCF-003</span>
+						<div class="rule-title">Minimize calls to notifyOutputChanged</div>
+					</a>
+					
+					<a class="rule-link" href="./pcf/PCF-004.html">
+						<span class="rule-id">PCF-004</span>
+						<div class="rule-title">Always handle null or undefined property values in the updateView method</div>
+					</a>
+					
+					<a class="rule-link" href="./pcf/PCF-005.html">
+						<span class="rule-id">PCF-005</span>
+						<div class="rule-title">Always scope CSS rules to your code component's container</div>
+					</a>
+					
+					<a class="rule-link" href="./pcf/PCF-006.html">
+						<span class="rule-id">PCF-006</span>
+						<div class="rule-title">Avoid using innerHTML to render dynamic content</div>
+					</a>
+					
+					<a class="rule-link" href="./pcf/PCF-007.html">
+						<span class="rule-id">PCF-007</span>
+						<div class="rule-title">Use path-based imports when importing from Fluent UI React to reduce bundle size</div>
+					</a>
+					
+					<a class="rule-link" href="./pcf/PCF-008.html">
+						<span class="rule-id">PCF-008</span>
+						<div class="rule-title">Use the init method to request network resources such as metadata or configuration data</div>
+					</a>
+					
+					<a class="rule-link" href="./pcf/PCF-009.html">
+						<span class="rule-id">PCF-009</span>
+						<div class="rule-title">Always check API availability before using platform-specific APIs</div>
+					</a>
+					
+					<a class="rule-link" href="./pcf/PCF-010.html">
+						<span class="rule-id">PCF-010</span>
+						<div class="rule-title">Do not use window</div>
+					</a>
+					
+					<a class="rule-link" href="./pcf/PCF-011.html">
+						<span class="rule-id">PCF-011</span>
+						<div class="rule-title">Bundle all required modules as part of your code component</div>
+					</a>
+					
+					<a class="rule-link" href="./pcf/PCF-012.html">
+						<span class="rule-id">PCF-012</span>
+						<div class="rule-title">Ensure code components are accessible</div>
+					</a>
+					
+					<a class="rule-link" href="./pcf/PCF-013.html">
+						<span class="rule-id">PCF-013</span>
+						<div class="rule-title">Make PCF controls easy to debug during development and after deployment</div>
+					</a>
+					
+					<a class="rule-link" href="./pcf/PCF-014.html">
+						<span class="rule-id">PCF-014</span>
+						<div class="rule-title">Always provide unit tests with PCF controls</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">General</div>
+					<div class="ruleset-card-description">Good practices for Model Driven Apps.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./model-driven-apps/MDA-001.html">
+						<span class="rule-id">MDA-001</span>
+						<div class="rule-title">Create separate Model Driven Apps for each distinct user role or business function inst...</div>
+					</a>
+					
+					<a class="rule-link" href="./model-driven-apps/MDA-002.html">
+						<span class="rule-id">MDA-002</span>
+						<div class="rule-title">Design the sitemap navigation with logical grouping, clear labels, and minimal nesting</div>
+					</a>
+					
+					<a class="rule-link" href="./model-driven-apps/MDA-003.html">
+						<span class="rule-id">MDA-003</span>
+						<div class="rule-title">Design system views to be focused, performant, and aligned with how users consume data</div>
+					</a>
+					
+					<a class="rule-link" href="./model-driven-apps/MDA-004.html">
+						<span class="rule-id">MDA-004</span>
+						<div class="rule-title">Design dashboards to surface actionable insights, not just raw data</div>
+					</a>
+					
+					<a class="rule-link" href="./model-driven-apps/MDA-005.html">
+						<span class="rule-id">MDA-005</span>
+						<div class="rule-title">Follow client scripting best practices when writing JavaScript for Model Driven Apps</div>
+					</a>
+					
+					<a class="rule-link" href="./model-driven-apps/MDA-006.html">
+						<span class="rule-id">MDA-006</span>
+						<div class="rule-title">Create custom security roles following the principle of least privilege instead of modi...</div>
+					</a>
+					
+					<a class="rule-link" href="./model-driven-apps/MDA-007.html">
+						<span class="rule-id">MDA-007</span>
+						<div class="rule-title">Package all customizations in managed solutions and follow a structured solution strategy</div>
+					</a>
+					
+					<a class="rule-link" href="./model-driven-apps/MDA-008.html">
+						<span class="rule-id">MDA-008</span>
+						<div class="rule-title">Every Model Driven App must have a description that explains its purpose, target audien...</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">Web Resources</div>
+					<div class="ruleset-card-description">Good practices for Dataverse Web Resources.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./dataverse/WR-001.html">
+						<span class="rule-id">WR-001</span>
+						<div class="rule-title">Use a consistent naming convention with virtual folder structures for all web resources</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/WR-002.html">
+						<span class="rule-id">WR-002</span>
+						<div class="rule-title">Every web resource must have a display name and a description that explain its purpose...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/WR-003.html">
+						<span class="rule-id">WR-003</span>
+						<div class="rule-title">Sanitize all user input and dynamic data rendered in HTML web resources to prevent Cros...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/WR-004.html">
+						<span class="rule-id">WR-004</span>
+						<div class="rule-title">Optimize all image web resources for size and use SVG format whenever possible</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/WR-005.html">
+						<span class="rule-id">WR-005</span>
+						<div class="rule-title">Prefix all CSS class and ID names with the project or publisher prefix to avoid collisi...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/WR-006.html">
+						<span class="rule-id">WR-006</span>
+						<div class="rule-title">Keep HTML web resources lightweight, responsive, and well-structured</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/WR-007.html">
+						<span class="rule-id">WR-007</span>
+						<div class="rule-title">Declare dependencies between web resources explicitly using the dependency configuratio...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/WR-008.html">
+						<span class="rule-id">WR-008</span>
+						<div class="rule-title">Periodically audit and remove unused web resources from the solution</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/WR-009.html">
+						<span class="rule-id">WR-009</span>
+						<div class="rule-title">Use RESX web resources for multi-language support instead of hardcoding strings in HTML...</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">Tables</div>
+					<div class="ruleset-card-description">Good practices for Dataverse Tables.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./dataverse/TAB-001.html">
+						<span class="rule-id">TAB-001</span>
+						<div class="rule-title">Naming rules:</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/TAB-002.html">
+						<span class="rule-id">TAB-002</span>
+						<div class="rule-title">Avoid creating new custom tables to replace existing system tables</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/TAB-003.html">
+						<span class="rule-id">TAB-003</span>
+						<div class="rule-title">Every table must have an icon configured</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/TAB-004.html">
+						<span class="rule-id">TAB-004</span>
+						<div class="rule-title">Choose the appropriate ownership type for each table based on the security requirements</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/TAB-005.html">
+						<span class="rule-id">TAB-005</span>
+						<div class="rule-title">Enable auditing only on tables and columns where tracking changes is required by busine...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/TAB-006.html">
+						<span class="rule-id">TAB-006</span>
+						<div class="rule-title">Define alternate keys for tables that participate in data integration or migration scen...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/TAB-007.html">
+						<span class="rule-id">TAB-007</span>
+						<div class="rule-title">Configure relationship cascade behaviors deliberately instead of relying on the default...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/TAB-008.html">
+						<span class="rule-id">TAB-008</span>
+						<div class="rule-title">Every table must have a description that explains its purpose and the type of data it s...</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">Component Naming</div>
+					<div class="ruleset-card-description">Good practices for Power Pages component naming. i.e., Web Pages, Web Templates, Basic Forms, Advanced Forms, etc.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./power-pages/PPN-001.html">
+						<span class="rule-id">PPN-001</span>
+						<div class="rule-title">End-users access web pages for the portal</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">Security Roles</div>
+					<div class="ruleset-card-description">Good practices for Dataverse Security Roles.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./dataverse/SEC-001.html">
+						<span class="rule-id">SEC-001</span>
+						<div class="rule-title">Never modify out-of-the-box (OOB) security roles</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/SEC-002.html">
+						<span class="rule-id">SEC-002</span>
+						<div class="rule-title">Apply the Principle of Least Privilege when assigning security role permissions</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/SEC-003.html">
+						<span class="rule-id">SEC-003</span>
+						<div class="rule-title">Assign security roles to teams instead of individual users whenever possible</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/SEC-004.html">
+						<span class="rule-id">SEC-004</span>
+						<div class="rule-title">Separate security roles by functional purpose: one set for application access and anoth...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/SEC-005.html">
+						<span class="rule-id">SEC-005</span>
+						<div class="rule-title">Set the appropriate access level (User, Business Unit, Parent: Child Business Units, Or...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/SEC-006.html">
+						<span class="rule-id">SEC-006</span>
+						<div class="rule-title">Review and audit security role assignments on a regular schedule</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/SEC-007.html">
+						<span class="rule-id">SEC-007</span>
+						<div class="rule-title">Test security roles in a non-production environment before deploying to production</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">JavaScript Client Scripts</div>
+					<div class="ruleset-card-description">Good practices for Dataverse JavaScript client scripts in model-driven apps.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./dataverse/JS-001.html">
+						<span class="rule-id">JS-001</span>
+						<div class="rule-title">Use the formContext object obtained from the execution context parameter instead of the...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/JS-002.html">
+						<span class="rule-id">JS-002</span>
+						<div class="rule-title">Organize your code using namespaces to avoid polluting the global scope</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/JS-003.html">
+						<span class="rule-id">JS-003</span>
+						<div class="rule-title">Use only supported Dataverse Client API methods</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/JS-004.html">
+						<span class="rule-id">JS-004</span>
+						<div class="rule-title">Always use asynchronous API calls</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/JS-005.html">
+						<span class="rule-id">JS-005</span>
+						<div class="rule-title">When using Xrm</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/JS-006.html">
+						<span class="rule-id">JS-006</span>
+						<div class="rule-title">Implement proper error handling in all asynchronous operations</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/JS-007.html">
+						<span class="rule-id">JS-007</span>
+						<div class="rule-title">Prefer out-of-the-box features (business rules, calculated fields, Power Automate) over...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/JS-008.html">
+						<span class="rule-id">JS-008</span>
+						<div class="rule-title">Follow a consistent naming convention for web resource files</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/JS-009.html">
+						<span class="rule-id">JS-009</span>
+						<div class="rule-title">Register scripts only on the forms and events where they are needed</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/JS-010.html">
+						<span class="rule-id">JS-010</span>
+						<div class="rule-title">Avoid hard-coding entity names, field names, GUIDs, or option set values in your scripts</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/JS-011.html">
+						<span class="rule-id">JS-011</span>
+						<div class="rule-title">Use setNotification and clearNotification on controls to display inline validation mess...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/JS-012.html">
+						<span class="rule-id">JS-012</span>
+						<div class="rule-title">Check the form type before executing logic that should only run on specific form modes...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/JS-013.html">
+						<span class="rule-id">JS-013</span>
+						<div class="rule-title">Document all functions using JSDoc syntax</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/JS-014.html">
+						<span class="rule-id">JS-014</span>
+						<div class="rule-title">Write client script code using TypeScript when possible</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/JS-015.html">
+						<span class="rule-id">JS-015</span>
+						<div class="rule-title">Remove all console</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">Forms</div>
+					<div class="ruleset-card-description">Good practices for Dataverse Forms.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./dataverse/FRM-001.html">
+						<span class="rule-id">FRM-001</span>
+						<div class="rule-title">Every table main form must have a hidden Admin tab containing all the system attributes...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FRM-002.html">
+						<span class="rule-id">FRM-002</span>
+						<div class="rule-title">Organize form content using tabs and sections with clear, descriptive names</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FRM-003.html">
+						<span class="rule-id">FRM-003</span>
+						<div class="rule-title">Optimize form load performance by minimizing the number of controls and scripts loaded...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FRM-004.html">
+						<span class="rule-id">FRM-004</span>
+						<div class="rule-title">When using business rules on forms, set the scope appropriately and avoid duplicating l...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FRM-005.html">
+						<span class="rule-id">FRM-005</span>
+						<div class="rule-title">Use Quick View Forms to display related record information without requiring navigation...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FRM-006.html">
+						<span class="rule-id">FRM-006</span>
+						<div class="rule-title">Every form must have a description that explains its purpose and intended audience</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">Fields</div>
+					<div class="ruleset-card-description">Good practices for Dataverse Table Fields.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./dataverse/FLD-001.html">
+						<span class="rule-id">FLD-001</span>
+						<div class="rule-title">Naming rules:</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FLD-002.html">
+						<span class="rule-id">FLD-002</span>
+						<div class="rule-title">Every field must include a description</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FLD-003.html">
+						<span class="rule-id">FLD-003</span>
+						<div class="rule-title">Choose the most specific and appropriate data type for each field</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FLD-004.html">
+						<span class="rule-id">FLD-004</span>
+						<div class="rule-title">Use Global Choices (Global Option Sets) for values that are shared across multiple tables</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FLD-005.html">
+						<span class="rule-id">FLD-005</span>
+						<div class="rule-title">Set the field requirement level deliberately based on business needs</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FLD-006.html">
+						<span class="rule-id">FLD-006</span>
+						<div class="rule-title">Enable Column-Level Security for fields containing sensitive or confidential data</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">Fetch XML</div>
+					<div class="ruleset-card-description">Good practices for Dataverse Fetch XML queries.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./dataverse/FXL-001.html">
+						<span class="rule-id">FXL-001</span>
+						<div class="rule-title">Always specify the columns you need explicitly using <attribute /> elements</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FXL-002.html">
+						<span class="rule-id">FXL-002</span>
+						<div class="rule-title">Use <filter> and <condition> elements to reduce the result set on the server</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FXL-003.html">
+						<span class="rule-id">FXL-003</span>
+						<div class="rule-title">Use paging to retrieve large data sets in manageable chunks</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FXL-004.html">
+						<span class="rule-id">FXL-004</span>
+						<div class="rule-title">Keep <link-entity> joins to a minimum</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FXL-005.html">
+						<span class="rule-id">FXL-005</span>
+						<div class="rule-title">Choose the appropriate link-type for <link-entity> based on the data you need</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FXL-006.html">
+						<span class="rule-id">FXL-006</span>
+						<div class="rule-title">Use the no-lock attribute for read-only or reporting queries where real-time data accur...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FXL-007.html">
+						<span class="rule-id">FXL-007</span>
+						<div class="rule-title">Prefer the eq and in operators over like for filter conditions</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FXL-008.html">
+						<span class="rule-id">FXL-008</span>
+						<div class="rule-title">Use the top attribute on the <fetch> element when you only need a limited number of rec...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FXL-009.html">
+						<span class="rule-id">FXL-009</span>
+						<div class="rule-title">Use aggregate and grouping queries carefully</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/FXL-010.html">
+						<span class="rule-id">FXL-010</span>
+						<div class="rule-title">Build FetchXML queries programmatically using the SDK QueryExpression-to-FetchXML conve...</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">Workflows</div>
+					<div class="ruleset-card-description">Good practices for Dataverse Classic Workflows and Actions.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./dataverse/WF-001.html">
+						<span class="rule-id">WF-001</span>
+						<div class="rule-title">Workflow and Action names must follow the pattern: ` [App Prefix] - [Table Schema Name]...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/WF-002.html">
+						<span class="rule-id">WF-002</span>
+						<div class="rule-title">All workflows and actions must have a description</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/WF-003.html">
+						<span class="rule-id">WF-003</span>
+						<div class="rule-title">Set the workflow scope to the narrowest necessary level</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/WF-004.html">
+						<span class="rule-id">WF-004</span>
+						<div class="rule-title">Assign workflow ownership to a dedicated service account rather than a named user account</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/WF-005.html">
+						<span class="rule-id">WF-005</span>
+						<div class="rule-title">Prefer asynchronous (background) workflows over real-time (synchronous) workflows unles...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/WF-006.html">
+						<span class="rule-id">WF-006</span>
+						<div class="rule-title">Use child workflows to encapsulate reusable logic and keep parent workflows manageable</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/WF-007.html">
+						<span class="rule-id">WF-007</span>
+						<div class="rule-title">Implement error handling and early termination in workflows</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">Copilot Studio</div>
+					<div class="ruleset-card-description">Good practices for Microsoft Copilot Studio agent development.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./copilot-studio/CS-001.html">
+						<span class="rule-id">CS-001</span>
+						<div class="rule-title">All topics must use a consistent naming convention that indicates the topic's category...</div>
+					</a>
+					
+					<a class="rule-link" href="./copilot-studio/CS-002.html">
+						<span class="rule-id">CS-002</span>
+						<div class="rule-title">Design trigger phrases that are specific, varied, and non-overlapping across topics to...</div>
+					</a>
+					
+					<a class="rule-link" href="./copilot-studio/CS-003.html">
+						<span class="rule-id">CS-003</span>
+						<div class="rule-title">Customize the fallback and error system topics to provide a helpful experience when the...</div>
+					</a>
+					
+					<a class="rule-link" href="./copilot-studio/CS-004.html">
+						<span class="rule-id">CS-004</span>
+						<div class="rule-title">Configure knowledge sources carefully and apply appropriate guardrails when enabling ge...</div>
+					</a>
+					
+					<a class="rule-link" href="./copilot-studio/CS-005.html">
+						<span class="rule-id">CS-005</span>
+						<div class="rule-title">Enable end-user authentication and follow security best practices when connecting your...</div>
+					</a>
+					
+					<a class="rule-link" href="./copilot-studio/CS-006.html">
+						<span class="rule-id">CS-006</span>
+						<div class="rule-title">Use solution-based development and environment separation to manage your agent through...</div>
+					</a>
+					
+					<a class="rule-link" href="./copilot-studio/CS-007.html">
+						<span class="rule-id">CS-007</span>
+						<div class="rule-title">Establish a thorough testing strategy and use built-in analytics to continuously improv...</div>
+					</a>
+					
+					<a class="rule-link" href="./copilot-studio/CS-008.html">
+						<span class="rule-id">CS-008</span>
+						<div class="rule-title">Plan your deployment channels carefully and design the conversational experience to mat...</div>
+					</a>
+					
+					<a class="rule-link" href="./copilot-studio/CS-009.html">
+						<span class="rule-id">CS-009</span>
+						<div class="rule-title">Apply responsible AI principles and configure content moderation to ensure your agent p...</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">Plugins</div>
+					<div class="ruleset-card-description">Good practices for Dataverse C# Plugins.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./dataverse/PLG-001.html">
+						<span class="rule-id">PLG-001</span>
+						<div class="rule-title">Plugin class names must use a namespace-based naming convention that describes the plug...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/PLG-002.html">
+						<span class="rule-id">PLG-002</span>
+						<div class="rule-title">Always throw InvalidPluginExecutionException for business rule violations and validatio...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/PLG-003.html">
+						<span class="rule-id">PLG-003</span>
+						<div class="rule-title">Always use ITracingService to log diagnostic information at key points in the plugin ex...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/PLG-004.html">
+						<span class="rule-id">PLG-004</span>
+						<div class="rule-title">Plugins must be stateless</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/PLG-005.html">
+						<span class="rule-id">PLG-005</span>
+						<div class="rule-title">Design plugins to be idempotent instead of relying on execution depth checks</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/PLG-006.html">
+						<span class="rule-id">PLG-006</span>
+						<div class="rule-title">Never use new ColumnSet(true) when retrieving records</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/PLG-007.html">
+						<span class="rule-id">PLG-007</span>
+						<div class="rule-title">Use pre-images and post-images instead of issuing additional Retrieve calls to access f...</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/PLG-008.html">
+						<span class="rule-id">PLG-008</span>
+						<div class="rule-title">Register plugins in the correct pipeline stage based on the type of logic they perform</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/PLG-009.html">
+						<span class="rule-id">PLG-009</span>
+						<div class="rule-title">Do not use ExecuteMultipleRequest inside plugin code</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/PLG-010.html">
+						<span class="rule-id">PLG-010</span>
+						<div class="rule-title">Register plugins only for the specific messages and tables required</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/PLG-011.html">
+						<span class="rule-id">PLG-011</span>
+						<div class="rule-title">Do not use multithreading, Task</div>
+					</a>
+					
+					<a class="rule-link" href="./dataverse/PLG-012.html">
+						<span class="rule-id">PLG-012</span>
+						<div class="rule-title">Keep synchronous plugins lightweight</div>
+					</a>
+					
+				</div>
+			</section>
+			
+			<section class="ruleset-card">
+				<div class="ruleset-card-header">
+					<div class="ruleset-card-title">Power Pages</div>
+					<div class="ruleset-card-description">Good practices for Power Pages site development and configuration.</div>
+				</div>
+				<div class="rules-grid">
+					
+					<a class="rule-link" href="./power-pages/PP-001.html">
+						<span class="rule-id">PP-001</span>
+						<div class="rule-title">Always configure table permissions for every Dataverse table exposed on the portal</div>
+					</a>
+					
+					<a class="rule-link" href="./power-pages/PP-002.html">
+						<span class="rule-id">PP-002</span>
+						<div class="rule-title">Define granular web roles that map to distinct user personas</div>
+					</a>
+					
+					<a class="rule-link" href="./power-pages/PP-003.html">
+						<span class="rule-id">PP-003</span>
+						<div class="rule-title">Keep Liquid templates focused on presentation logic</div>
+					</a>
+					
+					<a class="rule-link" href="./power-pages/PP-004.html">
+						<span class="rule-id">PP-004</span>
+						<div class="rule-title">Enable header and footer output caching to improve portal performance</div>
+					</a>
+					
+					<a class="rule-link" href="./power-pages/PP-005.html">
+						<span class="rule-id">PP-005</span>
+						<div class="rule-title">Configure forms with proper validation and table permissions</div>
+					</a>
+					
+					<a class="rule-link" href="./power-pages/PP-006.html">
+						<span class="rule-id">PP-006</span>
+						<div class="rule-title">Minimize custom JavaScript on portal pages</div>
+					</a>
+					
+					<a class="rule-link" href="./power-pages/PP-007.html">
+						<span class="rule-id">PP-007</span>
+						<div class="rule-title">Manage Power Pages configuration as code using the Power Platform CLI</div>
+					</a>
+					
+					<a class="rule-link" href="./power-pages/PP-008.html">
+						<span class="rule-id">PP-008</span>
+						<div class="rule-title">Restrict anonymous access to the minimum set of pages and data required for unauthentic...</div>
+					</a>
+					
+					<a class="rule-link" href="./power-pages/PP-009.html">
+						<span class="rule-id">PP-009</span>
+						<div class="rule-title">Use content snippets for reusable text, labels, and messages that appear across multipl...</div>
+					</a>
+					
+				</div>
+			</section>
+			
+		</div>
+
+		<div class="page-footer">
+			Created with ❤️ by <a href="https://creativityspark.es">Creativity Spark</a>
+		</div>
+	</div>
+</body>
+</html>
+
