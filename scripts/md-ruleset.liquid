@@ -1,0 +1,88 @@
+# {{ topic }}
+
+{{ description }}
+
+{%- for rule in rules -%}
+## {{ rule.id }}
+
+### Title
+
+{{ rule.title }}
+
+### Description
+
+{{ rule.description }}
+
+### Guidelines
+
+{%- for guideline in rule.guidelines -%}
+1. {{ guideline }}
+{%- endfor -%}
+
+### Rationale
+
+{%- for item in rule.rationale -%}
+1. {{ item }}
+{%- endfor -%}
+
+{%- if rule.pattern -%}
+### Pattern
+
+```
+{{ rule.pattern }}
+```
+{%- endif -%}
+
+{%- if rule.pattern_segments and rule.pattern_segments.size > 0 -%}
+### Pattern Segments
+
+| Name | Description | Optional |
+| ---- | ----------- | -------- |
+{%- for segment in rule.pattern_segments -%}
+| {{ segment.name }} | {{ segment.description }} | {% if segment.optional %}Yes{% else %}No{% endif %} |
+{%- endfor -%}
+{%- endif -%}
+
+### Examples
+
+#### Good
+
+{%- for example in rule.examples.good -%}
+{%- if example.value -%}
+- {{ example.value }}{% if example.note %}: {{ example.note }}{% endif %}
+{%- elsif example.code -%}
+{%- if example.description -%}
+{{ example.description }}
+{% endif -%}
+```{% if example.language %}{{ example.language }}{% endif %}
+{{ example.code }}
+```
+{%- elsif example.description -%}
+- {{ example.description }}
+{%- endif -%}
+{%- endfor -%}
+
+#### Bad
+
+{%- for example in rule.examples.bad -%}
+{%- if example.value -%}
+- {{ example.value }}{% if example.note %}: {{ example.note }}{% endif %}
+{%- elsif example.code -%}
+{%- if example.description -%}
+{{ example.description }}
+{% endif -%}
+```{% if example.language %}{{ example.language }}{% endif %}
+{{ example.code }}
+```
+{%- elsif example.description -%}
+- {{ example.description }}
+{%- endif -%}
+{%- endfor -%}
+
+### More Information
+
+{%- for reference in rule.references -%}
+1. [{{ reference.title }}]({{ reference.url }})
+{%- endfor -%}
+
+{%- endfor -%}
