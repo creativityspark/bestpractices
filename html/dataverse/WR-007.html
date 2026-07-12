@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WR-007 - Declare dependencies between web resources explicitly using the dependency configuratio...</title>
+    <title>WR-007 - Declare dependencies between web resources explicitly using the dependency</title>
     <style>
         * {
             margin: 0;
@@ -176,34 +176,28 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .step-card .step-icon {
             width: 32px;
             height: 32px;
-            background: #0078d4;
-            color: #ffffff;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            border-radius: 50%;
+            background: #edf4fc;
+            border: 1px solid #d9e8f8;
         }
 
-        .step-card .step-icon svg {
+        .step-card .step-icon img {
             width: 18px;
             height: 18px;
         }
 
-        .step-card .step-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1b2a4a;
-        }
-
         .step-card .step-description {
-            font-size: 13px;
+            font-size: 14px;
             color: #555;
             line-height: 1.5;
         }
@@ -211,9 +205,10 @@
         /* Examples section */
         .examples-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 16px;
             overflow: hidden;
+            margin-bottom: 24px;
         }
 
         .example-box {
@@ -235,27 +230,28 @@
         .example-box .example-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .example-box .example-kind {
+            display: flex;
+            align-items: center;
             gap: 8px;
-            margin-bottom: 14px;
         }
 
-        .example-box .example-icon {
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .example-box.do .example-icon {
-            color: #27ae60;
-        }
-
-        .example-box.dont .example-icon {
-            color: #c0392b;
+        .example-box .example-kind-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
         }
 
         .example-box .example-label {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
         .example-box.do .example-label {
@@ -266,51 +262,87 @@
             color: #c0392b;
         }
 
-        .example-box ul {
-            list-style: none;
-            padding: 0;
+        .example-box .example-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1b2a4a;
         }
 
-        .example-box ul li {
+        .example-content {
             font-size: 13px;
             color: #333;
-            padding: 5px 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
+            line-height: 1.55;
         }
 
-        .example-box ul li .icon {
+        .example-prose-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .example-prose-row .example-prose-icon {
+            width: 18px;
+            height: 18px;
             flex-shrink: 0;
-            font-weight: 700;
-            font-size: 12px;
-            margin-top: 1px;
         }
 
-        .example-box.do ul li .icon {
-            color: #27ae60;
-        }
-
-        .example-box.dont ul li .icon {
-            color: #c0392b;
-        }
-
-        .example-box ul li .text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .example-box ul li .text code {
+        .example-content pre {
             font-family: 'Consolas', 'Courier New', monospace;
-            font-size: 11px;
-            font-weight: 600;
-            word-break: break-all;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            background: #ffffff;
+            border: 1px solid #d8dee8;
+            border-radius: 6px;
+            padding: 10px;
+            color: #1f2a44;
         }
 
-        .example-box ul li .text .reason {
-            font-size: 11px;
-            color: #777;
-            font-style: italic;
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1b2a4a;
+            margin-bottom: 12px;
+        }
+
+        .info-card {
+            margin-top: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .section-header-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .references-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .references-list li {
+            margin-bottom: 6px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 20px;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -322,7 +354,7 @@
             <div class="header-subtitle">Web Resources / dataverse</div>
             <div class="title-row">
                 <a href="#"><span class="rule-id">WR-007</span></a>
-                <a href="#"><span class="rule-title">Declare dependencies between web resources explicitly using the dependency configuratio...</span></a>
+                <a href="#"><span class="rule-title">Declare dependencies between web resources explicitly using the dependency</span></a>
             </div>
         </div>
 
@@ -344,32 +376,36 @@
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">1</div>
-                        <div class="step-title">Guideline 1</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/settings.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Use the web resource dependency settings in the form editor or solution explorer to declare which web resources depend on others.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">2</div>
-                        <div class="step-title">Guideline 2</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/code-xml.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Do not dynamically load web resources at runtime using custom script loaders unless there is no alternative.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">3</div>
-                        <div class="step-title">Guideline 3</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/lightbulb.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">When a JavaScript library depends on a shared utility library, add the utility as a dependency so the platform loads it first.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">4</div>
-                        <div class="step-title">Guideline 4</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/check.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Before exporting a solution, use the Dependency Checker in Solution Explorer to verify that all required web resources are included.</div>
                 </div>
@@ -381,24 +417,27 @@
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">1</div>
-                        <div class="step-title">Rationale 1</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/link.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Explicitly declared dependencies ensure the platform loads web resources in the correct order, preventing runtime errors caused by missing references.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">2</div>
-                        <div class="step-title">Rationale 2</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/code-xml.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Dynamic script loading hides dependencies from the solution system. When the solution is exported and imported into another environment, dynamically loaded resources may be missing, causing silent failures.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">3</div>
-                        <div class="step-title">Rationale 3</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/check.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">The Dependency Checker prevents broken solutions from being deployed to downstream environments by catching missing components before export.</div>
                 </div>
@@ -406,81 +445,99 @@
             </div>
 
             <!-- Examples -->
+            <div class="section-title">Examples</div>
             <div class="examples-grid">
+                
                 <div class="example-box do">
                     <div class="example-header">
-                        <span class="example-icon">&#10003;</span>
-                        <span class="example-label">Do</span>
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">The form library list shows contoso/js/lib/utilities.js loaded before</div>
                     </div>
-                    <ul>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>The form library list shows contoso/js/lib/utilities.js loaded before contoso/js/account/formEvents.js, because the dependency is declared in the form configuration.</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/eye.svg" alt="Example icon" />
+                            <span>The form library list shows contoso/js/lib/utilities.js loaded before</span>
+                        </div>
+                        <div>The form library list shows contoso/js/lib/utilities.js loaded before contoso/js/account/formEvents.js, because the dependency is declared in the form configuration.</div>
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>The solution's Dependency Checker reports no missing components before export.</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
-                        
-                    </ul>
+                    </div>
                 </div>
+                
+                <div class="example-box do">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">The solution's Dependency Checker reports no missing components before export.</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/check.svg" alt="Example icon" />
+                            <span>The solution's Dependency Checker reports no missing components before export.</span>
+                        </div>
+                        <div>The solution's Dependency Checker reports no missing components before export.</div>
+                        
+                    </div>
+                </div>
+                
+
+                
                 <div class="example-box dont">
                     <div class="example-header">
-                        <span class="example-icon">&#10007;</span>
-                        <span class="example-label">Don't</span>
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">A script dynamically loads a utility library at runtime using a custom</div>
                     </div>
-                    <ul>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>A script dynamically loads a utility library at runtime using a custom loadScript() function. The utility library is not included in the solution, and the script fails silently in the target environment after import.</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/code-xml.svg" alt="Example icon" />
+                            <span>A script dynamically loads a utility library at runtime using a custom</span>
+                        </div>
+                        <div>A script dynamically loads a utility library at runtime using a custom loadScript() function. The utility library is not included in the solution, and the script fails silently in the target environment after import.</div>
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>Two JavaScript libraries are added to a form without specifying their load order, causing intermittent "function is not defined" errors.</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
-                        
-                    </ul>
+                    </div>
                 </div>
+                
+                <div class="example-box dont">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">Two JavaScript libraries are added to a form without specifying their load</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/circle-alert.svg" alt="Example icon" />
+                            <span>Two JavaScript libraries are added to a form without specifying their load</span>
+                        </div>
+                        <div>Two JavaScript libraries are added to a form without specifying their load order, causing intermittent "function is not defined" errors.</div>
+                        
+                    </div>
+                </div>
+                
             </div>
 
             
 
             
-            <div class="step-card" style="margin-top: 24px;">
-                <div class="step-header">
-                    <div class="step-icon">i</div>
-                    <div class="step-title">More Information</div>
+            <div class="step-card info-card">
+                <div class="section-header">
+                    <img class="section-header-icon" src="../img/icons/info.svg" alt="More information" />
+                    <div class="section-title" style="margin-bottom: 0;">More Information</div>
                 </div>
                 <div class="step-description">
-                    <ul>
+                    <ul class="references-list">
                         
                         <li><a href="https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/web-resource-dependencies" target="_blank" rel="noopener noreferrer">Web resource dependencies - Microsoft Learn</a></li>
                         

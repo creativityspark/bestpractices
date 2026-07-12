@@ -6,7 +6,7 @@ Good practices for Dataverse JavaScript client scripts in model-driven apps.
 
 ### Title
 
-Use the formContext object obtained from the execution context parameter instead of the...
+Use the formContext object obtained from the execution context parameter instead
 
 ### Description
 
@@ -31,7 +31,8 @@ Use the formContext object obtained from the execution context parameter instead
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```javascript
 function onLoad(executionContext) {
     var formContext = executionContext.getFormContext();
@@ -39,15 +40,18 @@ function onLoad(executionContext) {
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```javascript
 function onLoad() {
     // Xrm.Page is deprecated and will be removed in a future release
     var name = Xrm.Page.getAttribute("name").getValue();
 }
 ```
+
 
 ### More Information
 
@@ -58,7 +62,7 @@ function onLoad() {
 
 ### Title
 
-Organize your code using namespaces to avoid polluting the global scope
+Organize your code using namespaces to avoid polluting the global scope.
 
 ### Description
 
@@ -83,7 +87,8 @@ Organize your code using namespaces to avoid polluting the global scope.
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```javascript
 var Contoso = Contoso || {};
 Contoso.Account = Contoso.Account || {};
@@ -99,9 +104,11 @@ Contoso.Account.onSave = function (executionContext) {
 };
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```javascript
 // Global functions risk naming collisions with other web resources
 function onLoad(executionContext) {
@@ -113,6 +120,7 @@ function onSave(executionContext) {
 }
 ```
 
+
 ### More Information
 
 1. [Organize your code - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/client-scripting-best-practices)
@@ -122,7 +130,7 @@ function onSave(executionContext) {
 
 ### Title
 
-Use only supported Dataverse Client API methods
+Use only supported Dataverse Client API methods.
 
 ### Description
 
@@ -147,7 +155,8 @@ Use only supported Dataverse Client API methods. Never manipulate the DOM direct
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```javascript
 function hideField(formContext) {
     formContext.getControl("telephone1").setVisible(false);
@@ -162,9 +171,11 @@ function disableField(formContext) {
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```javascript
 function hideField() {
     // Direct DOM manipulation is unsupported and will break
@@ -182,6 +193,7 @@ function disableField() {
 }
 ```
 
+
 ### More Information
 
 1. [Client API reference - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/reference)
@@ -191,7 +203,7 @@ function disableField() {
 
 ### Title
 
-Always use asynchronous API calls
+Always use asynchronous API calls.
 
 ### Description
 
@@ -216,7 +228,8 @@ Always use asynchronous API calls. Never use synchronous XMLHttpRequest or any b
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```javascript
 async function getAccountName(accountId) {
     try {
@@ -230,9 +243,11 @@ async function getAccountName(accountId) {
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```javascript
 function getAccountName(accountId) {
     // Synchronous XMLHttpRequest blocks the UI
@@ -247,6 +262,7 @@ function getAccountName(accountId) {
 }
 ```
 
+
 ### More Information
 
 1. [Xrm.WebApi - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/reference/xrm-webapi)
@@ -256,7 +272,7 @@ function getAccountName(accountId) {
 
 ### Title
 
-When using Xrm
+When using Xrm.WebApi, retrieve only the columns you need by using the $select
 
 ### Description
 
@@ -280,7 +296,8 @@ When using Xrm.WebApi, retrieve only the columns you need by using the $select q
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```javascript
 // Retrieves only the name and account number
 Xrm.WebApi.retrieveRecord(
@@ -291,9 +308,11 @@ Xrm.WebApi.retrieveRecord(
 });
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```javascript
 // Retrieves all columns — unnecessary data transfer
 Xrm.WebApi.retrieveRecord(
@@ -302,6 +321,7 @@ Xrm.WebApi.retrieveRecord(
     console.log(result.name);
 });
 ```
+
 
 ### More Information
 
@@ -312,7 +332,7 @@ Xrm.WebApi.retrieveRecord(
 
 ### Title
 
-Implement proper error handling in all asynchronous operations
+Implement proper error handling in all asynchronous operations.
 
 ### Description
 
@@ -337,7 +357,8 @@ Implement proper error handling in all asynchronous operations. Provide user-fri
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```javascript
 async function onSave(executionContext) {
     var eventArgs = executionContext.getEventArgs();
@@ -360,9 +381,11 @@ async function onSave(executionContext) {
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```javascript
 async function onSave(executionContext) {
     // No error handling — if the API call fails, the record saves with invalid data
@@ -375,6 +398,7 @@ async function onSave(executionContext) {
 }
 ```
 
+
 ### More Information
 
 1. [Async event handlers - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/async-event-handlers)
@@ -384,7 +408,7 @@ async function onSave(executionContext) {
 
 ### Title
 
-Prefer out-of-the-box features (business rules, calculated fields, Power Automate) over...
+Prefer out-of-the-box features (business rules, calculated fields, Power
 
 ### Description
 
@@ -409,13 +433,25 @@ Prefer out-of-the-box features (business rules, calculated fields, Power Automat
 
 #### Good
 
-- A business rule sets the Phone field as required when the Contact Method is "Phone". No script is needed.
-- A calculated column computes the total order amount from line items. The value is always correct regardless of how the record is updated.
+##### A business rule sets the Phone field as required when the Contact Method is
+
+A business rule sets the Phone field as required when the Contact Method is "Phone". No script is needed.
+
+##### A calculated column computes the total order amount from line items.
+
+A calculated column computes the total order amount from line items. The value is always correct regardless of how the record is updated.
+
 
 #### Bad
 
-- A JavaScript OnLoad handler hides a field based on a simple condition that could be handled by a business rule.
-- A client script recalculates a total on every field change, but the total is incorrect when records are created via data import because the script never runs.
+##### A JavaScript OnLoad handler hides a field based on a simple condition that
+
+A JavaScript OnLoad handler hides a field based on a simple condition that could be handled by a business rule.
+
+##### A client script recalculates a total on every field change, but the total is
+
+A client script recalculates a total on every field change, but the total is incorrect when records are created via data import because the script never runs.
+
 
 ### More Information
 
@@ -426,7 +462,7 @@ Prefer out-of-the-box features (business rules, calculated fields, Power Automat
 
 ### Title
 
-Follow a consistent naming convention for web resource files
+Follow a consistent naming convention for web resource files.
 
 ### Description
 
@@ -453,11 +489,17 @@ Follow a consistent naming convention for web resource files. Create only one Ja
 
 #### Good
 
-- Conforms to the rule requirements.
+##### Conforms to the rule requirements.
+
+Conforms to the rule requirements.
+
 
 #### Bad
 
-- Violates the rule requirements.
+##### Violates the rule requirements.
+
+Violates the rule requirements.
+
 
 ### More Information
 
@@ -467,7 +509,7 @@ Follow a consistent naming convention for web resource files. Create only one Ja
 
 ### Title
 
-Register scripts only on the forms and events where they are needed
+Register scripts only on the forms and events where they are needed.
 
 ### Description
 
@@ -492,13 +534,25 @@ Register scripts only on the forms and events where they are needed. Do not load
 
 #### Good
 
-- The account_form.js web resource is added only to the Account main form and registered for the OnLoad event with "Pass execution context as first parameter" enabled.
-- The contactphonevalidation.js script is registered on the OnChange event of the telephone1 field only.
+##### The account_form.js web resource is added only to the Account main form and
+
+The account_form.js web resource is added only to the Account main form and registered for the OnLoad event with "Pass execution context as first parameter" enabled.
+
+##### The contactphonevalidation.js script is registered on the OnChange event of the
+
+The contactphonevalidation.js script is registered on the OnChange event of the telephone1 field only.
+
 
 #### Bad
 
-- A large utility library is added to every form in the solution, even though only one form uses it.
-- An OnLoad handler is registered on all entity forms "just in case", adding unnecessary processing on every form open.
+##### A large utility library is added to every form in the solution, even though
+
+A large utility library is added to every form in the solution, even though only one form uses it.
+
+##### An OnLoad handler is registered on all entity forms "just in case", adding
+
+An OnLoad handler is registered on all entity forms "just in case", adding unnecessary processing on every form open.
+
 
 ### More Information
 
@@ -508,7 +562,7 @@ Register scripts only on the forms and events where they are needed. Do not load
 
 ### Title
 
-Avoid hard-coding entity names, field names, GUIDs, or option set values in your scripts
+Avoid hard-coding entity names, field names, GUIDs, or option set values in your
 
 ### Description
 
@@ -532,7 +586,8 @@ Avoid hard-coding entity names, field names, GUIDs, or option set values in your
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```javascript
 var Contoso = Contoso || {};
 Contoso.Account = Contoso.Account || {};
@@ -558,9 +613,11 @@ Contoso.Account.onLoad = function (executionContext) {
 };
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```javascript
 function onLoad(executionContext) {
     var formContext = executionContext.getFormContext();
@@ -572,6 +629,7 @@ function onLoad(executionContext) {
 }
 ```
 
+
 ### More Information
 
 1. [Client scripting in model-driven apps - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/client-scripting)
@@ -580,7 +638,7 @@ function onLoad(executionContext) {
 
 ### Title
 
-Use setNotification and clearNotification on controls to display inline validation mess...
+Use setNotification and clearNotification on controls to display inline
 
 ### Description
 
@@ -604,7 +662,8 @@ Use setNotification and clearNotification on controls to display inline validati
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```javascript
 Contoso.Contact.onPhoneChange = function (executionContext) {
     var formContext = executionContext.getFormContext();
@@ -620,9 +679,11 @@ Contoso.Contact.onPhoneChange = function (executionContext) {
 };
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```javascript
 function onPhoneChange(executionContext) {
     var formContext = executionContext.getFormContext();
@@ -637,6 +698,7 @@ function onPhoneChange(executionContext) {
 }
 ```
 
+
 ### More Information
 
 1. [Control.setNotification - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/reference/controls/setnotification)
@@ -646,7 +708,7 @@ function onPhoneChange(executionContext) {
 
 ### Title
 
-Check the form type before executing logic that should only run on specific form modes...
+Only run on specific form modes (create, update, read-only).
 
 ### Description
 
@@ -670,7 +732,8 @@ Check the form type before executing logic that should only run on specific form
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```javascript
 Contoso.Case.onLoad = function (executionContext) {
     var formContext = executionContext.getFormContext();
@@ -683,9 +746,11 @@ Contoso.Case.onLoad = function (executionContext) {
 };
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```javascript
 function onLoad(executionContext) {
     var formContext = executionContext.getFormContext();
@@ -693,6 +758,7 @@ function onLoad(executionContext) {
     formContext.getAttribute("prioritycode").setValue(2);
 }
 ```
+
 
 ### More Information
 
@@ -702,7 +768,7 @@ function onLoad(executionContext) {
 
 ### Title
 
-Document all functions using JSDoc syntax
+Document all functions using JSDoc syntax.
 
 ### Description
 
@@ -728,12 +794,28 @@ Document all functions using JSDoc syntax. Provide inline comments that describe
 
 #### Good
 
-- Sets the phone field as required when the contact method is Phone.
-- @param {Object} executionContext - The execution context passed by the form event.
-- Retrieves the primary contact email for a given account.
-- @param {string} accountId - The GUID of the account record.
-- @returns {Promise<string|null>} The email address, or null if not found.
-Good example code snippet.
+##### Sets the phone field as required when the contact method is Phone.
+
+Sets the phone field as required when the contact method is Phone.
+
+##### @param {Object} executionContext - The execution context passed by the form
+
+@param {Object} executionContext - The execution context passed by the form event.
+
+##### Retrieves the primary contact email for a given account.
+
+Retrieves the primary contact email for a given account.
+
+##### @param {string} accountId - The GUID of the account record.
+
+@param {string} accountId - The GUID of the account record.
+
+##### @returns {Promise<string|null>} The email address, or null if not found.
+
+@returns {Promise<string|null>} The email address, or null if not found.
+
+##### Compliant code example
+
 ```javascript
 /**
  * Sets the phone field as required when the contact method is Phone.
@@ -769,9 +851,11 @@ Contoso.Account.getPrimaryContactEmail = async function (accountId) {
 };
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```javascript
 // No documentation — developers must read the entire function to understand it
 function onChange(executionContext) {
@@ -794,6 +878,7 @@ function setPhone(executionContext) {
 }
 ```
 
+
 ### More Information
 
 1. [JSDoc documentation](https://jsdoc.app/)
@@ -803,7 +888,7 @@ function setPhone(executionContext) {
 
 ### Title
 
-Write client script code using TypeScript when possible
+Write client script code using TypeScript when possible.
 
 ### Description
 
@@ -830,7 +915,8 @@ Write client script code using TypeScript when possible. Transpile TypeScript to
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```typescript
 // account.ts — TypeScript source with type safety
 namespace Contoso.Account {
@@ -847,9 +933,11 @@ namespace Contoso.Account {
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```javascript
 // account.js — plain JavaScript with no type safety
 function onLoad(executionContext) {
@@ -864,6 +952,7 @@ function onLoad(executionContext) {
 }
 ```
 
+
 ### More Information
 
 1. [@types/xrm - npm](https://www.npmjs.com/package/@types/xrm)
@@ -874,7 +963,7 @@ function onLoad(executionContext) {
 
 ### Title
 
-Remove all console
+Remove all console.log, console.debug, and debugger statements before deploying
 
 ### Description
 
@@ -899,7 +988,8 @@ Remove all console.log, console.debug, and debugger statements before deploying 
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```javascript
 Contoso.Account.onLoad = function (executionContext) {
     var formContext = executionContext.getFormContext();
@@ -911,9 +1001,11 @@ Contoso.Account.onLoad = function (executionContext) {
 };
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```javascript
 function onLoad(executionContext) {
     var formContext = executionContext.getFormContext();
@@ -928,6 +1020,7 @@ function onLoad(executionContext) {
     }
 }
 ```
+
 
 ### More Information
 

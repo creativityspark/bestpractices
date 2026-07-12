@@ -6,7 +6,7 @@ Good practices for Microsoft Copilot Studio agent development.
 
 ### Title
 
-All topics must use a consistent naming convention that indicates the topic's category...
+Use a consistent naming convention that indicates the topic's category
 
 ### Description
 
@@ -33,17 +33,41 @@ All topics must use a consistent naming convention that indicates the topic's ca
 
 #### Good
 
-- HR - Request Leave - clear category and action
-- IT - Reset Password - grouped under IT, describes the intent
-- Order - Check Status - grouped under Orders, specific action
-- Order - Cancel Order - Confirmation - sub-topic clearly linked to parent
+##### HR - Request Leave - clear category and action
+
+Value: HR - Request Leave - clear category and action
+
+##### IT - Reset Password - grouped under IT, describes the intent
+
+Value: IT - Reset Password - grouped under IT, describes the intent
+
+##### Order - Check Status - grouped under Orders, specific action
+
+Value: Order - Check Status - grouped under Orders, specific action
+
+##### Order - Cancel Order - Confirmation - sub-topic clearly linked to parent
+
+Value: Order - Cancel Order - Confirmation - sub-topic clearly linked to parent
+
 
 #### Bad
 
-- Topic 1 - default name, no context
-- Help - too vague, could match anything
-- Password - no action described, unclear intent
-- doStuff - meaningless and inconsistent format
+##### Topic 1 - default name, no context
+
+Value: Topic 1 - default name, no context
+
+##### Help - too vague, could match anything
+
+Value: Help - too vague, could match anything
+
+##### Password - no action described, unclear intent
+
+Value: Password - no action described, unclear intent
+
+##### doStuff - meaningless and inconsistent format
+
+Value: doStuff - meaningless and inconsistent format
+
 
 ### More Information
 
@@ -54,7 +78,7 @@ All topics must use a consistent naming convention that indicates the topic's ca
 
 ### Title
 
-Design trigger phrases that are specific, varied, and non-overlapping across topics to...
+Design trigger phrases that are specific, varied, and non-overlapping across
 
 ### Description
 
@@ -81,13 +105,32 @@ Design trigger phrases that are specific, varied, and non-overlapping across top
 
 #### Good
 
-- "I need to reset my password"
-- "How do I change my password?"
-- "My password expired, what do I do?"
-- "I forgot my password"
-- "Can you help me reset my login credentials?"
-- "Password reset request"
-Good example code snippet.
+##### "I need to reset my password"
+
+Value: "I need to reset my password"
+
+##### "How do I change my password?"
+
+Value: "How do I change my password?"
+
+##### "My password expired, what do I do?"
+
+Value: "My password expired, what do I do?"
+
+##### "I forgot my password"
+
+Value: "I forgot my password"
+
+##### "Can you help me reset my login credentials?"
+
+Value: "Can you help me reset my login credentials?"
+
+##### "Password reset request"
+
+Value: "Password reset request"
+
+##### Compliant code example
+
 ```Plain Text
 // Topic: IT - Reset Password
 Trigger phrases:
@@ -99,14 +142,31 @@ Trigger phrases:
 - "Password reset request"
 ```
 
+
 #### Bad
 
-- "password"          // Too vague, overlaps with other password-related topics
-- "help"              // Matches almost anything
-- "reset"             // Could apply to many unrelated topics
-- "I forgot my password"   // Same phrase already in Reset Password topic
-- "Can't log in"           // Ambiguous, could be either topic
-Bad example code snippet.
+##### "password" // Too vague, overlaps with other password-related topics
+
+Value: "password" // Too vague, overlaps with other password-related topics
+
+##### "help" // Matches almost anything
+
+Value: "help" // Matches almost anything
+
+##### "reset" // Could apply to many unrelated topics
+
+Value: "reset" // Could apply to many unrelated topics
+
+##### "I forgot my password" // Same phrase already in Reset Password topic
+
+Value: "I forgot my password" // Same phrase already in Reset Password topic
+
+##### "Can't log in" // Ambiguous, could be either topic
+
+Value: "Can't log in" // Ambiguous, could be either topic
+
+##### Non-compliant code example
+
 ```Plain Text
 // Topic: IT - Reset Password
 Trigger phrases:
@@ -120,6 +180,7 @@ Trigger phrases:
 - "Can't log in"           // Ambiguous, could be either topic
 ```
 
+
 ### More Information
 
 1. [Best practices for topic trigger phrases - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/trigger-phrases-best-practices)
@@ -129,7 +190,7 @@ Trigger phrases:
 
 ### Title
 
-Customize the fallback and error system topics to provide a helpful experience when the...
+Customize the fallback and error system topics to provide a helpful experience
 
 ### Description
 
@@ -156,10 +217,20 @@ Customize the fallback and error system topics to provide a helpful experience w
 
 #### Good
 
-- Check your order status
-- Reset your password
-- Contact support"
-Good example code snippet.
+##### Check your order status
+
+Value: Check your order status
+
+##### Reset your password
+
+Value: Reset your password
+
+##### Contact support"
+
+Value: Contact support"
+
+##### Compliant code example
+
 ```Plain Text
 // Fallback topic — first attempt
 "I'm sorry, I didn't quite catch that. Could you try rephrasing your question?
@@ -177,9 +248,11 @@ Would you like me to connect you with a support agent?"
 If the issue continues, contact support at support@contoso.com."
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```Plain Text
 // Default fallback with no guidance
 "I didn't understand that."
@@ -192,6 +265,7 @@ Bad example code snippet.
 "Error: HTTP 500 — Internal Server Error in flow Run_GetOrderDetails."
 ```
 
+
 ### More Information
 
 1. [Configure the fallback topic - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-system-fallback-topic)
@@ -201,7 +275,7 @@ Bad example code snippet.
 
 ### Title
 
-Configure knowledge sources carefully and apply appropriate guardrails when enabling ge...
+Configure knowledge sources carefully and apply appropriate guardrails when
 
 ### Description
 
@@ -229,17 +303,41 @@ Configure knowledge sources carefully and apply appropriate guardrails when enab
 
 #### Good
 
-- Knowledge sources use clear Markdown headings and short paragraphs optimized for AI extraction.
-- Generative answers are scoped to an internal SharePoint site and a curated FAQ document.
-- A disclaimer is appended: "This answer was generated from our knowledge base. Please verify with official documentation."
-- Monthly reviews of conversation transcripts identify two new frequently asked questions that are added to the FAQ.
+##### Knowledge sources use clear Markdown headings and short paragraphs optimized
+
+Knowledge sources use clear Markdown headings and short paragraphs optimized for AI extraction.
+
+##### Generative answers are scoped to an internal SharePoint site and a curated FAQ
+
+Generative answers are scoped to an internal SharePoint site and a curated FAQ document.
+
+##### A disclaimer is appended
+
+Value: A disclaimer is appended "This answer was generated from our knowledge base. Please verify with official documentation."
+
+##### Monthly reviews of conversation transcripts identify two new frequently asked
+
+Monthly reviews of conversation transcripts identify two new frequently asked questions that are added to the FAQ.
+
 
 #### Bad
 
-- A 200-page unstructured PDF is uploaded as a knowledge source, producing unreliable generative answers.
-- Knowledge source documents have not been updated in over a year, and the agent gives outdated policy information.
-- Generative answers are enabled without scope restrictions, causing the agent to answer questions outside its domain with fabricated information.
-- No disclaimer is provided for AI-generated legal or compliance guidance.
+##### A 200-page unstructured PDF is uploaded as a knowledge source, producing
+
+A 200-page unstructured PDF is uploaded as a knowledge source, producing unreliable generative answers.
+
+##### Knowledge source documents have not been updated in over a year, and the agent
+
+Knowledge source documents have not been updated in over a year, and the agent gives outdated policy information.
+
+##### Generative answers are enabled without scope restrictions, causing the agent to
+
+Generative answers are enabled without scope restrictions, causing the agent to answer questions outside its domain with fabricated information.
+
+##### No disclaimer is provided for AI-generated legal or compliance guidance.
+
+No disclaimer is provided for AI-generated legal or compliance guidance.
+
 
 ### More Information
 
@@ -250,7 +348,7 @@ Configure knowledge sources carefully and apply appropriate guardrails when enab
 
 ### Title
 
-Enable end-user authentication and follow security best practices when connecting your...
+Enable end-user authentication and follow security best practices when
 
 ### Description
 
@@ -278,15 +376,33 @@ Enable end-user authentication and follow security best practices when connectin
 
 #### Good
 
-- Authentication is enabled with Microsoft Entra ID; users sign in via SSO when they open the agent in Teams.
-- A Power Automate flow retrieves the user's pending approvals using the authenticated user's token, so each user only sees their own data.
-- API keys for a third-party service are stored in Azure Key Vault and referenced via environment variables in the solution.
+##### Authentication is enabled with Microsoft Entra ID; users sign in via SSO when
+
+Authentication is enabled with Microsoft Entra ID; users sign in via SSO when they open the agent in Teams.
+
+##### A Power Automate flow retrieves the user's pending approvals using the
+
+A Power Automate flow retrieves the user's pending approvals using the authenticated user's token, so each user only sees their own data.
+
+##### API keys for a third-party service are stored in Azure Key Vault and referenced
+
+API keys for a third-party service are stored in Azure Key Vault and referenced via environment variables in the solution.
+
 
 #### Bad
 
-- The agent is published without authentication, allowing anonymous users to access internal HR data.
-- A Power Automate flow runs under a service account with global admin permissions to retrieve employee records, ignoring individual user permissions.
-- An API key is pasted directly into a topic's HTTP request action and is visible in the solution export.
+##### The agent is published without authentication, allowing anonymous users to
+
+The agent is published without authentication, allowing anonymous users to access internal HR data.
+
+##### A Power Automate flow runs under a service account with global admin
+
+A Power Automate flow runs under a service account with global admin permissions to retrieve employee records, ignoring individual user permissions.
+
+##### An API key is pasted directly into a topic's HTTP request action and is visible
+
+An API key is pasted directly into a topic's HTTP request action and is visible in the solution export.
+
 
 ### More Information
 
@@ -297,7 +413,7 @@ Enable end-user authentication and follow security best practices when connectin
 
 ### Title
 
-Use solution-based development and environment separation to manage your agent through...
+Use solution-based development and environment separation to manage your agent
 
 ### Description
 
@@ -325,15 +441,33 @@ Use solution-based development and environment separation to manage your agent t
 
 #### Good
 
-- The agent and all its dependencies (topics, flows, connection references, environment variables) are packaged in a solution named ContosoITHelpDesk.
-- A GitHub Actions pipeline exports the solution from Dev, imports it into Test, and after approval, promotes it to Production.
-- Environment variables evServiceNowUrl and evApprovalEmailGroup are configured per environment.
+##### The agent and all its dependencies (topics, flows, connection references
+
+The agent and all its dependencies (topics, flows, connection references, environment variables) are packaged in a solution named ContosoITHelpDesk.
+
+##### A GitHub Actions pipeline exports the solution from Dev, imports it into Test
+
+A GitHub Actions pipeline exports the solution from Dev, imports it into Test, and after approval, promotes it to Production.
+
+##### Environment variables evServiceNowUrl and evApprovalEmailGroup are configured
+
+Environment variables evServiceNowUrl and evApprovalEmailGroup are configured per environment.
+
 
 #### Bad
 
-- The agent is built in the default environment with no solution, and topics are manually recreated in production.
-- Changes are tested in production because there is only one environment.
-- A flow contains a hard-coded URL https: //dev-api.contoso.com that fails when imported to the production environment.
+##### The agent is built in the default environment with no solution, and topics are
+
+The agent is built in the default environment with no solution, and topics are manually recreated in production.
+
+##### Changes are tested in production because there is only one environment.
+
+Changes are tested in production because there is only one environment.
+
+##### A flow contains a hard-coded URL https
+
+Value: A flow contains a hard-coded URL https //dev-api.contoso.com that fails when imported to the production environment.
+
 
 ### More Information
 
@@ -344,7 +478,7 @@ Use solution-based development and environment separation to manage your agent t
 
 ### Title
 
-Establish a thorough testing strategy and use built-in analytics to continuously improv...
+Establish a thorough testing strategy and use built-in analytics to continuously
 
 ### Description
 
@@ -372,15 +506,33 @@ Establish a thorough testing strategy and use built-in analytics to continuously
 
 #### Good
 
-- A test script documents 50+ test scenarios, including happy paths, edge cases, and fallback triggers, and is executed before every release.
-- The analytics dashboard is reviewed weekly; a drop in resolution rate from 85% to 70% triggers an investigation and topic updates.
-- Conversation transcripts reveal that users frequently ask about "PTO balance" but no topic exists - a new topic is created.
+##### A test script documents 50+ test scenarios, including happy paths, edge cases
+
+A test script documents 50+ test scenarios, including happy paths, edge cases, and fallback triggers, and is executed before every release.
+
+##### The analytics dashboard is reviewed weekly; a drop in resolution rate from 85%
+
+The analytics dashboard is reviewed weekly; a drop in resolution rate from 85% to 70% triggers an investigation and topic updates.
+
+##### Conversation transcripts reveal that users frequently ask about "PTO balance"
+
+Conversation transcripts reveal that users frequently ask about "PTO balance" but no topic exists - a new topic is created.
+
 
 #### Bad
 
-- Topics are published without testing; users discover that a critical branch leads to a dead end.
-- Analytics are never reviewed; the agent's fallback rate has been 40% for months without anyone noticing.
-- Conversation transcripts are enabled but never read, missing opportunities to improve the agent.
+##### Topics are published without testing; users discover that a critical branch
+
+Topics are published without testing; users discover that a critical branch leads to a dead end.
+
+##### Analytics are never reviewed; the agent's fallback rate has been 40% for months
+
+Analytics are never reviewed; the agent's fallback rate has been 40% for months without anyone noticing.
+
+##### Conversation transcripts are enabled but never read, missing opportunities to
+
+Conversation transcripts are enabled but never read, missing opportunities to improve the agent.
+
 
 ### More Information
 
@@ -392,7 +544,7 @@ Establish a thorough testing strategy and use built-in analytics to continuously
 
 ### Title
 
-Plan your deployment channels carefully and design the conversational experience to mat...
+Plan your deployment channels carefully and design the conversational experience
 
 ### Description
 
@@ -420,10 +572,20 @@ Plan your deployment channels carefully and design the conversational experience
 
 #### Good
 
-- 🔑 Password resets
-- 💻 Software requests
-- 🎫 Ticket status
-Good example code snippet.
+##### 🔑 Password resets
+
+Value: 🔑 Password resets
+
+##### 💻 Software requests
+
+Value: 💻 Software requests
+
+##### 🎫 Ticket status
+
+Value: 🎫 Ticket status
+
+##### Compliant code example
+
 ```Plain Text
 // Greeting message
 "Hi! I'm the Contoso IT Help Desk assistant. I can help you with:
@@ -437,9 +599,11 @@ What would you like help with?"
 [Reset Password] [Check Ticket Status] [Talk to an Agent]
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```Plain Text
 // No greeting — agent starts silently and waits for input
 (blank)
@@ -452,6 +616,7 @@ Please type your question below and we will try to help you as best we can.
 If we cannot help you, we will transfer you to an agent."
 ```
 
+
 ### More Information
 
 1. [Publish your agent to multiple channels - Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-copilot-studio/publication-fundamentals-publish-channels)
@@ -461,7 +626,7 @@ If we cannot help you, we will transfer you to an agent."
 
 ### Title
 
-Apply responsible AI principles and configure content moderation to ensure your agent p...
+Apply responsible AI principles and configure content moderation to ensure your
 
 ### Description
 
@@ -489,15 +654,33 @@ Apply responsible AI principles and configure content moderation to ensure your 
 
 #### Good
 
-- Content moderation is enabled; the agent refuses to engage with abusive or harmful input and responds with: "I'm here to help with IT support questions. Let me know how I can assist you."
-- The system message instructs the agent: "You are an IT help desk assistant. Only answer questions related to IT support. Do not provide medical, legal, or financial advice."
-- When asked a medical question, the agent responds: "I'm not able to help with medical questions. Please consult a healthcare professional."
+##### Content moderation is enabled; the agent refuses to engage with abusive or
+
+Value: Content moderation is enabled; the agent refuses to engage with abusive or harmful input and responds with "I'm here to help with IT support questions. Let me know how I can assist you."
+
+##### The system message instructs the agent
+
+Value: The system message instructs the agent "You are an IT help desk assistant. Only answer questions related to IT support. Do not provide medical, legal, or financial advice."
+
+##### When asked a medical question, the agent responds
+
+Value: When asked a medical question, the agent responds "I'm not able to help with medical questions. Please consult a healthcare professional."
+
 
 #### Bad
 
-- Content moderation is disabled; the agent responds to abusive messages or generates inappropriate content.
-- No behavioral guardrails are set; the agent answers questions about any topic, including areas where inaccurate answers could cause harm.
-- The agent provides detailed financial investment advice with no disclaimer, exposing the organization to liability.
+##### Content moderation is disabled; the agent responds to abusive messages or
+
+Content moderation is disabled; the agent responds to abusive messages or generates inappropriate content.
+
+##### No behavioral guardrails are set; the agent answers questions about any topic
+
+No behavioral guardrails are set; the agent answers questions about any topic, including areas where inaccurate answers could cause harm.
+
+##### The agent provides detailed financial investment advice with no disclaimer
+
+The agent provides detailed financial investment advice with no disclaimer, exposing the organization to liability.
+
 
 ### More Information
 

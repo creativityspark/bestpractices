@@ -6,7 +6,7 @@ Good practices for Power Platform Application Lifecycle Management.
 
 ### Title
 
-Establish a minimum of three separate environments - Development, Test, and Production...
+Establish a minimum of three separate environments
 
 ### Description
 
@@ -33,15 +33,33 @@ Establish a minimum of three separate environments - Development, Test, and Prod
 
 #### Good
 
-- Three environments configured: Contoso-Dev, Contoso-Test, Contoso-Prod.
-- Developers work only in Contoso-Dev, solutions are promoted as managed to Contoso-Test, and after UAT sign-off, deployed as managed to Contoso-Prod.
-- DLP policies in Production block all non-approved connectors.
+##### Three environments configured
+
+Value: Three environments configured Contoso-Dev, Contoso-Test, Contoso-Prod.
+
+##### Developers work only in Contoso-Dev, solutions are promoted as managed to
+
+Developers work only in Contoso-Dev, solutions are promoted as managed to Contoso-Test, and after UAT sign-off, deployed as managed to Contoso-Prod.
+
+##### DLP policies in Production block all non-approved connectors.
+
+DLP policies in Production block all non-approved connectors.
+
 
 #### Bad
 
-- A single environment used for development, testing, and production simultaneously.
-- Developers making changes directly in the Production environment.
-- No DLP policies configured, allowing any connector to be used in Production.
+##### A single environment used for development, testing, and production
+
+A single environment used for development, testing, and production simultaneously.
+
+##### Developers making changes directly in the Production environment.
+
+Developers making changes directly in the Production environment.
+
+##### No DLP policies configured, allowing any connector to be used in Production.
+
+No DLP policies configured, allowing any connector to be used in Production.
+
 
 ### More Information
 
@@ -53,7 +71,7 @@ Establish a minimum of three separate environments - Development, Test, and Prod
 
 ### Title
 
-Always deploy managed solutions to Test, UAT, and Production environments
+Always deploy managed solutions to Test, UAT, and Production environments.
 
 ### Description
 
@@ -79,15 +97,33 @@ Always deploy managed solutions to Test, UAT, and Production environments. Reser
 
 #### Good
 
-- Solution exported as managed from Dev and imported into Test for validation.
-- After UAT sign-off, the same managed solution is imported into Production.
-- An updated version is deployed using the Upgrade option, which removes deprecated components automatically.
+##### Solution exported as managed from Dev and imported into Test for validation.
+
+Solution exported as managed from Dev and imported into Test for validation.
+
+##### After UAT sign-off, the same managed solution is imported into Production.
+
+After UAT sign-off, the same managed solution is imported into Production.
+
+##### An updated version is deployed using the Upgrade option, which removes
+
+An updated version is deployed using the Upgrade option, which removes deprecated components automatically.
+
 
 #### Bad
 
-- An unmanaged solution imported into Production so a developer can "quickly fix something."
-- Deleting a managed solution and reimporting a new version instead of using the upgrade process, which causes data loss.
-- Customizations made directly in Production outside of any solution, creating untracked changes.
+##### An unmanaged solution imported into Production so a developer can "quickly fix
+
+Value: An unmanaged solution imported into Production so a developer can "quickly fix something."
+
+##### Deleting a managed solution and reimporting a new version instead of using the
+
+Deleting a managed solution and reimporting a new version instead of using the upgrade process, which causes data loss.
+
+##### Customizations made directly in Production outside of any solution, creating
+
+Customizations made directly in Production outside of any solution, creating untracked changes.
+
 
 ### More Information
 
@@ -98,7 +134,7 @@ Always deploy managed solutions to Test, UAT, and Production environments. Reser
 
 ### Title
 
-Create a dedicated solution publisher with a short, unique prefix and apply consistent...
+Create a dedicated solution publisher with a short, unique prefix and apply
 
 ### Description
 
@@ -125,16 +161,37 @@ Create a dedicated solution publisher with a short, unique prefix and apply cons
 
 #### Good
 
-- Publisher: Contoso Ltd, prefix: contoso, deployed consistently in Dev, Test, and Prod.
-- Solution name: Contoso_HROnboarding, version 1.2.0.0.
-- All custom tables use the contoso prefix: contosoEmployee, contoso_OnboardingTask.
+##### Publisher
+
+Value: Publisher Contoso Ltd, prefix: contoso, deployed consistently in Dev, Test, and Prod.
+
+##### Solution name
+
+Value: Solution name Contoso_HROnboarding, version 1.2.0.0.
+
+##### All custom tables use the contoso prefix
+
+Value: All custom tables use the contoso prefix contosoEmployee, contoso_OnboardingTask.
+
 
 #### Bad
 
-- Using the default CDS Default Publisher with prefix cr for production solutions.
-- Publisher prefix mycompanyglobaltradingsolutions - too long, making schema names unreadable.
-- Solution version left at 1.0.0.0 across all deployments with no version history.
-- Different publishers used in Dev and Prod, causing import conflicts.
+##### Using the default CDS Default Publisher with prefix cr for production solutions.
+
+Using the default CDS Default Publisher with prefix cr for production solutions.
+
+##### Publisher prefix mycompanyglobaltradingsolutions - too long, making schema
+
+Publisher prefix mycompanyglobaltradingsolutions - too long, making schema names unreadable.
+
+##### Solution version left at 1.0.0.0 across all deployments with no version history.
+
+Solution version left at 1.0.0.0 across all deployments with no version history.
+
+##### Different publishers used in Dev and Prod, causing import conflicts.
+
+Different publishers used in Dev and Prod, causing import conflicts.
+
 
 ### More Information
 
@@ -145,7 +202,7 @@ Create a dedicated solution publisher with a short, unique prefix and apply cons
 
 ### Title
 
-Use environment variables to store configuration values that differ between environment...
+Use environment variables to store configuration values that differ between
 
 ### Description
 
@@ -172,7 +229,8 @@ Use environment variables to store configuration values that differ between envi
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```Plain Text
 // Environment variable: contoso_SharePointSiteUrl
 // Dev value:  https://contoso-dev.sharepoint.com/sites/hr
@@ -183,9 +241,11 @@ Good example code snippet.
 // the environment variable instead of a hardcoded URL.
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```Plain Text
 // URL hardcoded directly in a Power Automate flow action:
 // Site Address: https://contoso.sharepoint.com/sites/hr
@@ -193,7 +253,9 @@ Bad example code snippet.
 // When deployed to Test, the flow still points to Production SharePoint,
 // causing test data to be written to the live site.
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```Plain Text
 // API key pasted directly into an HTTP action:
 // Authorization: Bearer sk-abc123secretkey
@@ -201,6 +263,7 @@ Bad example code snippet.
 // The secret is visible to anyone who can edit the flow
 // and is exported with the solution in plain text.
 ```
+
 
 ### More Information
 
@@ -211,7 +274,7 @@ Bad example code snippet.
 
 ### Title
 
-Use connection references in solutions instead of embedding connections directly, so th...
+Use connection references in solutions instead of embedding connections
 
 ### Description
 
@@ -237,15 +300,33 @@ Use connection references in solutions instead of embedding connections directly
 
 #### Good
 
-- A solution contains a connection reference contoso_SharePointConnection of type SharePoint.
-- All flows in the solution use contoso_SharePointConnection for their SharePoint actions.
-- When importing to Production, the admin maps contoso_SharePointConnection to a service account's SharePoint connection.
+##### A solution contains a connection reference contoso_SharePointConnection of type
+
+A solution contains a connection reference contoso_SharePointConnection of type SharePoint.
+
+##### All flows in the solution use contoso_SharePointConnection for their SharePoint
+
+All flows in the solution use contoso_SharePointConnection for their SharePoint actions.
+
+##### When importing to Production, the admin maps contoso_SharePointConnection to a
+
+When importing to Production, the admin maps contoso_SharePointConnection to a service account's SharePoint connection.
+
 
 #### Bad
 
-- A flow uses a direct connection tied to developer@contoso.com. When imported to Production, the flow fails because that user has no permissions in Production.
-- Multiple flows each create their own connection during import, resulting in dozens of orphaned connections with no clear ownership.
-- A flow runs under a departing employee's connection. When their account is disabled, all dependent flows stop working.
+##### A flow uses a direct connection tied to developer@contoso.com.
+
+A flow uses a direct connection tied to developer@contoso.com. When imported to Production, the flow fails because that user has no permissions in Production.
+
+##### Multiple flows each create their own connection during import, resulting in
+
+Multiple flows each create their own connection during import, resulting in dozens of orphaned connections with no clear ownership.
+
+##### A flow runs under a departing employee's connection.
+
+A flow runs under a departing employee's connection. When their account is disabled, all dependent flows stop working.
+
 
 ### More Information
 
@@ -256,7 +337,7 @@ Use connection references in solutions instead of embedding connections directly
 
 ### Title
 
-Store all solution artifacts in source control (Git) to enable version history, collabo...
+Store all solution artifacts in source control (Git) to enable version history
 
 ### Description
 
@@ -283,9 +364,16 @@ Store all solution artifacts in source control (Git) to enable version history, 
 
 #### Good
 
-- Developer creates a feature branch, makes changes in Dev, exports and unpacks the solution, commits, and opens a pull request.
-- A reviewer inspects the diff to verify only intended changes are included.
-Good example code snippet.
+##### Developer creates a feature branch, makes changes in Dev, exports and unpacks
+
+Developer creates a feature branch, makes changes in Dev, exports and unpacks the solution, commits, and opens a pull request.
+
+##### A reviewer inspects the diff to verify only intended changes are included.
+
+A reviewer inspects the diff to verify only intended changes are included.
+
+##### Compliant code example
+
 ```Plain Text
 Repository structure:
 ├── src/
@@ -302,11 +390,21 @@ Repository structure:
 └── README.md
 ```
 
+
 #### Bad
 
-- Solution .zip files emailed between team members or stored on a shared drive with names like Solutionv2final_FINAL.zip.
-- No version history - when something breaks, there is no way to determine what changed or revert to a previous state.
-- All developers working in the same Dev environment with no branching, overwriting each other's changes.
+##### Solution .zip files emailed between team members or stored on a shared drive
+
+Solution .zip files emailed between team members or stored on a shared drive with names like Solutionv2final_FINAL.zip.
+
+##### No version history - when something breaks, there is no way to determine what
+
+No version history - when something breaks, there is no way to determine what changed or revert to a previous state.
+
+##### All developers working in the same Dev environment with no branching
+
+All developers working in the same Dev environment with no branching, overwriting each other's changes.
+
 
 ### More Information
 
@@ -318,7 +416,7 @@ Repository structure:
 
 ### Title
 
-Automate solution export, packing, validation, and import using CI/CD pipelines instead...
+Automate solution export, packing, validation, and import using CI/CD pipelines
 
 ### Description
 
@@ -345,18 +443,52 @@ Automate solution export, packing, validation, and import using CI/CD pipelines 
 
 #### Good
 
-- stage: Build
-- job: ExportAndPack
-- task: PowerPlatformToolInstaller@2
-- task: PowerPlatformExportSolution@2
-- task: PowerPlatformChecker@2
-- stage: DeployToTest
-- deployment: DeployTest
-- task: PowerPlatformImportSolution@2
-- stage: DeployToProd
-- deployment: DeployProd
-- task: PowerPlatformImportSolution@2
-Good example code snippet.
+##### stage
+
+Value: stage Build
+
+##### job
+
+Value: job ExportAndPack
+
+##### task
+
+Value: task PowerPlatformToolInstaller@2
+
+##### task
+
+Value: task PowerPlatformExportSolution@2
+
+##### task
+
+Value: task PowerPlatformChecker@2
+
+##### stage
+
+Value: stage DeployToTest
+
+##### deployment
+
+Value: deployment DeployTest
+
+##### task
+
+Value: task PowerPlatformImportSolution@2
+
+##### stage
+
+Value: stage DeployToProd
+
+##### deployment
+
+Value: deployment DeployProd
+
+##### task
+
+Value: task PowerPlatformImportSolution@2
+
+##### Compliant code example
+
 ```yaml
 # Azure DevOps pipeline (simplified)
 stages:
@@ -400,11 +532,21 @@ stages:
                     SolutionInputFile: '$(Pipeline.Workspace)/**/ContosoHR_managed.zip'
 ```
 
+
 #### Bad
 
-- A developer manually exports a solution from Dev, downloads the .zip, and imports it into Production from the browser.
-- Pipeline authenticates using a developer's personal credentials - when the developer changes their password, all pipelines break.
-- No approval gates: a pipeline automatically deploys to Production after a commit, with no human review.
+##### A developer manually exports a solution from Dev, downloads the .zip, and
+
+A developer manually exports a solution from Dev, downloads the .zip, and imports it into Production from the browser.
+
+##### Pipeline authenticates using a developer's personal credentials - when the
+
+Pipeline authenticates using a developer's personal credentials - when the developer changes their password, all pipelines break.
+
+##### No approval gates
+
+Value: No approval gates a pipeline automatically deploys to Production after a commit, with no human review.
+
 
 ### More Information
 
@@ -416,7 +558,7 @@ stages:
 
 ### Title
 
-Integrate the Power Platform Solution Checker into your CI/CD pipeline to automatically...
+Integrate the Power Platform Solution Checker into your CI/CD pipeline
 
 ### Description
 
@@ -442,10 +584,20 @@ Integrate the Power Platform Solution Checker into your CI/CD pipeline to automa
 
 #### Good
 
-- task: PowerPlatformChecker@2
-- Pipeline fails when a critical issue is detected, blocking deployment until the issue is fixed.
-- Checker report is saved as a build artifact and reviewed by the team.
-Good example code snippet.
+##### task
+
+Value: task PowerPlatformChecker@2
+
+##### Pipeline fails when a critical issue is detected, blocking deployment until the
+
+Pipeline fails when a critical issue is detected, blocking deployment until the issue is fixed.
+
+##### Checker report is saved as a build artifact and reviewed by the team.
+
+Checker report is saved as a build artifact and reviewed by the team.
+
+##### Compliant code example
+
 ```yaml
 # Solution Checker step in Azure DevOps pipeline
 - task: PowerPlatformChecker@2
@@ -458,11 +610,21 @@ Good example code snippet.
     FailOnPowerAppsCheckerAnalysis: true
 ```
 
+
 #### Bad
 
-- Solution Checker is never run - issues are discovered by users in Production.
-- Checker is configured but its results are ignored - the pipeline always proceeds regardless of findings.
-- Checker is only run manually by one team member before major releases, missing issues in intermediate deployments.
+##### Solution Checker is never run - issues are discovered by users in Production.
+
+Solution Checker is never run - issues are discovered by users in Production.
+
+##### Checker is configured but its results are ignored - the pipeline always
+
+Checker is configured but its results are ignored - the pipeline always proceeds regardless of findings.
+
+##### Checker is only run manually by one team member before major releases, missing
+
+Checker is only run manually by one team member before major releases, missing issues in intermediate deployments.
+
 
 ### More Information
 
@@ -473,7 +635,7 @@ Good example code snippet.
 
 ### Title
 
-Apply semantic versioning to every solution and increment the version number with each...
+Apply semantic versioning to every solution and increment the version number
 
 ### Description
 
@@ -501,17 +663,41 @@ Apply semantic versioning to every solution and increment the version number wit
 
 #### Good
 
-- 1.0.0.0 - Initial release.
-- 1.1.0.0 - New feature added (leave approval workflow).
-- 1.1.1.0 - Bug fix (corrected email notification template).
-- 2.0.0.0 - Major redesign with schema changes (requires data migration).
-- Version is incremented automatically by the CI/CD pipeline on each build.
+##### 1.0.0.0 - Initial release.
+
+1.0.0.0 - Initial release.
+
+##### 1.1.0.0 - New feature added (leave approval workflow).
+
+1.1.0.0 - New feature added (leave approval workflow).
+
+##### 1.1.1.0 - Bug fix (corrected email notification template).
+
+1.1.1.0 - Bug fix (corrected email notification template).
+
+##### 2.0.0.0 - Major redesign with schema changes (requires data migration).
+
+2.0.0.0 - Major redesign with schema changes (requires data migration).
+
+##### Version is incremented automatically by the CI/CD pipeline on each build.
+
+Version is incremented automatically by the CI/CD pipeline on each build.
+
 
 #### Bad
 
-- Every deployment uses version 1.0.0.0 - no way to distinguish releases.
-- Version numbers are incremented randomly with no pattern: 1.0.0.0 → 3.5.0.0 → 2.1.0.0.
-- Version is updated manually and sometimes forgotten, causing import warnings or failures in the target environment.
+##### Every deployment uses version 1.0.0.0 - no way to distinguish releases.
+
+Every deployment uses version 1.0.0.0 - no way to distinguish releases.
+
+##### Version numbers are incremented randomly with no pattern
+
+Value: Version numbers are incremented randomly with no pattern 1.0.0.0 → 3.5.0.0 → 2.1.0.0.
+
+##### Version is updated manually and sometimes forgotten, causing import warnings or
+
+Version is updated manually and sometimes forgotten, causing import warnings or failures in the target environment.
+
 
 ### More Information
 

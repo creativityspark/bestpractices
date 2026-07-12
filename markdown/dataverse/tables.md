@@ -35,11 +35,17 @@ Naming rules:
 
 #### Good
 
-- Conforms to the rule requirements.
+##### Conforms to the rule requirements.
+
+Conforms to the rule requirements.
+
 
 #### Bad
 
-- Violates the rule requirements.
+##### Violates the rule requirements.
+
+Violates the rule requirements.
+
 
 ### More Information
 
@@ -50,7 +56,7 @@ Naming rules:
 
 ### Title
 
-Avoid creating new custom tables to replace existing system tables
+Avoid creating new custom tables to replace existing system tables.
 
 ### Description
 
@@ -71,11 +77,17 @@ Avoid creating new custom tables to replace existing system tables. If you need 
 
 #### Good
 
-- Conforms to the rule requirements.
+##### Conforms to the rule requirements.
+
+Conforms to the rule requirements.
+
 
 #### Bad
 
-- Violates the rule requirements.
+##### Violates the rule requirements.
+
+Violates the rule requirements.
+
 
 ### More Information
 
@@ -85,7 +97,7 @@ Avoid creating new custom tables to replace existing system tables. If you need 
 
 ### Title
 
-Every table must have an icon configured
+Have an icon configured.
 
 ### Description
 
@@ -107,11 +119,17 @@ Every table must have an icon configured. The selected icon must be made availab
 
 #### Good
 
-- Conforms to the rule requirements.
+##### Conforms to the rule requirements.
+
+Conforms to the rule requirements.
+
 
 #### Bad
 
-- Violates the rule requirements.
+##### Violates the rule requirements.
+
+Violates the rule requirements.
+
 
 ### More Information
 
@@ -121,7 +139,7 @@ Every table must have an icon configured. The selected icon must be made availab
 
 ### Title
 
-Choose the appropriate ownership type for each table based on the security requirements
+Choose the appropriate ownership type for each table based on the security
 
 ### Description
 
@@ -144,11 +162,17 @@ Choose the appropriate ownership type for each table based on the security requi
 
 #### Good
 
-- Conforms to the rule requirements.
+##### Conforms to the rule requirements.
+
+Conforms to the rule requirements.
+
 
 #### Bad
 
-- Violates the rule requirements.
+##### Violates the rule requirements.
+
+Violates the rule requirements.
+
 
 ### More Information
 
@@ -158,7 +182,7 @@ Choose the appropriate ownership type for each table based on the security requi
 
 ### Title
 
-Enable auditing only on tables and columns where tracking changes is required by busine...
+Enable auditing only on tables and columns where tracking changes is required
 
 ### Description
 
@@ -183,13 +207,25 @@ Enable auditing only on tables and columns where tracking changes is required by
 
 #### Good
 
-- Auditing enabled on the Customer table for the credit_limit, status, and owner columns because financial and ownership changes must be tracked.
-- Auditing enabled on the Order table for orderstatus and totalamount to support compliance requirements.
+##### Auditing enabled on the Customer table for the credit_limit, status, and owner
+
+Auditing enabled on the Customer table for the credit_limit, status, and owner columns because financial and ownership changes must be tracked.
+
+##### Auditing enabled on the Order table for orderstatus and totalamount to support
+
+Auditing enabled on the Order table for orderstatus and totalamount to support compliance requirements.
+
 
 #### Bad
 
-- Auditing enabled on all tables and all columns "just in case", resulting in excessive storage usage and no clear audit strategy.
-- Auditing enabled on the Country reference table where values rarely change and tracking is not required.
+##### Auditing enabled on all tables and all columns "just in case", resulting in
+
+Auditing enabled on all tables and all columns "just in case", resulting in excessive storage usage and no clear audit strategy.
+
+##### Auditing enabled on the Country reference table where values rarely change and
+
+Auditing enabled on the Country reference table where values rarely change and tracking is not required.
+
 
 ### More Information
 
@@ -200,7 +236,7 @@ Enable auditing only on tables and columns where tracking changes is required by
 
 ### Title
 
-Define alternate keys for tables that participate in data integration or migration scen...
+Define alternate keys for tables that participate in data integration
 
 ### Description
 
@@ -224,13 +260,25 @@ Define alternate keys for tables that participate in data integration or migrati
 
 #### Good
 
-- An external_id alternate key on the Customer table, mapped to the ERP system's customer number, used for upsert operations during data synchronization.
-- A composite alternate key on product_code and region for the Price List Item table to ensure unique pricing per region.
+##### An external_id alternate key on the Customer table, mapped to the ERP system's
+
+An external_id alternate key on the Customer table, mapped to the ERP system's customer number, used for upsert operations during data synchronization.
+
+##### A composite alternate key on product_code and region for the Price List Item
+
+A composite alternate key on product_code and region for the Price List Item table to ensure unique pricing per region.
+
 
 #### Bad
 
-- An alternate key on the full_name field of the Contact table, which is not unique and changes when contacts update their names.
-- Defining five or more alternate keys on a single table without a clear integration requirement.
+##### An alternate key on the full_name field of the Contact table, which is not
+
+An alternate key on the full_name field of the Contact table, which is not unique and changes when contacts update their names.
+
+##### Defining five or more alternate keys on a single table without a clear
+
+Defining five or more alternate keys on a single table without a clear integration requirement.
+
 
 ### More Information
 
@@ -240,7 +288,7 @@ Define alternate keys for tables that participate in data integration or migrati
 
 ### Title
 
-Configure relationship cascade behaviors deliberately instead of relying on the default...
+Configure relationship cascade behaviors deliberately instead of relying
 
 ### Description
 
@@ -266,11 +314,17 @@ Configure relationship cascade behaviors deliberately instead of relying on the 
 
 #### Good
 
-- Conforms to the rule requirements.
+##### Conforms to the rule requirements.
+
+Conforms to the rule requirements.
+
 
 #### Bad
 
-- Violates the rule requirements.
+##### Violates the rule requirements.
+
+Violates the rule requirements.
+
 
 ### More Information
 
@@ -280,7 +334,7 @@ Configure relationship cascade behaviors deliberately instead of relying on the 
 
 ### Title
 
-Every table must have a description that explains its purpose and the type of data it s...
+Have a description that explains its purpose and the type of data it stores.
 
 ### Description
 
@@ -304,13 +358,25 @@ Every table must have a description that explains its purpose and the type of da
 
 #### Good
 
-- "Stores customer product purchases. Each record represents a single product purchased by a customer. Related to the Customer and Product tables via lookup fields."
-- "Reference table for country codes. Organization-owned. Used as a lookup across multiple tables including Customer, Supplier, and Shipping Address."
+##### "Stores customer product purchases.
+
+"Stores customer product purchases. Each record represents a single product purchased by a customer. Related to the Customer and Product tables via lookup fields."
+
+##### "Reference table for country codes.
+
+"Reference table for country codes. Organization-owned. Used as a lookup across multiple tables including Customer, Supplier, and Shipping Address."
+
 
 #### Bad
 
-- "Table 1" - meaningless, provides no context.
-- No description at all - developers must inspect the table's fields and relationships to understand its purpose.
+##### "Table 1" - meaningless, provides no context.
+
+"Table 1" - meaningless, provides no context.
+
+##### No description at all - developers must inspect the table's fields and
+
+No description at all - developers must inspect the table's fields and relationships to understand its purpose.
+
 
 ### More Information
 

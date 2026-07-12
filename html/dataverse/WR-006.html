@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WR-006 - Keep HTML web resources lightweight, responsive, and well-structured</title>
+    <title>WR-006 - Keep HTML web resources lightweight, responsive, and well-structured.</title>
     <style>
         * {
             margin: 0;
@@ -176,34 +176,28 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .step-card .step-icon {
             width: 32px;
             height: 32px;
-            background: #0078d4;
-            color: #ffffff;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            border-radius: 50%;
+            background: #edf4fc;
+            border: 1px solid #d9e8f8;
         }
 
-        .step-card .step-icon svg {
+        .step-card .step-icon img {
             width: 18px;
             height: 18px;
         }
 
-        .step-card .step-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1b2a4a;
-        }
-
         .step-card .step-description {
-            font-size: 13px;
+            font-size: 14px;
             color: #555;
             line-height: 1.5;
         }
@@ -211,9 +205,10 @@
         /* Examples section */
         .examples-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 16px;
             overflow: hidden;
+            margin-bottom: 24px;
         }
 
         .example-box {
@@ -235,27 +230,28 @@
         .example-box .example-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .example-box .example-kind {
+            display: flex;
+            align-items: center;
             gap: 8px;
-            margin-bottom: 14px;
         }
 
-        .example-box .example-icon {
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .example-box.do .example-icon {
-            color: #27ae60;
-        }
-
-        .example-box.dont .example-icon {
-            color: #c0392b;
+        .example-box .example-kind-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
         }
 
         .example-box .example-label {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
         .example-box.do .example-label {
@@ -266,51 +262,87 @@
             color: #c0392b;
         }
 
-        .example-box ul {
-            list-style: none;
-            padding: 0;
+        .example-box .example-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1b2a4a;
         }
 
-        .example-box ul li {
+        .example-content {
             font-size: 13px;
             color: #333;
-            padding: 5px 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
+            line-height: 1.55;
         }
 
-        .example-box ul li .icon {
+        .example-prose-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .example-prose-row .example-prose-icon {
+            width: 18px;
+            height: 18px;
             flex-shrink: 0;
-            font-weight: 700;
-            font-size: 12px;
-            margin-top: 1px;
         }
 
-        .example-box.do ul li .icon {
-            color: #27ae60;
-        }
-
-        .example-box.dont ul li .icon {
-            color: #c0392b;
-        }
-
-        .example-box ul li .text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .example-box ul li .text code {
+        .example-content pre {
             font-family: 'Consolas', 'Courier New', monospace;
-            font-size: 11px;
-            font-weight: 600;
-            word-break: break-all;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            background: #ffffff;
+            border: 1px solid #d8dee8;
+            border-radius: 6px;
+            padding: 10px;
+            color: #1f2a44;
         }
 
-        .example-box ul li .text .reason {
-            font-size: 11px;
-            color: #777;
-            font-style: italic;
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1b2a4a;
+            margin-bottom: 12px;
+        }
+
+        .info-card {
+            margin-top: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .section-header-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .references-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .references-list li {
+            margin-bottom: 6px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 20px;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -322,7 +354,7 @@
             <div class="header-subtitle">Web Resources / dataverse</div>
             <div class="title-row">
                 <a href="#"><span class="rule-id">WR-006</span></a>
-                <a href="#"><span class="rule-title">Keep HTML web resources lightweight, responsive, and well-structured</span></a>
+                <a href="#"><span class="rule-title">Keep HTML web resources lightweight, responsive, and well-structured.</span></a>
             </div>
         </div>
 
@@ -344,40 +376,45 @@
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">1</div>
-                        <div class="step-title">Guideline 1</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/lightbulb.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Always include a proper <!DOCTYPE html> declaration, a <html lang="..."> attribute, and <meta charset="utf-8">.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">2</div>
-                        <div class="step-title">Guideline 2</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/circle-alert.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Keep the HTML structure minimal - avoid unnecessary wrapper elements and deeply nested DOM trees.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">3</div>
-                        <div class="step-title">Guideline 3</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/folder-open.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Use responsive design techniques (relative units, media queries, or a lightweight CSS framework) so the resource renders correctly at different sizes.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">4</div>
-                        <div class="step-title">Guideline 4</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/code-xml.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Load JavaScript and CSS from separate web resource files rather than inlining them in the HTML.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">5</div>
-                        <div class="step-title">Guideline 5</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/check.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Consider accessibility: use semantic HTML elements, provide alt attributes on images, and ensure sufficient color contrast.</div>
                 </div>
@@ -389,32 +426,36 @@
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">1</div>
-                        <div class="step-title">Rationale 1</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/lightbulb.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">A proper doctype and character set declaration ensure consistent rendering across all supported browsers.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">2</div>
-                        <div class="step-title">Rationale 2</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/folder-open.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">HTML web resources are often displayed inside iframes on forms and dashboards. Excessive DOM complexity increases rendering time within the already constrained iframe.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">3</div>
-                        <div class="step-title">Rationale 3</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/users.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Users may resize the form pane or access it from different screen sizes. Responsive design prevents clipped or broken layouts.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">4</div>
-                        <div class="step-title">Rationale 4</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/check.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Separating concerns (HTML, CSS, JS) improves cacheability and makes individual files easier to maintain and update independently.</div>
                 </div>
@@ -422,19 +463,20 @@
             </div>
 
             <!-- Examples -->
+            <div class="section-title">Examples</div>
             <div class="examples-grid">
+                
                 <div class="example-box do">
                     <div class="example-header">
-                        <span class="example-icon">&#10003;</span>
-                        <span class="example-label">Do</span>
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">Compliant code example</div>
                     </div>
-                    <ul>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code><!DOCTYPE html>
+                        <pre><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -451,27 +493,24 @@
     </main>
     <script src="contoso_/js/dashboard/main.js"></script>
 </body>
-</html></code>
-                                
-                                
-                                <span class="reason">Language: html</span>
-                            </span>
-                        </li>
+</html></pre>
                         
-                    </ul>
+                    </div>
                 </div>
+                
+
+                
                 <div class="example-box dont">
                     <div class="example-header">
-                        <span class="example-icon">&#10007;</span>
-                        <span class="example-label">Don't</span>
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">Non-compliant code example</div>
                     </div>
-                    <ul>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code><html>
+                        <pre><html>
 <body>
 <script>
     // Hundreds of lines of inline JavaScript
@@ -481,27 +520,23 @@
 </style>
 <div><div><div><div><div>Deeply nested content</div></div></div></div></div>
 </body>
-</html></code>
-                                
-                                
-                                <span class="reason">Language: html</span>
-                            </span>
-                        </li>
+</html></pre>
                         
-                    </ul>
+                    </div>
                 </div>
+                
             </div>
 
             
 
             
-            <div class="step-card" style="margin-top: 24px;">
-                <div class="step-header">
-                    <div class="step-icon">i</div>
-                    <div class="step-title">More Information</div>
+            <div class="step-card info-card">
+                <div class="section-header">
+                    <img class="section-header-icon" src="../img/icons/info.svg" alt="More information" />
+                    <div class="section-title" style="margin-bottom: 0;">More Information</div>
                 </div>
                 <div class="step-description">
-                    <ul>
+                    <ul class="references-list">
                         
                         <li><a href="https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/webpage-html-web-resources" target="_blank" rel="noopener noreferrer">Webpage (HTML) web resources - Microsoft Learn</a></li>
                         

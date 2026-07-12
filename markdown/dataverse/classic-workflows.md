@@ -6,7 +6,7 @@ Good practices for Dataverse Classic Workflows and Actions.
 
 ### Title
 
-Workflow and Action names must follow the pattern: ` [App Prefix] - [Table Schema Name]...
+Follow the pattern: [App Prefix]
 
 ### Description
 
@@ -45,17 +45,41 @@ Workflow and Action names must follow the pattern: ` [App Prefix] - [Table Schem
 
 #### Good
 
-- CRM - Contact - NEWMOD - Send Notifications
-- CRM - Account - MOD - Validations
-- OMS - Order - MOD - Move Out of Notice Wait Period
-- OMS - Product - CHD - Set Reference Number
-- CRM - CaseBPF - MOD - Set Status
-- OMS - CustomerRequest - DMD - Cancel Record
+##### CRM - Contact - NEWMOD - Send Notifications
+
+Value: CRM - Contact - NEWMOD - Send Notifications
+
+##### CRM - Account - MOD - Validations
+
+Value: CRM - Account - MOD - Validations
+
+##### OMS - Order - MOD - Move Out of Notice Wait Period
+
+Value: OMS - Order - MOD - Move Out of Notice Wait Period
+
+##### OMS - Product - CHD - Set Reference Number
+
+Value: OMS - Product - CHD - Set Reference Number
+
+##### CRM - CaseBPF - MOD - Set Status
+
+Value: CRM - CaseBPF - MOD - Set Status
+
+##### OMS - CustomerRequest - DMD - Cancel Record
+
+Value: OMS - CustomerRequest - DMD - Cancel Record
+
 
 #### Bad
 
-- Send Notifications - no prefix, no table name, no event; impossible to identify at a glance.
-- Contact - CreateUpdate - Send Notifications - missing the app prefix; uses long event name instead of a short code.
+##### Send Notifications - no prefix, no table name, no event; impossible to identify
+
+Send Notifications - no prefix, no table name, no event; impossible to identify at a glance.
+
+##### Contact - CreateUpdate - Send Notifications - missing the app prefix; uses long
+
+Contact - CreateUpdate - Send Notifications - missing the app prefix; uses long event name instead of a short code.
+
 
 ### More Information
 
@@ -65,7 +89,7 @@ Workflow and Action names must follow the pattern: ` [App Prefix] - [Table Schem
 
 ### Title
 
-All workflows and actions must have a description
+Have a description.
 
 ### Description
 
@@ -90,14 +114,29 @@ All workflows and actions must have a description. The description should summar
 
 #### Good
 
-- "Triggered when a Contact record is created or updated. Sends an email notification to the account manager with the updated contact details. Calls the CRM - Contact - CHD - Send Notification Email child workflow."
-- "Runs on demand. Cancels the selected Customer Request record and updates all related Order records to Cancelled status. Part of the Customer Request Lifecycle process."
+##### "Triggered when a Contact record is created or updated.
+
+"Triggered when a Contact record is created or updated. Sends an email notification to the account manager with the updated contact details. Calls the CRM - Contact - CHD - Send Notification Email child workflow."
+
+##### "Runs on demand.
+
+"Runs on demand. Cancels the selected Customer Request record and updates all related Order records to Cancelled status. Part of the Customer Request Lifecycle process."
+
 
 #### Bad
 
-- "My workflow" - meaningless, provides no context.
-- "Handles stuff" - vague, no useful information.
-- No description at all.
+##### "My workflow" - meaningless, provides no context.
+
+"My workflow" - meaningless, provides no context.
+
+##### "Handles stuff" - vague, no useful information.
+
+"Handles stuff" - vague, no useful information.
+
+##### No description at all.
+
+No description at all.
+
 
 ### More Information
 
@@ -107,7 +146,7 @@ All workflows and actions must have a description. The description should summar
 
 ### Title
 
-Set the workflow scope to the narrowest necessary level
+Set the workflow scope to the narrowest necessary level.
 
 ### Description
 
@@ -130,12 +169,21 @@ Set the workflow scope to the narrowest necessary level.
 
 #### Good
 
-- A workflow that sends a notification to the record owner when a Case is updated, scoped to Organization because all case owners need the notification.
-- A workflow that generates a report for a specific business unit's records, scoped to Business Unit.
+##### A workflow that sends a notification to the record owner when a Case is
+
+A workflow that sends a notification to the record owner when a Case is updated, scoped to Organization because all case owners need the notification.
+
+##### A workflow that generates a report for a specific business unit's records
+
+A workflow that generates a report for a specific business unit's records, scoped to Business Unit.
+
 
 #### Bad
 
-- A workflow scoped to Organization that only applies to a specific team's records, triggering unnecessarily for every user in the system.
+##### A workflow scoped to Organization that only applies to a specific team's
+
+A workflow scoped to Organization that only applies to a specific team's records, triggering unnecessarily for every user in the system.
+
 
 ### More Information
 
@@ -145,7 +193,7 @@ Set the workflow scope to the narrowest necessary level.
 
 ### Title
 
-Assign workflow ownership to a dedicated service account rather than a named user account
+Assign workflow ownership to a dedicated service account rather than a named
 
 ### Description
 
@@ -169,12 +217,21 @@ Assign workflow ownership to a dedicated service account rather than a named use
 
 #### Good
 
-- All production workflows owned by a service account svc_workflow@contoso.com with the appropriate security roles.
+##### All production workflows owned by a service account svc_workflow@contoso.com
+
+All production workflows owned by a service account svc_workflow@contoso.com with the appropriate security roles.
+
 
 #### Bad
 
-- A workflow owned by john.smith@contoso.com - when John leaves the organization, the workflow stops running and must be manually reassigned.
-- Multiple workflows owned by different individual users, making it difficult to track and maintain ownership.
+##### A workflow owned by john.smith@contoso.com - when John leaves the organization
+
+A workflow owned by john.smith@contoso.com - when John leaves the organization, the workflow stops running and must be manually reassigned.
+
+##### Multiple workflows owned by different individual users, making it difficult to
+
+Multiple workflows owned by different individual users, making it difficult to track and maintain ownership.
+
 
 ### More Information
 
@@ -184,7 +241,7 @@ Assign workflow ownership to a dedicated service account rather than a named use
 
 ### Title
 
-Prefer asynchronous (background) workflows over real-time (synchronous) workflows unles...
+Prefer asynchronous (background) workflows over real-time (synchronous)
 
 ### Description
 
@@ -208,13 +265,25 @@ Prefer asynchronous (background) workflows over real-time (synchronous) workflow
 
 #### Good
 
-- An asynchronous workflow that sends a welcome email when a new Contact is created. The user saves the Contact and continues working immediately.
-- A real-time workflow that validates that the Discount Percentage field does not exceed 50% on Order save, canceling the operation if it does.
+##### An asynchronous workflow that sends a welcome email when a new Contact is
+
+An asynchronous workflow that sends a welcome email when a new Contact is created. The user saves the Contact and continues working immediately.
+
+##### A real-time workflow that validates that the Discount Percentage field does not
+
+A real-time workflow that validates that the Discount Percentage field does not exceed 50% on Order save, canceling the operation if it does.
+
 
 #### Bad
 
-- A real-time workflow that updates 200 related Order Line Items when an Order status changes, causing the user to wait 30+ seconds.
-- A real-time workflow that calls an external REST API to validate an address, adding network latency to every save operation.
+##### A real-time workflow that updates 200 related Order Line Items when an Order
+
+A real-time workflow that updates 200 related Order Line Items when an Order status changes, causing the user to wait 30+ seconds.
+
+##### A real-time workflow that calls an external REST API to validate an address
+
+A real-time workflow that calls an external REST API to validate an address, adding network latency to every save operation.
+
 
 ### More Information
 
@@ -224,7 +293,7 @@ Prefer asynchronous (background) workflows over real-time (synchronous) workflow
 
 ### Title
 
-Use child workflows to encapsulate reusable logic and keep parent workflows manageable
+Use child workflows to encapsulate reusable logic and keep parent workflows
 
 ### Description
 
@@ -249,12 +318,21 @@ Use child workflows to encapsulate reusable logic and keep parent workflows mana
 
 #### Good
 
-- A child workflow CRM - Contact - CHD - Send Welcome Email that handles all welcome email logic. Called by both the CRM - Contact - NEW - Onboarding and CRM - Lead - MOD - Qualification parent workflows.
+##### A child workflow CRM - Contact - CHD - Send Welcome Email that handles all
+
+A child workflow CRM - Contact - CHD - Send Welcome Email that handles all welcome email logic. Called by both the CRM - Contact - NEW - Onboarding and CRM - Lead - MOD - Qualification parent workflows.
+
 
 #### Bad
 
-- The same email-sending logic duplicated in 5 different workflows. When the email template changes, all 5 must be updated manually.
-- A single monolithic workflow with 30+ steps handling onboarding, email notifications, field updates, and audit logging all in one sequence.
+##### The same email-sending logic duplicated in 5 different workflows.
+
+The same email-sending logic duplicated in 5 different workflows. When the email template changes, all 5 must be updated manually.
+
+##### A single monolithic workflow with 30+ steps handling onboarding, email
+
+A single monolithic workflow with 30+ steps handling onboarding, email notifications, field updates, and audit logging all in one sequence.
+
 
 ### More Information
 
@@ -264,7 +342,7 @@ Use child workflows to encapsulate reusable logic and keep parent workflows mana
 
 ### Title
 
-Implement error handling and early termination in workflows
+Implement error handling and early termination in workflows.
 
 ### Description
 
@@ -288,7 +366,8 @@ Implement error handling and early termination in workflows.
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```Plain Text
 Step 1: Check Condition → Is Status = Active?
   If No  → Stop Workflow (Cancelled: "Record is not active. Workflow skipped.")
@@ -299,14 +378,17 @@ Step 2: Check Condition → Is Email populated?
 Step 3: Update Record → Set csp_workflow_status = "Completed"
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```Plain Text
 Step 1: Send Email  → Fails because Email field is empty
                     → Workflow shows as "Failed" in System Jobs
                     → No indication on the record of what went wrong
 ```
+
 
 ### More Information
 

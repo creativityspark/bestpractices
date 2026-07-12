@@ -2,29 +2,53 @@ topic: Workflows
 description: Good practices for Dataverse Classic Workflows and Actions.
 rules:
 - id: WF-001
-  title: 'Workflow and Action names must follow the pattern: ` [App Prefix] - [Table Schema Name]...'
+  title: 'Follow the pattern: [App Prefix]'
   description: 'Workflow and Action names must follow the pattern: ` [App Prefix] - [Table Schema Name] - [Event Name Code(s)] - [Action/Purpose] `'
   guidelines:
-  - 'App Prefix: A short prefix (3 letters) that identifies the application the workflow belongs to. This helps group workflows from the same application together in any list.'
-  - 'Table Schema Name: The name of the main table triggering this Workflow or Action.'
-  - 'Event Name Code(s): A short code identifying the triggering event. Combine codes when the workflow triggers on multiple events (e.g., NEWMOD for create and update).'
-  - 'Action/Purpose: Brief text describing the purpose or the action taken by the Workflow or Action.'
+  - text: 'App Prefix: A short prefix (3 letters) that identifies the application the workflow belongs to. This helps group workflows from the same application together in any list.'
+    icon: icons/pencil.svg
+  - text: 'Table Schema Name: The name of the main table triggering this Workflow or Action.'
+    icon: icons/database.svg
+  - text: 'Event Name Code(s): A short code identifying the triggering event. Combine codes when the workflow triggers on multiple events (e.g., NEWMOD for create and update).'
+    icon: icons/workflow.svg
+  - text: 'Action/Purpose: Brief text describing the purpose or the action taken by the Workflow or Action.'
+    icon: icons/lightbulb.svg
   rationale:
-  - Having naming conventions in place makes the task of choosing names easier.
-  - Including the app prefix at the beginning groups all workflows belonging to the same application together when sorted alphabetically.
-  - Including the table name makes it easier to identify and select the workflows in the UI.
-  - Using short event name codes keeps the name concise while making the trigger immediately recognizable, and is consistent with the Power Automate flow naming conventions (PA-001).
+  - text: Having naming conventions in place makes the task of choosing names easier.
+    icon: icons/pencil.svg
+  - text: Including the app prefix at the beginning groups all workflows belonging to the same application together when sorted alphabetically.
+    icon: icons/workflow.svg
+  - text: Including the table name makes it easier to identify and select the workflows in the UI.
+    icon: icons/database.svg
+  - text: Using short event name codes keeps the name concise while making the trigger immediately recognizable, and is consistent with the Power Automate flow naming conventions (PA-001).
+    icon: icons/code-xml.svg
   examples:
     good:
-    - value: CRM - Contact - NEWMOD - Send Notifications
-    - value: CRM - Account - MOD - Validations
-    - value: OMS - Order - MOD - Move Out of Notice Wait Period
-    - value: OMS - Product - CHD - Set Reference Number
-    - value: CRM - CaseBPF - MOD - Set Status
-    - value: OMS - CustomerRequest - DMD - Cancel Record
+    - title: CRM - Contact - NEWMOD - Send Notifications
+      text: 'Value: CRM - Contact - NEWMOD - Send Notifications'
+      icon: icons/lightbulb.svg
+    - title: CRM - Account - MOD - Validations
+      text: 'Value: CRM - Account - MOD - Validations'
+      icon: icons/check.svg
+    - title: OMS - Order - MOD - Move Out of Notice Wait Period
+      text: 'Value: OMS - Order - MOD - Move Out of Notice Wait Period'
+      icon: icons/circle-alert.svg
+    - title: OMS - Product - CHD - Set Reference Number
+      text: 'Value: OMS - Product - CHD - Set Reference Number'
+      icon: icons/link.svg
+    - title: CRM - CaseBPF - MOD - Set Status
+      text: 'Value: CRM - CaseBPF - MOD - Set Status'
+      icon: icons/settings.svg
+    - title: OMS - CustomerRequest - DMD - Cancel Record
+      text: 'Value: OMS - CustomerRequest - DMD - Cancel Record'
+      icon: icons/workflow.svg
     bad:
-    - description: Send Notifications - no prefix, no table name, no event; impossible to identify at a glance.
-    - description: Contact - CreateUpdate - Send Notifications - missing the app prefix; uses long event name instead of a short code.
+    - title: Send Notifications - no prefix, no table name, no event; impossible to identify
+      text: Send Notifications - no prefix, no table name, no event; impossible to identify at a glance.
+      icon: icons/database.svg
+    - title: Contact - CreateUpdate - Send Notifications - missing the app prefix; uses long
+      text: Contact - CreateUpdate - Send Notifications - missing the app prefix; uses long event name instead of a short code.
+      icon: icons/pencil.svg
   references:
   - title: Configure workflow stages and steps - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/configure-workflow-steps
@@ -39,129 +63,213 @@ rules:
   - name: Action/Purpose
     description: 'Action/Purpose: Brief text describing the purpose or the action taken by the Workflow or Action.'
 - id: WF-002
-  title: All workflows and actions must have a description
+  title: Have a description.
   description: All workflows and actions must have a description. The description should summarize the workflow's purpose, the business process it supports, and any important details about its behavior.
   guidelines:
-  - 'State the purpose: Explain what the workflow does in one or two sentences.'
-  - 'Mention the trigger: Briefly describe what event initiates the workflow.'
-  - 'Include business context: Reference the business process or requirement the workflow supports.'
-  - 'Note dependencies: Mention any child workflows, custom actions, or external resources the workflow relies on.'
+  - text: 'State the purpose: Explain what the workflow does in one or two sentences.'
+    icon: icons/workflow.svg
+  - text: 'Mention the trigger: Briefly describe what event initiates the workflow.'
+    icon: icons/lightbulb.svg
+  - text: 'Include business context: Reference the business process or requirement the workflow supports.'
+    icon: icons/link.svg
+  - text: 'Note dependencies: Mention any child workflows, custom actions, or external resources the workflow relies on.'
+    icon: icons/file-text.svg
   rationale:
-  - Providing a description for each workflow ensures that anyone reviewing or maintaining it can quickly understand its purpose and functionality.
-  - Descriptions help document the workflow's behavior, making it easier to troubleshoot and update in the future.
-  - Well-documented workflows improve collaboration among team members by providing clear context and reducing the learning curve for new team members.
+  - text: Providing a description for each workflow ensures that anyone reviewing or maintaining it can quickly understand its purpose and functionality.
+    icon: icons/workflow.svg
+  - text: Descriptions help document the workflow's behavior, making it easier to troubleshoot and update in the future.
+    icon: icons/file-text.svg
+  - text: Well-documented workflows improve collaboration among team members by providing clear context and reducing the learning curve for new team members.
+    icon: icons/link.svg
   examples:
     good:
-    - description: '"Triggered when a Contact record is created or updated. Sends an email notification to the account manager with the updated contact details. Calls the CRM - Contact - CHD - Send Notification Email child workflow."'
-    - description: '"Runs on demand. Cancels the selected Customer Request record and updates all related Order records to Cancelled status. Part of the Customer Request Lifecycle process."'
+    - title: '"Triggered when a Contact record is created or updated.'
+      text: '"Triggered when a Contact record is created or updated. Sends an email notification to the account manager with the updated contact details. Calls the CRM - Contact - CHD - Send Notification Email child workflow."'
+      icon: icons/workflow.svg
+    - title: '"Runs on demand.'
+      text: '"Runs on demand. Cancels the selected Customer Request record and updates all related Order records to Cancelled status. Part of the Customer Request Lifecycle process."'
+      icon: icons/lightbulb.svg
     bad:
-    - description: '"My workflow" - meaningless, provides no context.'
-    - description: '"Handles stuff" - vague, no useful information.'
-    - description: No description at all.
+    - title: '"My workflow" - meaningless, provides no context.'
+      text: '"My workflow" - meaningless, provides no context.'
+      icon: icons/check.svg
+    - title: '"Handles stuff" - vague, no useful information.'
+      text: '"Handles stuff" - vague, no useful information.'
+      icon: icons/circle-alert.svg
+    - title: No description at all.
+      text: No description at all.
+      icon: icons/file-text.svg
   references:
   - title: Configure workflow stages and steps - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/configure-workflow-steps
 - id: WF-003
-  title: Set the workflow scope to the narrowest necessary level
+  title: Set the workflow scope to the narrowest necessary level.
   description: Set the workflow scope to the narrowest necessary level.
   guidelines:
-  - Use User scope when the workflow should only run for records owned by the workflow owner.
-  - Use Business Unit scope when it should apply to all users within the same business unit.
-  - Use Organization scope only when the workflow must apply to all records across the entire organization.
+  - text: Use User scope when the workflow should only run for records owned by the workflow owner.
+    icon: icons/workflow.svg
+  - text: Use Business Unit scope when it should apply to all users within the same business unit.
+    icon: icons/users.svg
+  - text: Use Organization scope only when the workflow must apply to all records across the entire organization.
+    icon: icons/check.svg
   rationale:
-  - A narrower scope reduces the number of times the workflow is triggered, improving system performance.
-  - Overly broad scopes can cause the workflow to run on records it was never intended to process, leading to unexpected behavior.
+  - text: A narrower scope reduces the number of times the workflow is triggered, improving system performance.
+    icon: icons/workflow.svg
+  - text: Overly broad scopes can cause the workflow to run on records it was never intended to process, leading to unexpected behavior.
+    icon: icons/circle-alert.svg
   examples:
     good:
-    - description: A workflow that sends a notification to the record owner when a Case is updated, scoped to Organization because all case owners need the notification.
-    - description: A workflow that generates a report for a specific business unit's records, scoped to Business Unit.
+    - title: A workflow that sends a notification to the record owner when a Case is
+      text: A workflow that sends a notification to the record owner when a Case is updated, scoped to Organization because all case owners need the notification.
+      icon: icons/workflow.svg
+    - title: A workflow that generates a report for a specific business unit's records
+      text: A workflow that generates a report for a specific business unit's records, scoped to Business Unit.
+      icon: icons/lightbulb.svg
     bad:
-    - description: A workflow scoped to Organization that only applies to a specific team's records, triggering unnecessarily for every user in the system.
+    - title: A workflow scoped to Organization that only applies to a specific team's
+      text: A workflow scoped to Organization that only applies to a specific team's records, triggering unnecessarily for every user in the system.
+      icon: icons/users.svg
   references:
   - title: Configure workflow stages and steps - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/configure-workflow-steps
 - id: WF-004
-  title: Assign workflow ownership to a dedicated service account rather than a named user account
+  title: Assign workflow ownership to a dedicated service account rather than a named
   description: Assign workflow ownership to a dedicated service account rather than a named user account.
   guidelines:
-  - Create a dedicated service account (e.g., svc_workflow@contoso.com) to own all workflows.
-  - Ensure the service account has the appropriate security roles and remains active.
-  - Avoid assigning workflow ownership to individual users who may leave the organization or change roles.
+  - text: Create a dedicated service account (e.g., svc_workflow@contoso.com) to own all workflows.
+    icon: icons/workflow.svg
+  - text: Ensure the service account has the appropriate security roles and remains active.
+    icon: icons/shield-alert.svg
+  - text: Avoid assigning workflow ownership to individual users who may leave the organization or change roles.
+    icon: icons/users.svg
   rationale:
-  - When a named user leaves the organization or is deactivated, all workflows owned by that user stop running, potentially disrupting business processes.
-  - A dedicated service account provides a stable owner that is not affected by personnel changes.
-  - Centralizing workflow ownership under a service account makes it easier to manage permissions and audit workflow execution.
+  - text: When a named user leaves the organization or is deactivated, all workflows owned by that user stop running, potentially disrupting business processes.
+    icon: icons/pencil.svg
+  - text: A dedicated service account provides a stable owner that is not affected by personnel changes.
+    icon: icons/database.svg
+  - text: Centralizing workflow ownership under a service account makes it easier to manage permissions and audit workflow execution.
+    icon: icons/shield-alert.svg
   examples:
     good:
-    - description: All production workflows owned by a service account svc_workflow@contoso.com with the appropriate security roles.
+    - title: All production workflows owned by a service account svc_workflow@contoso.com
+      text: All production workflows owned by a service account svc_workflow@contoso.com with the appropriate security roles.
+      icon: icons/shield-alert.svg
     bad:
-    - description: A workflow owned by john.smith@contoso.com - when John leaves the organization, the workflow stops running and must be manually reassigned.
-    - description: Multiple workflows owned by different individual users, making it difficult to track and maintain ownership.
+    - title: A workflow owned by john.smith@contoso.com - when John leaves the organization
+      text: A workflow owned by john.smith@contoso.com - when John leaves the organization, the workflow stops running and must be manually reassigned.
+      icon: icons/workflow.svg
+    - title: Multiple workflows owned by different individual users, making it difficult to
+      text: Multiple workflows owned by different individual users, making it difficult to track and maintain ownership.
+      icon: icons/users.svg
   references:
   - title: Configure workflow stages and steps - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/configure-workflow-steps
 - id: WF-005
-  title: Prefer asynchronous (background) workflows over real-time (synchronous) workflows unles...
+  title: Prefer asynchronous (background) workflows over real-time (synchronous)
   description: Prefer asynchronous (background) workflows over real-time (synchronous) workflows unless immediate validation or cancellation is required.
   guidelines:
-  - Use asynchronous workflows for post-processing tasks such as sending notifications, updating related records, or logging.
-  - Use real-time workflows only when the action must happen immediately and the user must see the result before proceeding (e.g., validating data and canceling a save).
-  - Never use real-time workflows for long-running operations such as sending emails, calling external services, or processing many records.
+  - text: Use asynchronous workflows for post-processing tasks such as sending notifications, updating related records, or logging.
+    icon: icons/workflow.svg
+  - text: Use real-time workflows only when the action must happen immediately and the user must see the result before proceeding (e.g., validating data and canceling a save).
+    icon: icons/database.svg
+  - text: Never use real-time workflows for long-running operations such as sending emails, calling external services, or processing many records.
+    icon: icons/circle-alert.svg
   rationale:
-  - Asynchronous workflows run in the background and do not block the user interface, providing a better user experience.
-  - Real-time workflows execute synchronously - the user must wait for the workflow to complete before the form responds, which can cause timeouts and frustration.
-  - Long-running operations in real-time workflows risk hitting the 2-minute execution timeout, causing the entire transaction to fail.
+  - text: Asynchronous workflows run in the background and do not block the user interface, providing a better user experience.
+    icon: icons/workflow.svg
+  - text: Real-time workflows execute synchronously - the user must wait for the workflow to complete before the form responds, which can cause timeouts and frustration.
+    icon: icons/users.svg
+  - text: Long-running operations in real-time workflows risk hitting the 2-minute execution timeout, causing the entire transaction to fail.
+    icon: icons/circle-alert.svg
   examples:
     good:
-    - description: An asynchronous workflow that sends a welcome email when a new Contact is created. The user saves the Contact and continues working immediately.
-    - description: A real-time workflow that validates that the Discount Percentage field does not exceed 50% on Order save, canceling the operation if it does.
+    - title: An asynchronous workflow that sends a welcome email when a new Contact is
+      text: An asynchronous workflow that sends a welcome email when a new Contact is created. The user saves the Contact and continues working immediately.
+      icon: icons/workflow.svg
+    - title: A real-time workflow that validates that the Discount Percentage field does not
+      text: A real-time workflow that validates that the Discount Percentage field does not exceed 50% on Order save, canceling the operation if it does.
+      icon: icons/database.svg
     bad:
-    - description: A real-time workflow that updates 200 related Order Line Items when an Order status changes, causing the user to wait 30+ seconds.
-    - description: A real-time workflow that calls an external REST API to validate an address, adding network latency to every save operation.
+    - title: A real-time workflow that updates 200 related Order Line Items when an Order
+      text: A real-time workflow that updates 200 related Order Line Items when an Order status changes, causing the user to wait 30+ seconds.
+      icon: icons/users.svg
+    - title: A real-time workflow that calls an external REST API to validate an address
+      text: A real-time workflow that calls an external REST API to validate an address, adding network latency to every save operation.
+      icon: icons/check.svg
   references:
   - title: Real-time workflows vs background workflows - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/overview-realtime-workflows
 - id: WF-006
-  title: Use child workflows to encapsulate reusable logic and keep parent workflows manageable
+  title: Use child workflows to encapsulate reusable logic and keep parent workflows
   description: Use child workflows to encapsulate reusable logic and keep parent workflows manageable.
   guidelines:
-  - Extract repeated logic into child workflows that can be called from multiple parent workflows.
-  - Design child workflows to be self-contained - they should not rely on assumptions about the calling context.
-  - Keep parent workflows focused on orchestration and decision-making, delegating specific actions to child workflows.
-  - Use the CHD event code in the name to clearly identify child workflows (see WF-001).
+  - text: Extract repeated logic into child workflows that can be called from multiple parent workflows.
+    icon: icons/workflow.svg
+  - text: Design child workflows to be self-contained - they should not rely on assumptions about the calling context.
+    icon: icons/lightbulb.svg
+  - text: Keep parent workflows focused on orchestration and decision-making, delegating specific actions to child workflows.
+    icon: icons/check.svg
+  - text: Use the CHD event code in the name to clearly identify child workflows (see WF-001).
+    icon: icons/pencil.svg
   rationale:
-  - Reusable child workflows reduce duplication. When the logic needs to change, it only needs to be updated in one place.
-  - Breaking complex workflows into smaller, focused child workflows makes them easier to understand, test, and debug.
-  - Self-contained child workflows can be tested independently, improving reliability.
+  - text: Reusable child workflows reduce duplication. When the logic needs to change, it only needs to be updated in one place.
+    icon: icons/workflow.svg
+  - text: Breaking complex workflows into smaller, focused child workflows makes them easier to understand, test, and debug.
+    icon: icons/check.svg
+  - text: Self-contained child workflows can be tested independently, improving reliability.
+    icon: icons/lightbulb.svg
   examples:
     good:
-    - description: A child workflow CRM - Contact - CHD - Send Welcome Email that handles all welcome email logic. Called by both the CRM - Contact - NEW - Onboarding and CRM - Lead - MOD - Qualification parent workflows.
+    - title: A child workflow CRM - Contact - CHD - Send Welcome Email that handles all
+      text: A child workflow CRM - Contact - CHD - Send Welcome Email that handles all welcome email logic. Called by both the CRM - Contact - NEW - Onboarding and CRM - Lead - MOD - Qualification parent workflows.
+      icon: icons/workflow.svg
     bad:
-    - description: The same email-sending logic duplicated in 5 different workflows. When the email template changes, all 5 must be updated manually.
-    - description: A single monolithic workflow with 30+ steps handling onboarding, email notifications, field updates, and audit logging all in one sequence.
+    - title: The same email-sending logic duplicated in 5 different workflows.
+      text: The same email-sending logic duplicated in 5 different workflows. When the email template changes, all 5 must be updated manually.
+      icon: icons/check.svg
+    - title: A single monolithic workflow with 30+ steps handling onboarding, email
+      text: A single monolithic workflow with 30+ steps handling onboarding, email notifications, field updates, and audit logging all in one sequence.
+      icon: icons/database.svg
   references:
   - title: Configure child workflows - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/configure-workflow-steps#child-workflows
 - id: WF-007
-  title: Implement error handling and early termination in workflows
+  title: Implement error handling and early termination in workflows.
   description: Implement error handling and early termination in workflows.
   guidelines:
-  - Add Check Condition steps at the beginning of the workflow to validate preconditions and terminate early if they are not met.
-  - Use the Stop Workflow step with a status of Cancelled and a descriptive message when a workflow cannot or should not continue.
-  - For critical business workflows, consider updating a custom status field on the record to indicate success or failure for monitoring purposes.
+  - text: Add Check Condition steps at the beginning of the workflow to validate preconditions and terminate early if they are not met.
+    icon: icons/workflow.svg
+  - text: Use the Stop Workflow step with a status of Cancelled and a descriptive message when a workflow cannot or should not continue.
+    icon: icons/code-xml.svg
+  - text: For critical business workflows, consider updating a custom status field on the record to indicate success or failure for monitoring purposes.
+    icon: icons/database.svg
   rationale:
-  - Without precondition checks, workflows may attempt to process records in an invalid state, leading to errors or corrupted data.
-  - Terminating early with a clear status message makes it much easier to diagnose issues in the System Jobs view.
-  - Custom status fields on records provide visibility to users and administrators about whether automated processing completed successfully, without requiring access to System Jobs.
+  - text: Without precondition checks, workflows may attempt to process records in an invalid state, leading to errors or corrupted data.
+    icon: icons/database.svg
+  - text: Terminating early with a clear status message makes it much easier to diagnose issues in the System Jobs view.
+    icon: icons/eye.svg
+  - text: Custom status fields on records provide visibility to users and administrators about whether automated processing completed successfully, without requiring access to System Jobs.
+    icon: icons/workflow.svg
   examples:
     good:
-    - description: Good example code snippet.
-      code: "Step 1: Check Condition \u2192 Is Status = Active?\n  If No  \u2192 Stop Workflow (Cancelled: \"Record is not active. Workflow skipped.\")\n  If Yes \u2192 Continue with processing...\nStep 2: Check Condition \u2192 Is Email populated?\n  If No  \u2192 Stop Workflow (Cancelled: \"Email is missing. Cannot send notification.\")\n  If Yes \u2192 Send Email\nStep 3: Update Record \u2192 Set csp_workflow_status = \"Completed\""
+    - title: Compliant code example
+      code: |-
+        Step 1: Check Condition → Is Status = Active?
+          If No  → Stop Workflow (Cancelled: "Record is not active. Workflow skipped.")
+          If Yes → Continue with processing...
+        Step 2: Check Condition → Is Email populated?
+          If No  → Stop Workflow (Cancelled: "Email is missing. Cannot send notification.")
+          If Yes → Send Email
+        Step 3: Update Record → Set csp_workflow_status = "Completed"
       language: Plain Text
     bad:
-    - description: Bad example code snippet.
-      code: "Step 1: Send Email  \u2192 Fails because Email field is empty\n                    \u2192 Workflow shows as \"Failed\" in System Jobs\n                    \u2192 No indication on the record of what went wrong"
+    - title: Non-compliant code example
+      code: |-
+        Step 1: Send Email  → Fails because Email field is empty
+                            → Workflow shows as "Failed" in System Jobs
+                            → No indication on the record of what went wrong
       language: Plain Text
   references:
   - title: Workflow stages and steps - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/configure-workflow-steps
+

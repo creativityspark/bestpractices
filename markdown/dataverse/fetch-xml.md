@@ -6,7 +6,7 @@ Good practices for Dataverse Fetch XML queries.
 
 ### Title
 
-Always specify the columns you need explicitly using <attribute /> elements
+Always specify the columns you need explicitly using <attribute /> elements.
 
 ### Description
 
@@ -28,7 +28,8 @@ Always specify the columns you need explicitly using <attribute /> elements. Nev
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```xml
 <fetch>
   <entity name="account">
@@ -39,9 +40,11 @@ Good example code snippet.
 </fetch>
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```xml
 <fetch>
   <entity name="account">
@@ -49,6 +52,7 @@ Bad example code snippet.
   </entity>
 </fetch>
 ```
+
 
 ### More Information
 
@@ -59,7 +63,7 @@ Bad example code snippet.
 
 ### Title
 
-Use <filter> and <condition> elements to reduce the result set on the server
+Use <filter> and <condition> elements to reduce the result set on the server.
 
 ### Description
 
@@ -83,7 +87,8 @@ Use <filter> and <condition> elements to reduce the result set on the server. Ne
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```xml
 <fetch>
   <entity name="contact">
@@ -97,9 +102,11 @@ Good example code snippet.
 </fetch>
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```xml
 <fetch>
   <entity name="contact">
@@ -107,11 +114,14 @@ Bad example code snippet.
   </entity>
 </fetch>
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```csharp
 // Anti-pattern: filtering thousands of records in memory
 var recentContacts = allContacts.Where(c => c.CreatedOn > DateTime.Now.AddDays(-30));
 ```
+
 
 ### More Information
 
@@ -122,7 +132,7 @@ var recentContacts = allContacts.Where(c => c.CreatedOn > DateTime.Now.AddDays(-
 
 ### Title
 
-Use paging to retrieve large data sets in manageable chunks
+Use paging to retrieve large data sets in manageable chunks.
 
 ### Description
 
@@ -146,7 +156,8 @@ Use paging to retrieve large data sets in manageable chunks. Never attempt to fe
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```xml
 <fetch page="1" count="500">
   <entity name="account">
@@ -157,7 +168,9 @@ Good example code snippet.
   </entity>
 </fetch>
 ```
-Good example code snippet.
+
+##### Compliant code example
+
 ```xml
 <fetch page="2" count="500" paging-cookie="&lt;cookie page=&quot;1&quot;&gt;...&lt;/cookie&gt;">
   <entity name="account">
@@ -169,9 +182,11 @@ Good example code snippet.
 </fetch>
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```xml
 <fetch>
   <entity name="account">
@@ -179,6 +194,7 @@ Bad example code snippet.
   </entity>
 </fetch>
 ```
+
 
 ### More Information
 
@@ -188,7 +204,7 @@ Bad example code snippet.
 
 ### Title
 
-Keep <link-entity> joins to a minimum
+Keep <link-entity> joins to a minimum.
 
 ### Description
 
@@ -212,7 +228,8 @@ Keep <link-entity> joins to a minimum. Only join tables that are necessary for t
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```xml
 <fetch>
   <entity name="contact">
@@ -228,9 +245,11 @@ Good example code snippet.
 </fetch>
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```xml
 <fetch>
   <entity name="contact">
@@ -251,6 +270,7 @@ Bad example code snippet.
 </fetch>
 ```
 
+
 ### More Information
 
 1. [Join tables using FetchXml - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/join-tables)
@@ -259,7 +279,7 @@ Bad example code snippet.
 
 ### Title
 
-Choose the appropriate link-type for <link-entity> based on the data you need
+Choose the appropriate link-type for <link-entity> based on the data you need.
 
 ### Description
 
@@ -283,7 +303,8 @@ Choose the appropriate link-type for <link-entity> based on the data you need.
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```xml
 <fetch>
   <entity name="account">
@@ -294,7 +315,9 @@ Good example code snippet.
   </entity>
 </fetch>
 ```
-Good example code snippet.
+
+##### Compliant code example
+
 ```xml
 <fetch>
   <entity name="account">
@@ -306,9 +329,11 @@ Good example code snippet.
 </fetch>
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```xml
 <!-- This silently excludes accounts with no contacts -->
 <fetch>
@@ -321,6 +346,7 @@ Bad example code snippet.
 </fetch>
 ```
 
+
 ### More Information
 
 1. [Join tables using FetchXml - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/join-tables)
@@ -329,7 +355,7 @@ Bad example code snippet.
 
 ### Title
 
-Use the no-lock attribute for read-only or reporting queries where real-time data accur...
+Use the no-lock attribute for read-only or reporting queries where real-time
 
 ### Description
 
@@ -352,7 +378,8 @@ Use the no-lock attribute for read-only or reporting queries where real-time dat
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```xml
 <fetch no-lock="true">
   <entity name="opportunity">
@@ -365,9 +392,11 @@ Good example code snippet.
 </fetch>
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```xml
 <!-- Dangerous: reading uncommitted data before updating records -->
 <fetch no-lock="true">
@@ -380,6 +409,7 @@ Bad example code snippet.
 </fetch>
 ```
 
+
 ### More Information
 
 1. [FetchXml reference - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/reference/)
@@ -389,7 +419,7 @@ Bad example code snippet.
 
 ### Title
 
-Prefer the eq and in operators over like for filter conditions
+Prefer the eq and in operators over like for filter conditions.
 
 ### Description
 
@@ -413,7 +443,8 @@ Prefer the eq and in operators over like for filter conditions. Use wildcard ope
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```xml
 <filter type="and">
   <condition attribute="statecode" operator="eq" value="0" />
@@ -425,21 +456,27 @@ Good example code snippet.
 </filter>
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```xml
 <filter type="and">
   <condition attribute="name" operator="like" value="%Contoso%" />
 </filter>
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```xml
 <filter type="and">
   <condition attribute="name" operator="begins-with" value="Contoso" />
 </filter>
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```xml
 <!-- Verbose and harder to maintain -->
 <filter type="or">
@@ -449,6 +486,7 @@ Bad example code snippet.
 </filter>
 ```
 
+
 ### More Information
 
 1. [Filter rows using FetchXml - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/filter-rows)
@@ -457,7 +495,7 @@ Bad example code snippet.
 
 ### Title
 
-Use the top attribute on the <fetch> element when you only need a limited number of rec...
+Use the top attribute on the <fetch> element when you only need a limited number
 
 ### Description
 
@@ -480,7 +518,8 @@ Use the top attribute on the <fetch> element when you only need a limited number
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```xml
 <fetch top="10">
   <entity name="salesorder">
@@ -491,9 +530,11 @@ Good example code snippet.
 </fetch>
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```xml
 <fetch>
   <entity name="salesorder">
@@ -504,6 +545,7 @@ Bad example code snippet.
 </fetch>
 ```
 
+
 ### More Information
 
 1. [FetchXml reference: fetch element - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/fetchxml/reference/fetch)
@@ -513,7 +555,7 @@ Bad example code snippet.
 
 ### Title
 
-Use aggregate and grouping queries carefully
+Use aggregate and grouping queries carefully.
 
 ### Description
 
@@ -537,7 +579,8 @@ Use aggregate and grouping queries carefully. Avoid unnecessary aggregations and
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```xml
 <fetch aggregate="true">
   <entity name="opportunity">
@@ -550,9 +593,11 @@ Good example code snippet.
 </fetch>
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```xml
 <fetch aggregate="true">
   <entity name="activitypointer">
@@ -560,6 +605,7 @@ Bad example code snippet.
   </entity>
 </fetch>
 ```
+
 
 ### More Information
 
@@ -569,7 +615,7 @@ Bad example code snippet.
 
 ### Title
 
-Build FetchXML queries programmatically using the SDK QueryExpression-to-FetchXML conve...
+Build FetchXML queries programmatically using the SDK
 
 ### Description
 
@@ -593,7 +639,8 @@ Build FetchXML queries programmatically using the SDK QueryExpression-to-FetchXM
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```csharp
 var query = new QueryExpression("account");
 query.ColumnSet = new ColumnSet("name", "accountnumber");
@@ -604,9 +651,11 @@ var response = (QueryExpressionToFetchXmlResponse)service.Execute(request);
 string fetchXml = response.FetchXml;
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```csharp
 // Dangerous: user input is injected directly into the query
 string fetchXml = @"<fetch>
@@ -618,6 +667,7 @@ string fetchXml = @"<fetch>
   </entity>
 </fetch>";
 ```
+
 
 ### More Information
 

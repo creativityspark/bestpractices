@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FRM-004 - When using business rules on forms, set the scope appropriately and avoid duplicating l...</title>
+    <title>FRM-004 - When using business rules on forms, set the scope appropriately and avoid</title>
     <style>
         * {
             margin: 0;
@@ -176,34 +176,28 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .step-card .step-icon {
             width: 32px;
             height: 32px;
-            background: #0078d4;
-            color: #ffffff;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            border-radius: 50%;
+            background: #edf4fc;
+            border: 1px solid #d9e8f8;
         }
 
-        .step-card .step-icon svg {
+        .step-card .step-icon img {
             width: 18px;
             height: 18px;
         }
 
-        .step-card .step-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1b2a4a;
-        }
-
         .step-card .step-description {
-            font-size: 13px;
+            font-size: 14px;
             color: #555;
             line-height: 1.5;
         }
@@ -211,9 +205,10 @@
         /* Examples section */
         .examples-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 16px;
             overflow: hidden;
+            margin-bottom: 24px;
         }
 
         .example-box {
@@ -235,27 +230,28 @@
         .example-box .example-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .example-box .example-kind {
+            display: flex;
+            align-items: center;
             gap: 8px;
-            margin-bottom: 14px;
         }
 
-        .example-box .example-icon {
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .example-box.do .example-icon {
-            color: #27ae60;
-        }
-
-        .example-box.dont .example-icon {
-            color: #c0392b;
+        .example-box .example-kind-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
         }
 
         .example-box .example-label {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
         .example-box.do .example-label {
@@ -266,51 +262,87 @@
             color: #c0392b;
         }
 
-        .example-box ul {
-            list-style: none;
-            padding: 0;
+        .example-box .example-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1b2a4a;
         }
 
-        .example-box ul li {
+        .example-content {
             font-size: 13px;
             color: #333;
-            padding: 5px 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
+            line-height: 1.55;
         }
 
-        .example-box ul li .icon {
+        .example-prose-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .example-prose-row .example-prose-icon {
+            width: 18px;
+            height: 18px;
             flex-shrink: 0;
-            font-weight: 700;
-            font-size: 12px;
-            margin-top: 1px;
         }
 
-        .example-box.do ul li .icon {
-            color: #27ae60;
-        }
-
-        .example-box.dont ul li .icon {
-            color: #c0392b;
-        }
-
-        .example-box ul li .text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .example-box ul li .text code {
+        .example-content pre {
             font-family: 'Consolas', 'Courier New', monospace;
-            font-size: 11px;
-            font-weight: 600;
-            word-break: break-all;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            background: #ffffff;
+            border: 1px solid #d8dee8;
+            border-radius: 6px;
+            padding: 10px;
+            color: #1f2a44;
         }
 
-        .example-box ul li .text .reason {
-            font-size: 11px;
-            color: #777;
-            font-style: italic;
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1b2a4a;
+            margin-bottom: 12px;
+        }
+
+        .info-card {
+            margin-top: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .section-header-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .references-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .references-list li {
+            margin-bottom: 6px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 20px;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -322,7 +354,7 @@
             <div class="header-subtitle">Forms / dataverse</div>
             <div class="title-row">
                 <a href="#"><span class="rule-id">FRM-004</span></a>
-                <a href="#"><span class="rule-title">When using business rules on forms, set the scope appropriately and avoid duplicating l...</span></a>
+                <a href="#"><span class="rule-title">When using business rules on forms, set the scope appropriately and avoid</span></a>
             </div>
         </div>
 
@@ -344,32 +376,36 @@
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">1</div>
-                        <div class="step-title">Guideline 1</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/database.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Set the scope to Table if the rule should apply across all forms, views, and server-side operations (e.g., imports, API calls).</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">2</div>
-                        <div class="step-title">Guideline 2</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/lightbulb.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Set the scope to a specific Form only if the logic is unique to that form.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">3</div>
-                        <div class="step-title">Guideline 3</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/code-xml.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Avoid duplicating the same logic in both business rules and JavaScript. Choose one approach and be consistent.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">4</div>
-                        <div class="step-title">Guideline 4</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/pencil.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Name business rules descriptively following a pattern like: [Table Name] - [Purpose].</div>
                 </div>
@@ -381,24 +417,27 @@
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">1</div>
-                        <div class="step-title">Rationale 1</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/database.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Table-scoped business rules enforce logic server-side, which means the rules apply even when records are created via imports, workflows, or API calls - not just the UI.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">2</div>
-                        <div class="step-title">Rationale 2</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/users.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Form-scoped rules only execute when a user opens that specific form, which can lead to inconsistent data if records are modified through other channels.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">3</div>
-                        <div class="step-title">Rationale 3</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/code-xml.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Duplicating logic between business rules and JavaScript increases maintenance effort and creates a risk of conflicting behavior.</div>
                 </div>
@@ -406,70 +445,80 @@
             </div>
 
             <!-- Examples -->
+            <div class="section-title">Examples</div>
             <div class="examples-grid">
+                
                 <div class="example-box do">
                     <div class="example-header">
-                        <span class="example-icon">&#10003;</span>
-                        <span class="example-label">Do</span>
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">A business rule named Contact - Set Phone Required When Type Is Customer scoped</div>
                     </div>
-                    <ul>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>A business rule named Contact - Set Phone Required When Type Is Customer scoped to the Table level, ensuring the phone number is always required regardless of how the Contact is created.</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/database.svg" alt="Example icon" />
+                            <span>A business rule named Contact - Set Phone Required When Type Is Customer scoped</span>
+                        </div>
+                        <div>A business rule named Contact - Set Phone Required When Type Is Customer scoped to the Table level, ensuring the phone number is always required regardless of how the Contact is created.</div>
                         
-                    </ul>
+                    </div>
                 </div>
+                
+
+                
                 <div class="example-box dont">
                     <div class="example-header">
-                        <span class="example-icon">&#10007;</span>
-                        <span class="example-label">Don't</span>
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">A business rule that hides a field, combined with a JavaScript OnLoad handler</div>
                     </div>
-                    <ul>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>A business rule that hides a field, combined with a JavaScript OnLoad handler that also hides the same field, causing confusion about which one controls the behavior.</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/code-xml.svg" alt="Example icon" />
+                            <span>A business rule that hides a field, combined with a JavaScript OnLoad handler</span>
+                        </div>
+                        <div>A business rule that hides a field, combined with a JavaScript OnLoad handler that also hides the same field, causing confusion about which one controls the behavior.</div>
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>A form-scoped business rule that sets a field as required, but records created via data import skip the rule entirely, resulting in incomplete data.</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
-                        
-                    </ul>
+                    </div>
                 </div>
+                
+                <div class="example-box dont">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">A form-scoped business rule that sets a field as required, but records created</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/check.svg" alt="Example icon" />
+                            <span>A form-scoped business rule that sets a field as required, but records created</span>
+                        </div>
+                        <div>A form-scoped business rule that sets a field as required, but records created via data import skip the rule entirely, resulting in incomplete data.</div>
+                        
+                    </div>
+                </div>
+                
             </div>
 
             
 
             
-            <div class="step-card" style="margin-top: 24px;">
-                <div class="step-header">
-                    <div class="step-icon">i</div>
-                    <div class="step-title">More Information</div>
+            <div class="step-card info-card">
+                <div class="section-header">
+                    <img class="section-header-icon" src="../img/icons/info.svg" alt="More information" />
+                    <div class="section-title" style="margin-bottom: 0;">More Information</div>
                 </div>
                 <div class="step-description">
-                    <ul>
+                    <ul class="references-list">
                         
                         <li><a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/create-business-rules-recommendations-apply-logic-form" target="_blank" rel="noopener noreferrer">Create business rules - Microsoft Learn</a></li>
                         

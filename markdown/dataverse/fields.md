@@ -37,11 +37,17 @@ Naming rules:
 
 #### Good
 
-- Several fields grouped logically: cspreviewduedate, cspreviewcompletedon, cspreviewlink.
+##### Several fields grouped logically
+
+Value: Several fields grouped logically cspreviewduedate, cspreviewcompletedon, cspreviewlink.
+
 
 #### Bad
 
-- The same fields without a consistent prefix: cspduedatereview, cspreviewcompletedon, csplinkreview - harder to identify as a group.
+##### The same fields without a consistent prefix
+
+Value: The same fields without a consistent prefix cspduedatereview, cspreviewcompletedon, csplinkreview - harder to identify as a group.
+
 
 ### More Information
 
@@ -51,7 +57,7 @@ Naming rules:
 
 ### Title
 
-Every field must include a description
+Include a description.
 
 ### Description
 
@@ -73,13 +79,25 @@ Every field must include a description. !Field Description
 
 #### Good
 
-- "The date when the customer's last order was placed. Used to calculate inactivity alerts."
-- "System Field. Stores the workflow processing status for automated monitoring."
+##### "The date when the customer's last order was placed.
+
+Value: "The date when the customer's last order was placed. Used to calculate inactivity alerts."
+
+##### "System Field.
+
+Value: "System Field. Stores the workflow processing status for automated monitoring."
+
 
 #### Bad
 
-- No description at all - users and developers have no context about the field's purpose.
-- "Field 1" - meaningless, provides no useful information.
+##### No description at all - users and developers have no context about the field's
+
+No description at all - users and developers have no context about the field's purpose.
+
+##### "Field 1" - meaningless, provides no useful information.
+
+"Field 1" - meaningless, provides no useful information.
+
 
 ### More Information
 
@@ -89,7 +107,7 @@ Every field must include a description. !Field Description
 
 ### Title
 
-Choose the most specific and appropriate data type for each field
+Choose the most specific and appropriate data type for each field.
 
 ### Description
 
@@ -117,11 +135,17 @@ Choose the most specific and appropriate data type for each field.
 
 #### Good
 
-- Conforms to the rule requirements.
+##### Conforms to the rule requirements.
+
+Conforms to the rule requirements.
+
 
 #### Bad
 
-- Violates the rule requirements.
+##### Violates the rule requirements.
+
+Violates the rule requirements.
+
 
 ### More Information
 
@@ -131,7 +155,7 @@ Choose the most specific and appropriate data type for each field.
 
 ### Title
 
-Use Global Choices (Global Option Sets) for values that are shared across multiple tables
+Use Global Choices (Global Option Sets) for values that are shared across
 
 ### Description
 
@@ -155,14 +179,29 @@ Use Global Choices (Global Option Sets) for values that are shared across multip
 
 #### Good
 
-- A Global Choice named Priority with values High, Medium, Low - used in the Case, Task, and Order tables.
-- A Local Choice named Case Origin with values Phone, Email, Web - specific to the Case table only.
-- A Lookup to a Product Category reference table when there are 50+ categories that change quarterly.
+##### A Global Choice named Priority with values High, Medium, Low - used in the
+
+A Global Choice named Priority with values High, Medium, Low - used in the Case, Task, and Order tables.
+
+##### A Local Choice named Case Origin with values Phone, Email, Web - specific to
+
+A Local Choice named Case Origin with values Phone, Email, Web - specific to the Case table only.
+
+##### A Lookup to a Product Category reference table when there are 50+ categories
+
+A Lookup to a Product Category reference table when there are 50+ categories that change quarterly.
+
 
 #### Bad
 
-- Three separate Local Choices named "Priority" in the Case, Task, and Order tables, each with slightly different values (e.g., one has "Critical" and the others don't).
-- A Global Choice with 100+ items that requires a solution deployment every time a new value is added.
+##### Three separate Local Choices named "Priority" in the Case, Task, and Order
+
+Three separate Local Choices named "Priority" in the Case, Task, and Order tables, each with slightly different values (e.g., one has "Critical" and the others don't).
+
+##### A Global Choice with 100+ items that requires a solution deployment every time
+
+A Global Choice with 100+ items that requires a solution deployment every time a new value is added.
+
 
 ### More Information
 
@@ -172,7 +211,7 @@ Use Global Choices (Global Option Sets) for values that are shared across multip
 
 ### Title
 
-Set the field requirement level deliberately based on business needs
+Set the field requirement level deliberately based on business needs.
 
 ### Description
 
@@ -197,11 +236,17 @@ Set the field requirement level deliberately based on business needs.
 
 #### Good
 
-- Conforms to the rule requirements.
+##### Conforms to the rule requirements.
+
+Conforms to the rule requirements.
+
 
 #### Bad
 
-- Violates the rule requirements.
+##### Violates the rule requirements.
+
+Violates the rule requirements.
+
 
 ### More Information
 
@@ -211,7 +256,7 @@ Set the field requirement level deliberately based on business needs.
 
 ### Title
 
-Enable Column-Level Security for fields containing sensitive or confidential data
+Enable Column-Level Security for fields containing sensitive or confidential
 
 ### Description
 
@@ -236,12 +281,21 @@ Enable Column-Level Security for fields containing sensitive or confidential dat
 
 #### Good
 
-- Column-level security enabled on the salary and socialsecuritynumber fields of the Employee table, with a Field Security Profile granting access only to HR team members.
+##### Column-level security enabled on the salary and socialsecuritynumber fields of
+
+Column-level security enabled on the salary and socialsecuritynumber fields of the Employee table, with a Field Security Profile granting access only to HR team members.
+
 
 #### Bad
 
-- No column-level security on the Employee table, allowing any user with read access to see salary and SSN data.
-- Column-level security applied to 50+ fields across the system, including non-sensitive fields like first_name and email, adding unnecessary complexity.
+##### No column-level security on the Employee table, allowing any user with read
+
+No column-level security on the Employee table, allowing any user with read access to see salary and SSN data.
+
+##### Column-level security applied to 50+ fields across the system, including
+
+Column-level security applied to 50+ fields across the system, including non-sensitive fields like first_name and email, adding unnecessary complexity.
+
 
 ### More Information
 

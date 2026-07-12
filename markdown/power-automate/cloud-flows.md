@@ -6,7 +6,7 @@ Good practices for Power Automate flows.
 
 ### Title
 
-Name cloud flows using the standard pattern
+Follow a consistent pattern that identifies the owning app, trigger connector
 
 ### Description
 
@@ -51,17 +51,41 @@ Cloud flow names must follow a consistent pattern that identifies the owning app
 
 #### Good
 
-- ORM - DV - Contact - NEWMOD - Send Notifications: Sends a notification when a Dataverse Contact record is created or modified for the Orders Management app.
-- ORM - DV - Account - MOD - Validations: Performs validations when an Account record is updated in Dataverse for the Orders Management app.
-- ORM - SP - Orders - MOD - Move out of notice wait period: Handles updates to the Orders SharePoint list for the Orders Management app.
-- HRO - CF - Set Reference Number: Names a child flow that sets a reference number for the HR Onboarding app.
-- HRO - SCH - Daily - Set Status: Names a scheduled flow that runs daily and sets status for the HR Onboarding app.
-- PA - Orders Management - Cancel Record: Omits the app prefix because the flow is shared across multiple apps and is triggered from Power Apps.
+##### ORM - DV - Contact - NEWMOD - Send Notifications
+
+Value: ORM - DV - Contact - NEWMOD - Send Notifications Sends a notification when a Dataverse Contact record is created or modified for the Orders Management app.
+
+##### ORM - DV - Account - MOD - Validations
+
+Value: ORM - DV - Account - MOD - Validations Performs validations when an Account record is updated in Dataverse for the Orders Management app.
+
+##### ORM - SP - Orders - MOD - Move out of notice wait period
+
+Value: ORM - SP - Orders - MOD - Move out of notice wait period Handles updates to the Orders SharePoint list for the Orders Management app.
+
+##### HRO - CF - Set Reference Number
+
+Value: HRO - CF - Set Reference Number Names a child flow that sets a reference number for the HR Onboarding app.
+
+##### HRO - SCH - Daily - Set Status
+
+Value: HRO - SCH - Daily - Set Status Names a scheduled flow that runs daily and sets status for the HR Onboarding app.
+
+##### PA - Orders Management - Cancel Record
+
+Value: PA - Orders Management - Cancel Record Omits the app prefix because the flow is shared across multiple apps and is triggered from Power Apps.
+
 
 #### Bad
 
-- Send Notifications: Omits the app, connector, data store, and event segments required to make the name self-descriptive.
-- ORM - Contact - Send Notifications: Omits the connector prefix and event code segments.
+##### Send Notifications
+
+Value: Send Notifications Omits the app, connector, data store, and event segments required to make the name self-descriptive.
+
+##### ORM - Contact - Send Notifications
+
+Value: ORM - Contact - Send Notifications Omits the connector prefix and event code segments.
+
 
 ### More Information
 
@@ -72,7 +96,7 @@ Cloud flow names must follow a consistent pattern that identifies the owning app
 
 ### Title
 
-Add meaningful descriptions to all flows
+Have a description that summarizes its purpose, the business process it
 
 ### Description
 
@@ -98,14 +122,29 @@ Every flow must have a description that summarizes its purpose, the business pro
 
 #### Good
 
-- Triggered when a Contact record is created or modified in Dataverse. Sends an email notification to the account manager with the updated contact details. Calls the CF - Send Notification Email child flow.: Clearly states the trigger, purpose, and dependency.
-- Runs daily at 6:00 AM. Queries all open orders older than 30 days and updates their status to Expired. Part of the Order Lifecycle Management process.: Includes timing, behavior, and business context.
+##### Triggered when a Contact record is created or modified in Dataverse.
+
+Value: Triggered when a Contact record is created or modified in Dataverse. Sends an email notification to the account manager with the updated contact details. Calls the CF - Send Notification Email child flow. Clearly states the trigger, purpose, and dependency.
+
+##### Runs daily at 6:00 AM.
+
+Value: Runs daily at 6:00 AM. Queries all open orders older than 30 days and updates their status to Expired. Part of the Order Lifecycle Management process. Includes timing, behavior, and business context.
+
 
 #### Bad
 
-- My flow: Meaningless and provides no context.
-- Handles stuff: Vague and not actionable for maintainers.
-- No description at all.
+##### My flow
+
+Value: My flow Meaningless and provides no context.
+
+##### Handles stuff
+
+Value: Handles stuff Vague and not actionable for maintainers.
+
+##### No description at all.
+
+No description at all.
+
 
 ### More Information
 
@@ -115,7 +154,7 @@ Every flow must have a description that summarizes its purpose, the business pro
 
 ### Title
 
-Give triggers clear descriptive names
+Be clear and descriptive so reviewers can quickly understand what initiates
 
 ### Description
 
@@ -139,15 +178,33 @@ Trigger names should be clear and descriptive so reviewers can quickly understan
 
 #### Good
 
-- When a new item is created: Clearly describes the event in plain language.
-- When a new contact is added to Dataverse: Includes both the event and the data source.
-- When a file is created in SharePoint: Uses full words and identifies the source system.
+##### When a new item is created
+
+Value: When a new item is created Clearly describes the event in plain language.
+
+##### When a new contact is added to Dataverse
+
+Value: When a new contact is added to Dataverse Includes both the event and the data source.
+
+##### When a file is created in SharePoint
+
+Value: When a file is created in SharePoint Uses full words and identifies the source system.
+
 
 #### Bad
 
-- File Created SP: Abbreviated and unclear.
-- Manually trigger a flow: Default name that does not describe the business purpose.
-- Recurrence: Default name with no indication of what the schedule is for.
+##### File Created SP
+
+Value: File Created SP Abbreviated and unclear.
+
+##### Manually trigger a flow
+
+Value: Manually trigger a flow Default name that does not describe the business purpose.
+
+##### Recurrence
+
+Value: Recurrence Default name with no indication of what the schedule is for.
+
 
 ### More Information
 
@@ -157,7 +214,7 @@ Trigger names should be clear and descriptive so reviewers can quickly understan
 
 ### Title
 
-Rename actions with clear descriptive names
+Be renamed from their default names to clear, descriptive names that explain
 
 ### Description
 
@@ -183,21 +240,57 @@ All actions must be renamed from their default names to clear, descriptive names
 
 #### Good
 
-- Get Customer by Email: Describes both the action and the lookup key.
-- Send Approval Email to Manager: Explains the action and the recipient.
-- Filter Active Orders: Clearly describes the filtering purpose.
-- Update Contact Status to Inactive: Identifies both the entity and intended state change.
-- Apply to Each Invoice Line: Makes the loop target explicit.
-- Check if Account Exists: Explains the condition being evaluated.
-- Parse JSON Response from API: Identifies both the action and the data source.
+##### Get Customer by Email
+
+Value: Get Customer by Email Describes both the action and the lookup key.
+
+##### Send Approval Email to Manager
+
+Value: Send Approval Email to Manager Explains the action and the recipient.
+
+##### Filter Active Orders
+
+Value: Filter Active Orders Clearly describes the filtering purpose.
+
+##### Update Contact Status to Inactive
+
+Value: Update Contact Status to Inactive Identifies both the entity and intended state change.
+
+##### Apply to Each Invoice Line
+
+Value: Apply to Each Invoice Line Makes the loop target explicit.
+
+##### Check if Account Exists
+
+Value: Check if Account Exists Explains the condition being evaluated.
+
+##### Parse JSON Response from API
+
+Value: Parse JSON Response from API Identifies both the action and the data source.
+
 
 #### Bad
 
-- Get_item: Default name and unclear which item is retrieved.
-- Compose: Default name with no business meaning.
-- Apply_to_each: Default name and unclear what is being iterated.
-- Condition: Default name and unclear what is being evaluated.
-- HTTP: Default name and unclear what endpoint is being called.
+##### Get_item
+
+Value: Get_item Default name and unclear which item is retrieved.
+
+##### Compose
+
+Value: Compose Default name with no business meaning.
+
+##### Apply_to_each
+
+Value: Apply_to_each Default name and unclear what is being iterated.
+
+##### Condition
+
+Value: Condition Default name and unclear what is being evaluated.
+
+##### HTTP
+
+Value: HTTP Default name and unclear what endpoint is being called.
+
 
 ### More Information
 
@@ -207,7 +300,7 @@ All actions must be renamed from their default names to clear, descriptive names
 
 ### Title
 
-Name variables with typed camelCase
+Use camelCase notation and a short type prefix so the data type is immediately
 
 ### Description
 
@@ -233,19 +326,49 @@ Variable names must use camelCase notation and a short type prefix so the data t
 
 #### Good
 
-- strCustomerFullName: String variable with a descriptive name.
-- intNumberOfRetries: Integer variable that clearly expresses its purpose.
-- boolIsEligibleForDiscount: Boolean variable that reads as a condition.
-- arrPendingApprovals: Array variable with a meaningful collection name.
-- objOrderDetails: Object variable that clearly identifies its contents.
+##### strCustomerFullName
+
+Value: strCustomerFullName String variable with a descriptive name.
+
+##### intNumberOfRetries
+
+Value: intNumberOfRetries Integer variable that clearly expresses its purpose.
+
+##### boolIsEligibleForDiscount
+
+Value: boolIsEligibleForDiscount Boolean variable that reads as a condition.
+
+##### arrPendingApprovals
+
+Value: arrPendingApprovals Array variable with a meaningful collection name.
+
+##### objOrderDetails
+
+Value: objOrderDetails Object variable that clearly identifies its contents.
+
 
 #### Bad
 
-- x: No indication of purpose or type.
-- temp: Generic and unclear.
-- var1: Generic and unclear.
-- name: Missing a type prefix and ambiguous.
-- n: Single-character name with no meaning.
+##### x
+
+Value: x No indication of purpose or type.
+
+##### temp
+
+Value: temp Generic and unclear.
+
+##### var1
+
+Value: var1 Generic and unclear.
+
+##### name
+
+Value: name Missing a type prefix and ambiguous.
+
+##### n
+
+Value: n Single-character name with no meaning.
+
 
 ### More Information
 
@@ -255,7 +378,7 @@ Variable names must use camelCase notation and a short type prefix so the data t
 
 ### Title
 
-Name connection references using the standard pattern
+Follow a standard pattern that identifies the solution publisher, the connector
 
 ### Description
 
@@ -296,17 +419,41 @@ Connection reference names must follow a standard pattern that identifies the so
 
 #### Good
 
-- csp - Dataverse - Main Application: Identifies the publisher, connector, and business context.
-- csp - SharePoint - Document Library: Names the connector reference according to the required structure.
-- csp - Outlook - Service Notifications: Describes how the connection is used.
-- csp - Teams - Approval Notifications: Includes the publisher prefix and purpose.
+##### csp - Dataverse - Main Application
+
+Value: csp - Dataverse - Main Application Identifies the publisher, connector, and business context.
+
+##### csp - SharePoint - Document Library
+
+Value: csp - SharePoint - Document Library Names the connector reference according to the required structure.
+
+##### csp - Outlook - Service Notifications
+
+Value: csp - Outlook - Service Notifications Describes how the connection is used.
+
+##### csp - Teams - Approval Notifications
+
+Value: csp - Teams - Approval Notifications Includes the publisher prefix and purpose.
+
 
 #### Bad
 
-- My Connection: No structure and no context.
-- Dataverse: Missing the publisher prefix and purpose.
-- John's SharePoint: Uses a personal account reference and no standard format.
-- New Connection Reference: Default name with no meaning.
+##### My Connection
+
+Value: My Connection No structure and no context.
+
+##### Dataverse
+
+Value: Dataverse Missing the publisher prefix and purpose.
+
+##### John's SharePoint
+
+Value: John's SharePoint Uses a personal account reference and no standard format.
+
+##### New Connection Reference
+
+Value: New Connection Reference Default name with no meaning.
+
 
 ### More Information
 
@@ -316,7 +463,7 @@ Connection reference names must follow a standard pattern that identifies the so
 
 ### Title
 
-Implement scope-based try-catch-finally error handling
+Implement error handling using the Scope-based Try-Catch-Finally pattern.
 
 ### Description
 
@@ -344,7 +491,8 @@ All cloud flows must implement error handling using the Scope-based Try-Catch-Fi
 
 #### Good
 
-Uses dedicated Try, Catch, and Finally scopes to group business logic, error handling, and cleanup.
+##### Uses dedicated Try, Catch, and Finally scopes to group business logic, error
+
 ```Plain Text
 Scope: Try - Process Invoice
     Get Invoice from SharePoint
@@ -359,11 +507,21 @@ Scope: Finally - Cleanup (Run after: Catch)
 
 ```
 
+
 #### Bad
 
-- No error handling at all, so the flow silently fails.
-- Uses individual Configure Run After settings on each action instead of grouping logic into scopes.
-- Catches errors but does not log them or notify anyone.
+##### No error handling at all, so the flow silently fails.
+
+No error handling at all, so the flow silently fails.
+
+##### Uses individual Configure Run After settings on each action instead of grouping
+
+Uses individual Configure Run After settings on each action instead of grouping logic into scopes.
+
+##### Catches errors but does not log them or notify anyone.
+
+Catches errors but does not log them or notify anyone.
+
 
 ### More Information
 
@@ -373,7 +531,7 @@ Scope: Finally - Cleanup (Run after: Catch)
 
 ### Title
 
-Initialize all variables at the start of the flow
+Be initialized at the beginning of the flow before any other actions or logic.
 
 ### Description
 
@@ -398,7 +556,8 @@ All variables must be initialized at the beginning of the flow before any other 
 
 #### Good
 
-Groups all variable initialization actions at the top of the flow inside a dedicated scope.
+##### Groups all variable initialization actions at the top of the flow inside a
+
 ```Plain Text
 Scope: Initialize Variables
     Initialize strCustomerEmail
@@ -410,9 +569,11 @@ Scope: Try - Main Logic
 
 ```
 
+
 #### Bad
 
-Mixes initialization with other actions and initializes a variable inside a condition branch.
+##### Mixes initialization with other actions and initializes a variable inside a
+
 ```Plain Text
 Get Items from SharePoint
 Initialize strCustomerEmail
@@ -422,6 +583,7 @@ Condition: Check Status
 
 ```
 
+
 ### More Information
 
 1. [Microsoft Learn - Power Automate Documentation](https://learn.microsoft.com/en-us/power-automate/)
@@ -430,7 +592,7 @@ Condition: Check Status
 
 ### Title
 
-Use environment variables instead of hardcoded values
+Avoid hardcoding URLs, email addresses, IDs, or configuration settings directly
 
 ### Description
 
@@ -455,15 +617,33 @@ Avoid hardcoding URLs, email addresses, IDs, or configuration settings directly 
 
 #### Good
 
-- @{parameters('env_SharePointSiteUrl')}: References an environment variable for a SharePoint site URL.
-- @{parameters('env_SupportTeamEmail')}: References an environment variable for a notification email address.
-- @{parameters('env_ExternalApiKey')}: References an environment variable for an API key.
+##### @{parameters('env_SharePointSiteUrl')}
+
+Value: @{parameters('env_SharePointSiteUrl')} References an environment variable for a SharePoint site URL.
+
+##### @{parameters('env_SupportTeamEmail')}
+
+Value: @{parameters('env_SupportTeamEmail')} References an environment variable for a notification email address.
+
+##### @{parameters('env_ExternalApiKey')}
+
+Value: @{parameters('env_ExternalApiKey')} References an environment variable for an API key.
+
 
 #### Bad
 
-- https://contoso.sharepoint.com/sites/Operations: Hardcoded SharePoint URL.
-- support@contoso.com: Hardcoded email address.
-- a1b2c3d4-e5f6-7890-abcd-ef1234567890: Hardcoded record GUID.
+##### https://contoso.sharepoint.com/sites/Operations
+
+Value: https://contoso.sharepoint.com/sites/Operations Hardcoded SharePoint URL.
+
+##### support@contoso.com
+
+Value: support@contoso.com Hardcoded email address.
+
+##### a1b2c3d4-e5f6-7890-abcd-ef1234567890
+
+Value: a1b2c3d4-e5f6-7890-abcd-ef1234567890 Hardcoded record GUID.
+
 
 ### More Information
 
@@ -473,7 +653,7 @@ Avoid hardcoding URLs, email addresses, IDs, or configuration settings directly 
 
 ### Title
 
-Extract reusable logic into child flows
+Be extracted into child flows to avoid duplicating the same actions across
 
 ### Description
 
@@ -499,15 +679,33 @@ Reusable logic should be extracted into child flows to avoid duplicating the sam
 
 #### Good
 
-- CF - Set Reference Number: Child flow that generates and assigns a reference number for reuse across multiple parent flows.
-- CF - Send Notification Email: Child flow that accepts recipient, subject, and body inputs for reuse across notification scenarios.
-- CF - Validate Address: Child flow that validates and standardizes address data for reuse by multiple record creation flows.
+##### CF - Set Reference Number
+
+Value: CF - Set Reference Number Child flow that generates and assigns a reference number for reuse across multiple parent flows.
+
+##### CF - Send Notification Email
+
+Value: CF - Send Notification Email Child flow that accepts recipient, subject, and body inputs for reuse across notification scenarios.
+
+##### CF - Validate Address
+
+Value: CF - Validate Address Child flow that validates and standardizes address data for reuse by multiple record creation flows.
+
 
 #### Bad
 
-- Copying and pasting the same 15 actions for sending a notification email into 10 different flows.
-- A single monolithic flow with more than 400 actions that handles multiple unrelated processes.
-- Creating child flows for trivial single-action operations where the overhead is not justified.
+##### Copying and pasting the same 15 actions for sending a notification email into
+
+Copying and pasting the same 15 actions for sending a notification email into 10 different flows.
+
+##### A single monolithic flow with more than 400 actions that handles multiple
+
+A single monolithic flow with more than 400 actions that handles multiple unrelated processes.
+
+##### Creating child flows for trivial single-action operations where the overhead is
+
+Creating child flows for trivial single-action operations where the overhead is not justified.
+
 
 ### More Information
 
@@ -517,7 +715,7 @@ Reusable logic should be extracted into child flows to avoid duplicating the sam
 
 ### Title
 
-Use notes to document complex logic
+Use the built-in Notes feature to document complex expressions, business logic
 
 ### Description
 
@@ -542,14 +740,29 @@ Use the built-in Notes feature to document complex expressions, business logic, 
 
 #### Good
 
-- Add a note to a complex Compose action: "Calculates the fiscal quarter based on the invoice date. Fiscal year starts in April."
-- Add a note to a Condition action: "Checks if the order total exceeds the auto-approval threshold defined by Finance ($5,000)."
-- Add a note to an HTTP action: "Calls the external tax calculation API. Retry logic is handled by the parent Scope."
+##### Add a note to a complex Compose action: "Calculates the fiscal quarter based on
+
+Add a note to a complex Compose action: "Calculates the fiscal quarter based on the invoice date. Fiscal year starts in April."
+
+##### Add a note to a Condition action: "Checks if the order total exceeds the
+
+Add a note to a Condition action: "Checks if the order total exceeds the auto-approval threshold defined by Finance ($5,000)."
+
+##### Add a note to an HTTP action: "Calls the external tax calculation API.
+
+Add a note to an HTTP action: "Calls the external tax calculation API. Retry logic is handled by the parent Scope."
+
 
 #### Bad
 
-- No notes anywhere in a flow with more than 50 actions and complex expressions.
-- Adding obvious notes like "This sends an email" on a Send an email action.
+##### No notes anywhere in a flow with more than 50 actions and complex expressions.
+
+No notes anywhere in a flow with more than 50 actions and complex expressions.
+
+##### Adding obvious notes like "This sends an email" on a Send an email action.
+
+Adding obvious notes like "This sends an email" on a Send an email action.
+
 
 ### More Information
 
@@ -559,7 +772,7 @@ Use the built-in Notes feature to document complex expressions, business logic, 
 
 ### Title
 
-Create all cloud flows inside solutions
+Be created inside solutions and should not be created as non-solution flows
 
 ### Description
 
@@ -584,14 +797,29 @@ All cloud flows must be created inside solutions and should not be created as no
 
 #### Good
 
-- Creating a flow inside the Orders Management solution alongside its related tables, connection references, and environment variables.
-- csp: Uses a consistent solution publisher prefix and groups related flows in one solution.
+##### Creating a flow inside the Orders Management solution alongside its related
+
+Creating a flow inside the Orders Management solution alongside its related tables, connection references, and environment variables.
+
+##### csp
+
+Value: csp Uses a consistent solution publisher prefix and groups related flows in one solution.
+
 
 #### Bad
 
-- Creating a flow from the My Flows section of the Power Automate portal.
-- Having related flows scattered across multiple solutions with no clear organization.
-- Creating flows outside of solutions and manually recreating them in each environment.
+##### Creating a flow from the My Flows section of the Power Automate portal.
+
+Creating a flow from the My Flows section of the Power Automate portal.
+
+##### Having related flows scattered across multiple solutions with no clear
+
+Having related flows scattered across multiple solutions with no clear organization.
+
+##### Creating flows outside of solutions and manually recreating them in each
+
+Creating flows outside of solutions and manually recreating them in each environment.
+
 
 ### More Information
 
@@ -601,7 +829,7 @@ All cloud flows must be created inside solutions and should not be created as no
 
 ### Title
 
-Filter Dataverse triggers by columns and conditions
+Specify the columns that should trigger the flow and include filter expressions
 
 ### Description
 
@@ -627,15 +855,33 @@ Dataverse triggers must specify the columns that should trigger the flow and inc
 
 #### Good
 
-- Column filter set to statuscode and filter expression statuscode eq 5 so the flow only triggers when Status Reason changes to Approved.
-- Column filter set to emailaddress1,telephone1 so the flow only triggers when the primary email or phone number changes.
-- Column filter set to csp_review_status and filter expression csp_review_status eq 100000001 so the flow only triggers when review status changes to Complete.
+##### Column filter set to statuscode and filter expression statuscode eq 5 so the
+
+Column filter set to statuscode and filter expression statuscode eq 5 so the flow only triggers when Status Reason changes to Approved.
+
+##### Column filter set to emailaddress1,telephone1 so the flow only triggers when
+
+Column filter set to emailaddress1,telephone1 so the flow only triggers when the primary email or phone number changes.
+
+##### Column filter set to csp_review_status and filter expression csp_review_status
+
+Column filter set to csp_review_status and filter expression csp_review_status eq 100000001 so the flow only triggers when review status changes to Complete.
+
 
 #### Bad
 
-- No column filter set, so the flow triggers on every field update including system fields such as modifiedon.
-- No filter expression, so the flow triggers for all status values instead of just the required business state.
-- Using a Condition action inside the flow to check field values instead of filtering at the trigger level, which wastes a flow run for every non-matching event.
+##### No column filter set, so the flow triggers on every field update including
+
+No column filter set, so the flow triggers on every field update including system fields such as modifiedon.
+
+##### No filter expression, so the flow triggers for all status values instead of
+
+No filter expression, so the flow triggers for all status values instead of just the required business state.
+
+##### Using a Condition action inside the flow to check field values instead of
+
+Using a Condition action inside the flow to check field values instead of filtering at the trigger level, which wastes a flow run for every non-matching event.
+
 
 ### More Information
 
@@ -646,7 +892,7 @@ Dataverse triggers must specify the columns that should trigger the flow and inc
 
 ### Title
 
-Minimize Dataverse query columns and rows
+When querying Dataverse, retrieve only the columns and rows required by the flow
 
 ### Description
 
@@ -673,7 +919,8 @@ When querying Dataverse, retrieve only the columns and rows required by the flow
 
 #### Good
 
-FetchXML with selected attributes, a count limit, and a filter.
+##### FetchXML with selected attributes, a count limit, and a filter.
+
 ```XML
 <fetch count="50">
   <entity name="contact">
@@ -686,7 +933,9 @@ FetchXML with selected attributes, a count limit, and a filter.
 </fetch>
 
 ```
-List Rows action configured with selected columns, a filter, and a row count.
+
+##### List Rows action configured with selected columns, a filter, and a row count.
+
 ```Plain Text
 Select columns: fullname,emailaddress1
 Filter rows: statuscode eq 1
@@ -694,12 +943,25 @@ Row count: 50
 
 ```
 
+
 #### Bad
 
-- Using List Rows with no column selection, which retrieves all columns for every row.
-- Using FetchXML without a count attribute, which retrieves all matching rows without pagination.
-- Applying no filter, which retrieves the entire table regardless of how many rows are needed.
-- Using <all-attributes /> in FetchXML instead of specifying individual attribute elements.
+##### Using List Rows with no column selection, which retrieves all columns for every
+
+Using List Rows with no column selection, which retrieves all columns for every row.
+
+##### Using FetchXML without a count attribute, which retrieves all matching rows
+
+Using FetchXML without a count attribute, which retrieves all matching rows without pagination.
+
+##### Applying no filter, which retrieves the entire table regardless of how many
+
+Applying no filter, which retrieves the entire table regardless of how many rows are needed.
+
+##### Using <all-attributes /> in FetchXML instead of specifying individual attribute
+
+Using <all-attributes /> in FetchXML instead of specifying individual attribute elements.
+
 
 ### More Information
 

@@ -6,7 +6,7 @@ Good practices for Power Pages site development and configuration.
 
 ### Title
 
-Always configure table permissions for every Dataverse table exposed on the portal
+Always configure table permissions for every Dataverse table exposed
 
 ### Description
 
@@ -31,11 +31,17 @@ Always configure table permissions for every Dataverse table exposed on the port
 
 #### Good
 
-- Conforms to the rule requirements.
+##### Conforms to the rule requirements.
+
+Conforms to the rule requirements.
+
 
 #### Bad
 
-- Violates the rule requirements.
+##### Violates the rule requirements.
+
+Violates the rule requirements.
+
 
 ### More Information
 
@@ -46,7 +52,7 @@ Always configure table permissions for every Dataverse table exposed on the port
 
 ### Title
 
-Define granular web roles that map to distinct user personas
+Define granular web roles that map to distinct user personas.
 
 ### Description
 
@@ -71,14 +77,29 @@ Define granular web roles that map to distinct user personas. Assign table permi
 
 #### Good
 
-- A Customer web role with Read and Create permissions on the Case table (Contact scope).
-- A Partner web role with Read permissions on the Product Catalog table (Global scope) and Write permissions on the Partner Application table (Contact scope).
-- A Site Administrator web role assigned only to a small group of internal users.
+##### A Customer web role with Read and Create permissions on the Case table (Contact
+
+A Customer web role with Read and Create permissions on the Case table (Contact scope).
+
+##### A Partner web role with Read permissions on the Product Catalog table (Global
+
+A Partner web role with Read permissions on the Product Catalog table (Global scope) and Write permissions on the Partner Application table (Contact scope).
+
+##### A Site Administrator web role assigned only to a small group of internal users.
+
+A Site Administrator web role assigned only to a small group of internal users.
+
 
 #### Bad
 
-- A single Authenticated User web role that grants Read, Write, and Delete on all tables with Global scope.
-- A Customer web role that is automatically assigned to every registered user without validation.
+##### A single Authenticated User web role that grants Read, Write, and Delete on all
+
+A single Authenticated User web role that grants Read, Write, and Delete on all tables with Global scope.
+
+##### A Customer web role that is automatically assigned to every registered user
+
+A Customer web role that is automatically assigned to every registered user without validation.
+
 
 ### More Information
 
@@ -89,7 +110,7 @@ Define granular web roles that map to distinct user personas. Assign table permi
 
 ### Title
 
-Keep Liquid templates focused on presentation logic
+Keep Liquid templates focused on presentation logic.
 
 ### Description
 
@@ -116,7 +137,8 @@ Keep Liquid templates focused on presentation logic. Avoid embedding complex bus
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```liquid
 {%- fetchxml recent_cases -%}
   <fetch top="5">
@@ -138,9 +160,11 @@ Good example code snippet.
 </ul>
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```liquid
 <!-- Heavy business logic in Liquid -->
 {% assign total = 0 %}
@@ -153,6 +177,7 @@ Bad example code snippet.
 <p>{{ user.fullname }}</p>
 ```
 
+
 ### More Information
 
 1. [Liquid overview - Microsoft Learn](https://learn.microsoft.com/en-us/power-pages/configure/liquid/liquid-overview)
@@ -162,7 +187,7 @@ Bad example code snippet.
 
 ### Title
 
-Enable header and footer output caching to improve portal performance
+Enable header and footer output caching to improve portal performance.
 
 ### Description
 
@@ -187,11 +212,17 @@ Enable header and footer output caching to improve portal performance. This cach
 
 #### Good
 
-- Conforms to the rule requirements.
+##### Conforms to the rule requirements.
+
+Conforms to the rule requirements.
+
 
 #### Bad
 
-- Violates the rule requirements.
+##### Violates the rule requirements.
+
+Violates the rule requirements.
+
 
 ### More Information
 
@@ -201,7 +232,7 @@ Enable header and footer output caching to improve portal performance. This cach
 
 ### Title
 
-Configure forms with proper validation and table permissions
+Configure forms with proper validation and table permissions.
 
 ### Description
 
@@ -228,13 +259,25 @@ Configure forms with proper validation and table permissions. Use basic forms fo
 
 #### Good
 
-- A Contact Us basic form in Insert mode paired with table permissions granting Create-only access to the Inquiry table for Anonymous Users.
-- An Application Form implemented as an advanced form with three steps: Personal Details → Upload Documents → Review & Submit. Each step validates required fields before allowing progression.
+##### A Contact Us basic form in Insert mode paired with table permissions granting
+
+A Contact Us basic form in Insert mode paired with table permissions granting Create-only access to the Inquiry table for Anonymous Users.
+
+##### An Application Form implemented as an advanced form with three steps
+
+Value: An Application Form implemented as an advanced form with three steps Personal Details → Upload Documents → Review & Submit. Each step validates required fields before allowing progression.
+
 
 #### Bad
 
-- A basic form for the Account table in Edit mode with no table permissions configured, allowing any user to modify any account record.
-- A single-step form that collects 30+ fields across unrelated categories, resulting in poor user experience and high abandonment rates.
+##### A basic form for the Account table in Edit mode with no table permissions
+
+A basic form for the Account table in Edit mode with no table permissions configured, allowing any user to modify any account record.
+
+##### A single-step form that collects 30+ fields across unrelated categories
+
+A single-step form that collects 30+ fields across unrelated categories, resulting in poor user experience and high abandonment rates.
+
 
 ### More Information
 
@@ -245,7 +288,7 @@ Configure forms with proper validation and table permissions. Use basic forms fo
 
 ### Title
 
-Minimize custom JavaScript on portal pages
+Minimize custom JavaScript on portal pages.
 
 ### Description
 
@@ -272,13 +315,25 @@ Minimize custom JavaScript on portal pages. When JavaScript is necessary, follow
 
 #### Good
 
-- Using the form metadata Required property to enforce mandatory fields instead of writing JavaScript to add validation.
-- Storing a utility script as a web file at /js/custom-validation.js and referencing it in the page template.
+##### Using the form metadata Required property to enforce mandatory fields instead
+
+Using the form metadata Required property to enforce mandatory fields instead of writing JavaScript to add validation.
+
+##### Storing a utility script as a web file at /js/custom-validation.js and
+
+Storing a utility script as a web file at /js/custom-validation.js and referencing it in the page template.
+
 
 #### Bad
 
-- A 500-line inline <script> block in a web template that hard-codes entity GUIDs and environment URLs.
-- Client-side JavaScript that hides the "Delete" button instead of using table permissions to revoke the Delete operation.
+##### A 500-line inline <script> block in a web template that hard-codes entity GUIDs
+
+A 500-line inline <script> block in a web template that hard-codes entity GUIDs and environment URLs.
+
+##### Client-side JavaScript that hides the "Delete" button instead of using table
+
+Client-side JavaScript that hides the "Delete" button instead of using table permissions to revoke the Delete operation.
+
 
 ### More Information
 
@@ -288,7 +343,7 @@ Minimize custom JavaScript on portal pages. When JavaScript is necessary, follow
 
 ### Title
 
-Manage Power Pages configuration as code using the Power Platform CLI
+Manage Power Pages configuration as code using the Power Platform CLI.
 
 ### Description
 
@@ -316,13 +371,25 @@ Manage Power Pages configuration as code using the Power Platform CLI. Store por
 
 #### Good
 
-- Portal artifacts are stored in a Git repository with a clear folder structure matching the pac paportal download output.
-- A CI/CD pipeline runs on every pull request merge: it downloads the latest portal configuration, applies it to the Test environment, and runs smoke tests before promoting to Production.
+##### Portal artifacts are stored in a Git repository with a clear folder structure
+
+Portal artifacts are stored in a Git repository with a clear folder structure matching the pac paportal download output.
+
+##### A CI/CD pipeline runs on every pull request merge
+
+Value: A CI/CD pipeline runs on every pull request merge it downloads the latest portal configuration, applies it to the Test environment, and runs smoke tests before promoting to Production.
+
 
 #### Bad
 
-- Developers edit web templates directly in the Production Power Pages Design Studio without any change tracking.
-- Portal configuration is shared between developers via email or file shares with no version history.
+##### Developers edit web templates directly in the Production Power Pages Design
+
+Developers edit web templates directly in the Production Power Pages Design Studio without any change tracking.
+
+##### Portal configuration is shared between developers via email or file shares with
+
+Portal configuration is shared between developers via email or file shares with no version history.
+
 
 ### More Information
 
@@ -333,7 +400,7 @@ Manage Power Pages configuration as code using the Power Platform CLI. Store por
 
 ### Title
 
-Restrict anonymous access to the minimum set of pages and data required for unauthentic...
+Restrict anonymous access to the minimum set of pages and data required
 
 ### Description
 
@@ -358,13 +425,25 @@ Restrict anonymous access to the minimum set of pages and data required for unau
 
 #### Good
 
-- The Anonymous Users web role has Read-only access to the Knowledge Article table (Global scope) and no access to any other tables.
-- A public Contact Us form grants the Anonymous Users role Create-only access to the Inquiry table, with no Read, Write, or Delete permissions.
+##### The Anonymous Users web role has Read-only access to the Knowledge Article
+
+The Anonymous Users web role has Read-only access to the Knowledge Article table (Global scope) and no access to any other tables.
+
+##### A public Contact Us form grants the Anonymous Users role Create-only access to
+
+A public Contact Us form grants the Anonymous Users role Create-only access to the Inquiry table, with no Read, Write, or Delete permissions.
+
 
 #### Bad
 
-- The Anonymous Users web role has Global Read access to the Contact, Account, and Case tables, exposing customer data to anyone.
-- No page permissions configured, so all portal pages are visible to unauthenticated users including administrative dashboards.
+##### The Anonymous Users web role has Global Read access to the Contact, Account
+
+The Anonymous Users web role has Global Read access to the Contact, Account, and Case tables, exposing customer data to anyone.
+
+##### No page permissions configured, so all portal pages are visible to
+
+No page permissions configured, so all portal pages are visible to unauthenticated users including administrative dashboards.
+
 
 ### More Information
 
@@ -374,7 +453,7 @@ Restrict anonymous access to the minimum set of pages and data required for unau
 
 ### Title
 
-Use content snippets for reusable text, labels, and messages that appear across multipl...
+Use content snippets for reusable text, labels, and messages that appear across
 
 ### Description
 
@@ -399,13 +478,25 @@ Use content snippets for reusable text, labels, and messages that appear across 
 
 #### Good
 
-- A content snippet named VendorName/Footer/Disclaimer containing the legal disclaimer text, referenced in the footer web template with {% snippet 'VendorName/Footer/Disclaimer' %}.
-- A content snippet named VendorName/Errors/GenericMessage used across all error pages to display a consistent user-friendly error message.
+##### A content snippet named VendorName/Footer/Disclaimer containing the legal
+
+A content snippet named VendorName/Footer/Disclaimer containing the legal disclaimer text, referenced in the footer web template with {% snippet 'VendorName/Footer/Disclaimer' %}.
+
+##### A content snippet named VendorName/Errors/GenericMessage used across all error
+
+A content snippet named VendorName/Errors/GenericMessage used across all error pages to display a consistent user-friendly error message.
+
 
 #### Bad
 
-- The same disclaimer text copy-pasted into five different web templates. When the legal team updates the text, only two of the five templates are updated.
-- A content snippet containing 200 lines of HTML and Liquid code that should be a web template instead.
+##### The same disclaimer text copy-pasted into five different web templates.
+
+The same disclaimer text copy-pasted into five different web templates. When the legal team updates the text, only two of the five templates are updated.
+
+##### A content snippet containing 200 lines of HTML and Liquid code that should be a
+
+A content snippet containing 200 lines of HTML and Liquid code that should be a web template instead.
+
 
 ### More Information
 

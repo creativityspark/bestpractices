@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALM-003 - Create a dedicated solution publisher with a short, unique prefix and apply consistent...</title>
+    <title>ALM-003 - Create a dedicated solution publisher with a short, unique prefix and apply</title>
     <style>
         * {
             margin: 0;
@@ -176,34 +176,28 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .step-card .step-icon {
             width: 32px;
             height: 32px;
-            background: #0078d4;
-            color: #ffffff;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            border-radius: 50%;
+            background: #edf4fc;
+            border: 1px solid #d9e8f8;
         }
 
-        .step-card .step-icon svg {
+        .step-card .step-icon img {
             width: 18px;
             height: 18px;
         }
 
-        .step-card .step-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1b2a4a;
-        }
-
         .step-card .step-description {
-            font-size: 13px;
+            font-size: 14px;
             color: #555;
             line-height: 1.5;
         }
@@ -211,9 +205,10 @@
         /* Examples section */
         .examples-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 16px;
             overflow: hidden;
+            margin-bottom: 24px;
         }
 
         .example-box {
@@ -235,27 +230,28 @@
         .example-box .example-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .example-box .example-kind {
+            display: flex;
+            align-items: center;
             gap: 8px;
-            margin-bottom: 14px;
         }
 
-        .example-box .example-icon {
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .example-box.do .example-icon {
-            color: #27ae60;
-        }
-
-        .example-box.dont .example-icon {
-            color: #c0392b;
+        .example-box .example-kind-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
         }
 
         .example-box .example-label {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
         .example-box.do .example-label {
@@ -266,51 +262,87 @@
             color: #c0392b;
         }
 
-        .example-box ul {
-            list-style: none;
-            padding: 0;
+        .example-box .example-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1b2a4a;
         }
 
-        .example-box ul li {
+        .example-content {
             font-size: 13px;
             color: #333;
-            padding: 5px 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
+            line-height: 1.55;
         }
 
-        .example-box ul li .icon {
+        .example-prose-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .example-prose-row .example-prose-icon {
+            width: 18px;
+            height: 18px;
             flex-shrink: 0;
-            font-weight: 700;
-            font-size: 12px;
-            margin-top: 1px;
         }
 
-        .example-box.do ul li .icon {
-            color: #27ae60;
-        }
-
-        .example-box.dont ul li .icon {
-            color: #c0392b;
-        }
-
-        .example-box ul li .text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .example-box ul li .text code {
+        .example-content pre {
             font-family: 'Consolas', 'Courier New', monospace;
-            font-size: 11px;
-            font-weight: 600;
-            word-break: break-all;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            background: #ffffff;
+            border: 1px solid #d8dee8;
+            border-radius: 6px;
+            padding: 10px;
+            color: #1f2a44;
         }
 
-        .example-box ul li .text .reason {
-            font-size: 11px;
-            color: #777;
-            font-style: italic;
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1b2a4a;
+            margin-bottom: 12px;
+        }
+
+        .info-card {
+            margin-top: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .section-header-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .references-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .references-list li {
+            margin-bottom: 6px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 20px;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -322,7 +354,7 @@
             <div class="header-subtitle">Application Lifecycle Management (ALM) / alm</div>
             <div class="title-row">
                 <a href="#"><span class="rule-id">ALM-003</span></a>
-                <a href="#"><span class="rule-title">Create a dedicated solution publisher with a short, unique prefix and apply consistent...</span></a>
+                <a href="#"><span class="rule-title">Create a dedicated solution publisher with a short, unique prefix and apply</span></a>
             </div>
         </div>
 
@@ -344,40 +376,45 @@
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">1</div>
-                        <div class="step-title">Guideline 1</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/pencil.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Use a publisher prefix of 3 to 5 lowercase characters that represents your organization or project (e.g., contoso, adw).</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">2</div>
-                        <div class="step-title">Guideline 2</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/circle-alert.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Never use the default publisher (CDS Default Publisher with prefix cr), as it is shared and cannot be changed later.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">3</div>
-                        <div class="step-title">Guideline 3</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/check.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Use the same publisher across all environments (Dev, Test, Prod) to ensure consistency during deployments.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">4</div>
-                        <div class="step-title">Guideline 4</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/package.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Name solutions clearly using a pattern like PublisherPrefixSolutionPurpose (e.g., ContosoSalesOperations).</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">5</div>
-                        <div class="step-title">Guideline 5</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/lightbulb.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Apply semantic versioning (Major.Minor.Build.Revision) to all solutions.</div>
                 </div>
@@ -389,32 +426,36 @@
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">1</div>
-                        <div class="step-title">Rationale 1</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/database.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">The publisher prefix is permanently prepended to all custom tables, columns, and components. Choosing a meaningful prefix avoids confusion and conflicts with other publishers or ISV solutions.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">2</div>
-                        <div class="step-title">Rationale 2</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/users.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">The default publisher is shared across the organization - using it means your components mix with others, making it impossible to distinguish ownership.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">3</div>
-                        <div class="step-title">Rationale 3</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/package.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">A consistent publisher across environments ensures that solution imports are recognized as updates rather than new solutions.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">4</div>
-                        <div class="step-title">Rationale 4</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/lightbulb.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Semantic versioning provides a clear history of changes and makes it easy to identify which version is deployed in each environment.</div>
                 </div>
@@ -422,114 +463,156 @@
             </div>
 
             <!-- Examples -->
+            <div class="section-title">Examples</div>
             <div class="examples-grid">
+                
                 <div class="example-box do">
                     <div class="example-header">
-                        <span class="example-icon">&#10003;</span>
-                        <span class="example-label">Do</span>
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">Publisher</div>
                     </div>
-                    <ul>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>Publisher</code>
-                                
-                                <span class="reason">Contoso Ltd, prefix: contoso, deployed consistently in Dev, Test, and Prod.</span>
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/pencil.svg" alt="Example icon" />
+                            <span>Publisher</span>
+                        </div>
+                        <div>Value: Publisher Contoso Ltd, prefix: contoso, deployed consistently in Dev, Test, and Prod.</div>
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>Solution name</code>
-                                
-                                <span class="reason">Contoso_HROnboarding, version 1.2.0.0.</span>
-                                
-                            </span>
-                        </li>
-                        
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>All custom tables use the contoso prefix</code>
-                                
-                                <span class="reason">contosoEmployee, contoso_OnboardingTask.</span>
-                                
-                            </span>
-                        </li>
-                        
-                    </ul>
+                    </div>
                 </div>
+                
+                <div class="example-box do">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">Solution name</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/package.svg" alt="Example icon" />
+                            <span>Solution name</span>
+                        </div>
+                        <div>Value: Solution name Contoso_HROnboarding, version 1.2.0.0.</div>
+                        
+                    </div>
+                </div>
+                
+                <div class="example-box do">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">All custom tables use the contoso prefix</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/database.svg" alt="Example icon" />
+                            <span>All custom tables use the contoso prefix</span>
+                        </div>
+                        <div>Value: All custom tables use the contoso prefix contosoEmployee, contoso_OnboardingTask.</div>
+                        
+                    </div>
+                </div>
+                
+
+                
                 <div class="example-box dont">
                     <div class="example-header">
-                        <span class="example-icon">&#10007;</span>
-                        <span class="example-label">Don't</span>
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">Using the default CDS Default Publisher with prefix cr for production solutions.</div>
                     </div>
-                    <ul>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>Using the default CDS Default Publisher with prefix cr for production solutions.</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/lightbulb.svg" alt="Example icon" />
+                            <span>Using the default CDS Default Publisher with prefix cr for production solutions.</span>
+                        </div>
+                        <div>Using the default CDS Default Publisher with prefix cr for production solutions.</div>
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>Publisher prefix mycompanyglobaltradingsolutions - too long, making schema names unreadable.</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
-                        
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>Solution version left at 1.0.0.0 across all deployments with no version history.</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
-                        
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>Different publishers used in Dev and Prod, causing import conflicts.</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
-                        
-                    </ul>
+                    </div>
                 </div>
+                
+                <div class="example-box dont">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">Publisher prefix mycompanyglobaltradingsolutions - too long, making schema</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/book-open.svg" alt="Example icon" />
+                            <span>Publisher prefix mycompanyglobaltradingsolutions - too long, making schema</span>
+                        </div>
+                        <div>Publisher prefix mycompanyglobaltradingsolutions - too long, making schema names unreadable.</div>
+                        
+                    </div>
+                </div>
+                
+                <div class="example-box dont">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">Solution version left at 1.0.0.0 across all deployments with no version history.</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/check.svg" alt="Example icon" />
+                            <span>Solution version left at 1.0.0.0 across all deployments with no version history.</span>
+                        </div>
+                        <div>Solution version left at 1.0.0.0 across all deployments with no version history.</div>
+                        
+                    </div>
+                </div>
+                
+                <div class="example-box dont">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">Different publishers used in Dev and Prod, causing import conflicts.</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/circle-alert.svg" alt="Example icon" />
+                            <span>Different publishers used in Dev and Prod, causing import conflicts.</span>
+                        </div>
+                        <div>Different publishers used in Dev and Prod, causing import conflicts.</div>
+                        
+                    </div>
+                </div>
+                
             </div>
 
             
 
             
-            <div class="step-card" style="margin-top: 24px;">
-                <div class="step-header">
-                    <div class="step-icon">i</div>
-                    <div class="step-title">More Information</div>
+            <div class="step-card info-card">
+                <div class="section-header">
+                    <img class="section-header-icon" src="../img/icons/info.svg" alt="More information" />
+                    <div class="section-title" style="margin-bottom: 0;">More Information</div>
                 </div>
                 <div class="step-description">
-                    <ul>
+                    <ul class="references-list">
                         
                         <li><a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/create-solution#create-a-solution-publisher" target="_blank" rel="noopener noreferrer">Create a solution publisher - Microsoft Learn</a></li>
                         

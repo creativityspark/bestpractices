@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS-002 - Design trigger phrases that are specific, varied, and non-overlapping across topics to...</title>
+    <title>CS-002 - Design trigger phrases that are specific, varied, and non-overlapping across</title>
     <style>
         * {
             margin: 0;
@@ -176,34 +176,28 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .step-card .step-icon {
             width: 32px;
             height: 32px;
-            background: #0078d4;
-            color: #ffffff;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            border-radius: 50%;
+            background: #edf4fc;
+            border: 1px solid #d9e8f8;
         }
 
-        .step-card .step-icon svg {
+        .step-card .step-icon img {
             width: 18px;
             height: 18px;
         }
 
-        .step-card .step-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1b2a4a;
-        }
-
         .step-card .step-description {
-            font-size: 13px;
+            font-size: 14px;
             color: #555;
             line-height: 1.5;
         }
@@ -211,9 +205,10 @@
         /* Examples section */
         .examples-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 16px;
             overflow: hidden;
+            margin-bottom: 24px;
         }
 
         .example-box {
@@ -235,27 +230,28 @@
         .example-box .example-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .example-box .example-kind {
+            display: flex;
+            align-items: center;
             gap: 8px;
-            margin-bottom: 14px;
         }
 
-        .example-box .example-icon {
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .example-box.do .example-icon {
-            color: #27ae60;
-        }
-
-        .example-box.dont .example-icon {
-            color: #c0392b;
+        .example-box .example-kind-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
         }
 
         .example-box .example-label {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
         .example-box.do .example-label {
@@ -266,51 +262,87 @@
             color: #c0392b;
         }
 
-        .example-box ul {
-            list-style: none;
-            padding: 0;
+        .example-box .example-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1b2a4a;
         }
 
-        .example-box ul li {
+        .example-content {
             font-size: 13px;
             color: #333;
-            padding: 5px 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
+            line-height: 1.55;
         }
 
-        .example-box ul li .icon {
+        .example-prose-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .example-prose-row .example-prose-icon {
+            width: 18px;
+            height: 18px;
             flex-shrink: 0;
-            font-weight: 700;
-            font-size: 12px;
-            margin-top: 1px;
         }
 
-        .example-box.do ul li .icon {
-            color: #27ae60;
-        }
-
-        .example-box.dont ul li .icon {
-            color: #c0392b;
-        }
-
-        .example-box ul li .text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .example-box ul li .text code {
+        .example-content pre {
             font-family: 'Consolas', 'Courier New', monospace;
-            font-size: 11px;
-            font-weight: 600;
-            word-break: break-all;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            background: #ffffff;
+            border: 1px solid #d8dee8;
+            border-radius: 6px;
+            padding: 10px;
+            color: #1f2a44;
         }
 
-        .example-box ul li .text .reason {
-            font-size: 11px;
-            color: #777;
-            font-style: italic;
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1b2a4a;
+            margin-bottom: 12px;
+        }
+
+        .info-card {
+            margin-top: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .section-header-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .references-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .references-list li {
+            margin-bottom: 6px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 20px;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -322,7 +354,7 @@
             <div class="header-subtitle">Copilot Studio / copilot-studio</div>
             <div class="title-row">
                 <a href="#"><span class="rule-id">CS-002</span></a>
-                <a href="#"><span class="rule-title">Design trigger phrases that are specific, varied, and non-overlapping across topics to...</span></a>
+                <a href="#"><span class="rule-title">Design trigger phrases that are specific, varied, and non-overlapping across</span></a>
             </div>
         </div>
 
@@ -344,40 +376,45 @@
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">1</div>
-                        <div class="step-title">Guideline 1</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/workflow.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Provide at least 5–10 trigger phrases per topic, covering different ways a user might express the same intent.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">2</div>
-                        <div class="step-title">Guideline 2</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/lightbulb.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Use specific and detailed phrases rather than single words or generic terms.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">3</div>
-                        <div class="step-title">Guideline 3</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/circle-alert.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Avoid overlapping trigger phrases between topics - each phrase should clearly map to one topic only.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">4</div>
-                        <div class="step-title">Guideline 4</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/check.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Regularly test trigger phrases using the Test bot pane to verify correct topic routing.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">5</div>
-                        <div class="step-title">Guideline 5</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/eye.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Review conversation analytics to identify misrouted queries and adjust trigger phrases accordingly.</div>
                 </div>
@@ -389,32 +426,36 @@
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">1</div>
-                        <div class="step-title">Rationale 1</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/workflow.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Too few trigger phrases reduce the agent's ability to recognize user intent, leading to unnecessary fallback responses.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">2</div>
-                        <div class="step-title">Rationale 2</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/lightbulb.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Generic or single-word triggers (e.g., "help", "status") match too broadly and cause the wrong topic to fire.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">3</div>
-                        <div class="step-title">Rationale 3</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/check.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Overlapping phrases between topics create ambiguity that degrades the conversational experience.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">4</div>
-                        <div class="step-title">Rationale 4</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/users.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Testing and analytics reveal real-world phrasing that users employ, helping you refine triggers over time.</div>
                 </div>
@@ -422,167 +463,253 @@
             </div>
 
             <!-- Examples -->
+            <div class="section-title">Examples</div>
             <div class="examples-grid">
+                
                 <div class="example-box do">
                     <div class="example-header">
-                        <span class="example-icon">&#10003;</span>
-                        <span class="example-label">Do</span>
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">"I need to reset my password"</div>
                     </div>
-                    <ul>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>"I need to reset my password"</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/lightbulb.svg" alt="Example icon" />
+                            <span>"I need to reset my password"</span>
+                        </div>
+                        <div>Value: "I need to reset my password"</div>
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>"How do I change my password?"</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                    </div>
+                </div>
+                
+                <div class="example-box do">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">"How do I change my password?"</div>
+                    </div>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>"My password expired, what do I do?"</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/check.svg" alt="Example icon" />
+                            <span>"How do I change my password?"</span>
+                        </div>
+                        <div>Value: "How do I change my password?"</div>
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>"I forgot my password"</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                    </div>
+                </div>
+                
+                <div class="example-box do">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">"My password expired, what do I do?"</div>
+                    </div>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>"Can you help me reset my login credentials?"</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/circle-alert.svg" alt="Example icon" />
+                            <span>"My password expired, what do I do?"</span>
+                        </div>
+                        <div>Value: "My password expired, what do I do?"</div>
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>"Password reset request"</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                    </div>
+                </div>
+                
+                <div class="example-box do">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">"I forgot my password"</div>
+                    </div>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>// Topic: IT - Reset Password
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/settings.svg" alt="Example icon" />
+                            <span>"I forgot my password"</span>
+                        </div>
+                        <div>Value: "I forgot my password"</div>
+                        
+                    </div>
+                </div>
+                
+                <div class="example-box do">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">"Can you help me reset my login credentials?"</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/workflow.svg" alt="Example icon" />
+                            <span>"Can you help me reset my login credentials?"</span>
+                        </div>
+                        <div>Value: "Can you help me reset my login credentials?"</div>
+                        
+                    </div>
+                </div>
+                
+                <div class="example-box do">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">"Password reset request"</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/database.svg" alt="Example icon" />
+                            <span>"Password reset request"</span>
+                        </div>
+                        <div>Value: "Password reset request"</div>
+                        
+                    </div>
+                </div>
+                
+                <div class="example-box do">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">Compliant code example</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <pre>// Topic: IT - Reset Password
 Trigger phrases:
 - "I need to reset my password"
 - "How do I change my password?"
 - "My password expired, what do I do?"
 - "I forgot my password"
 - "Can you help me reset my login credentials?"
-- "Password reset request"</code>
-                                
-                                
-                                <span class="reason">Language: Plain Text</span>
-                            </span>
-                        </li>
+- "Password reset request"</pre>
                         
-                    </ul>
+                    </div>
                 </div>
+                
+
+                
                 <div class="example-box dont">
                     <div class="example-header">
-                        <span class="example-icon">&#10007;</span>
-                        <span class="example-label">Don't</span>
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">"password" // Too vague, overlaps with other password-related topics</div>
                     </div>
-                    <ul>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>"password"          // Too vague, overlaps with other password-related topics</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/link.svg" alt="Example icon" />
+                            <span>"password" // Too vague, overlaps with other password-related topics</span>
+                        </div>
+                        <div>Value: "password" // Too vague, overlaps with other password-related topics</div>
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>"help"              // Matches almost anything</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                    </div>
+                </div>
+                
+                <div class="example-box dont">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">"help" // Matches almost anything</div>
+                    </div>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>"reset"             // Could apply to many unrelated topics</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/package.svg" alt="Example icon" />
+                            <span>"help" // Matches almost anything</span>
+                        </div>
+                        <div>Value: "help" // Matches almost anything</div>
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>"I forgot my password"   // Same phrase already in Reset Password topic</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                    </div>
+                </div>
+                
+                <div class="example-box dont">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">"reset" // Could apply to many unrelated topics</div>
+                    </div>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>"Can't log in"           // Ambiguous, could be either topic</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/users.svg" alt="Example icon" />
+                            <span>"reset" // Could apply to many unrelated topics</span>
+                        </div>
+                        <div>Value: "reset" // Could apply to many unrelated topics</div>
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>// Topic: IT - Reset Password
+                    </div>
+                </div>
+                
+                <div class="example-box dont">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">"I forgot my password" // Same phrase already in Reset Password topic</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/book-open.svg" alt="Example icon" />
+                            <span>"I forgot my password" // Same phrase already in Reset Password topic</span>
+                        </div>
+                        <div>Value: "I forgot my password" // Same phrase already in Reset Password topic</div>
+                        
+                    </div>
+                </div>
+                
+                <div class="example-box dont">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">"Can't log in" // Ambiguous, could be either topic</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/file-text.svg" alt="Example icon" />
+                            <span>"Can't log in" // Ambiguous, could be either topic</span>
+                        </div>
+                        <div>Value: "Can't log in" // Ambiguous, could be either topic</div>
+                        
+                    </div>
+                </div>
+                
+                <div class="example-box dont">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">Non-compliant code example</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <pre>// Topic: IT - Reset Password
 Trigger phrases:
 - "password"          // Too vague, overlaps with other password-related topics
 - "help"              // Matches almost anything
@@ -591,27 +718,23 @@ Trigger phrases:
 // Topic: IT - Unlock Account (overlapping triggers)
 Trigger phrases:
 - "I forgot my password"   // Same phrase already in Reset Password topic
-- "Can't log in"           // Ambiguous, could be either topic</code>
-                                
-                                
-                                <span class="reason">Language: Plain Text</span>
-                            </span>
-                        </li>
+- "Can't log in"           // Ambiguous, could be either topic</pre>
                         
-                    </ul>
+                    </div>
                 </div>
+                
             </div>
 
             
 
             
-            <div class="step-card" style="margin-top: 24px;">
-                <div class="step-header">
-                    <div class="step-icon">i</div>
-                    <div class="step-title">More Information</div>
+            <div class="step-card info-card">
+                <div class="section-header">
+                    <img class="section-header-icon" src="../img/icons/info.svg" alt="More information" />
+                    <div class="section-title" style="margin-bottom: 0;">More Information</div>
                 </div>
                 <div class="step-description">
-                    <ul>
+                    <ul class="references-list">
                         
                         <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/trigger-phrases-best-practices" target="_blank" rel="noopener noreferrer">Best practices for topic trigger phrases - Microsoft Learn</a></li>
                         

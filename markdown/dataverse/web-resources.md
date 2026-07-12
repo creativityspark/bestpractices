@@ -6,7 +6,7 @@ Good practices for Dataverse Web Resources.
 
 ### Title
 
-Use a consistent naming convention with virtual folder structures for all web resources
+Use a consistent naming convention with virtual folder structures for all web
 
 ### Description
 
@@ -33,7 +33,8 @@ Use a consistent naming convention with virtual folder structures for all web re
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```Plain Text
 contoso_/js/account/formEvents.js
 contoso_/js/contact/phoneValidation.js
@@ -43,15 +44,18 @@ contoso_/css/common.css
 contoso_/img/icons/phone.svg
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```Plain Text
 new_script1.js
 new_script2.js
 accountformeventsvalidationandribbon.js
 contoso_/js/features/module1/submodule2/helpers/internal/utils.js
 ```
+
 
 ### More Information
 
@@ -61,7 +65,7 @@ contoso_/js/features/module1/submodule2/helpers/internal/utils.js
 
 ### Title
 
-Every web resource must have a display name and a description that explain its purpose...
+Have a display name and a description that explain its purpose and usage.
 
 ### Description
 
@@ -85,13 +89,25 @@ Every web resource must have a display name and a description that explain its p
 
 #### Good
 
-- Display Name: Account Form Events
-- Description: Handles OnLoad, OnSave, and OnChange events for the Account main form. Depends on contoso\/js/lib/utilities.js. Registered on the Account Main Form._
+##### Display Name
+
+Value: Display Name Account Form Events
+
+##### Description
+
+Value: Description Handles OnLoad, OnSave, and OnChange events for the Account main form. Depends on contoso\/js/lib/utilities.js. Registered on the Account Main Form._
+
 
 #### Bad
 
-- Display Name: Script1
-- Description: (empty)
+##### Display Name
+
+Value: Display Name Script1
+
+##### Description
+
+Value: Description (empty)
+
 
 ### More Information
 
@@ -101,7 +117,7 @@ Every web resource must have a display name and a description that explain its p
 
 ### Title
 
-Sanitize all user input and dynamic data rendered in HTML web resources to prevent Cros...
+Sanitize all user input and dynamic data rendered in HTML web resources
 
 ### Description
 
@@ -126,21 +142,26 @@ Sanitize all user input and dynamic data rendered in HTML web resources to preve
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```html
 <meta http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'">
 ```
-Good example code snippet.
+
+##### Compliant code example
+
 ```javascript
 // Using textContent to safely render data
 var output = document.getElementById("output");
 output.textContent = recordName; // Safe — HTML is not parsed
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```javascript
 // Using innerHTML with unsanitized data — vulnerable to XSS
 var output = document.getElementById("output");
@@ -149,6 +170,7 @@ output.innerHTML = "<h1>" + recordName + "</h1>";
 // Using eval to process data
 eval("var data = " + serverResponse);
 ```
+
 
 ### More Information
 
@@ -160,7 +182,7 @@ eval("var data = " + serverResponse);
 
 ### Title
 
-Optimize all image web resources for size and use SVG format whenever possible
+Optimize all image web resources for size and use SVG format whenever possible.
 
 ### Description
 
@@ -187,14 +209,29 @@ Optimize all image web resources for size and use SVG format whenever possible.
 
 #### Good
 
-- A table icon uploaded as a 2 KB SVG file at contoso_/img/icons/customer.svg.
-- A product photograph compressed from 3.2 MB to 180 KB using TinyPNG before uploading as contoso_/img/products/widget.jpg.
+##### A table icon uploaded as a 2 KB SVG file at contoso_/img/icons/customer.svg.
+
+A table icon uploaded as a 2 KB SVG file at contoso_/img/icons/customer.svg.
+
+##### A product photograph compressed from 3.2 MB to 180 KB using TinyPNG before
+
+A product photograph compressed from 3.2 MB to 180 KB using TinyPNG before uploading as contoso_/img/products/widget.jpg.
+
 
 #### Bad
 
-- A 1.5 MB PNG file used as a 32×32 table icon when a 2 KB SVG would suffice.
-- An uncompressed 4000×3000 BMP screenshot uploaded as a dashboard background.
-- A 500 KB Base64-encoded logo embedded directly inside an HTML web resource.
+##### A 1.5 MB PNG file used as a 32×32 table icon when a 2 KB SVG would suffice.
+
+A 1.5 MB PNG file used as a 32×32 table icon when a 2 KB SVG would suffice.
+
+##### An uncompressed 4000×3000 BMP screenshot uploaded as a dashboard background.
+
+An uncompressed 4000×3000 BMP screenshot uploaded as a dashboard background.
+
+##### A 500 KB Base64-encoded logo embedded directly inside an HTML web resource.
+
+A 500 KB Base64-encoded logo embedded directly inside an HTML web resource.
+
 
 ### More Information
 
@@ -206,7 +243,7 @@ Optimize all image web resources for size and use SVG format whenever possible.
 
 ### Title
 
-Prefix all CSS class and ID names with the project or publisher prefix to avoid collisi...
+Prefix all CSS class and ID names with the project or publisher prefix to avoid
 
 ### Description
 
@@ -232,7 +269,8 @@ Prefix all CSS class and ID names with the project or publisher prefix to avoid 
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```css
 .csp-dashboard-header {
     font-size: 18px;
@@ -245,9 +283,11 @@ Good example code snippet.
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```css
 .header {
     font-size: 18px;
@@ -259,6 +299,7 @@ Bad example code snippet.
 }
 ```
 
+
 ### More Information
 
 1. [CSS web resources - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/css-web-resources)
@@ -267,7 +308,7 @@ Bad example code snippet.
 
 ### Title
 
-Keep HTML web resources lightweight, responsive, and well-structured
+Keep HTML web resources lightweight, responsive, and well-structured.
 
 ### Description
 
@@ -294,7 +335,8 @@ Keep HTML web resources lightweight, responsive, and well-structured.
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -316,9 +358,11 @@ Good example code snippet.
 </html>
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```html
 <html>
 <body>
@@ -333,6 +377,7 @@ Bad example code snippet.
 </html>
 ```
 
+
 ### More Information
 
 1. [Webpage (HTML) web resources - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/webpage-html-web-resources)
@@ -341,7 +386,7 @@ Bad example code snippet.
 
 ### Title
 
-Declare dependencies between web resources explicitly using the dependency configuratio...
+Declare dependencies between web resources explicitly using the dependency
 
 ### Description
 
@@ -366,13 +411,25 @@ Declare dependencies between web resources explicitly using the dependency confi
 
 #### Good
 
-- The form library list shows contoso/js/lib/utilities.js loaded before contoso/js/account/formEvents.js, because the dependency is declared in the form configuration.
-- The solution's Dependency Checker reports no missing components before export.
+##### The form library list shows contoso/js/lib/utilities.js loaded before
+
+The form library list shows contoso/js/lib/utilities.js loaded before contoso/js/account/formEvents.js, because the dependency is declared in the form configuration.
+
+##### The solution's Dependency Checker reports no missing components before export.
+
+The solution's Dependency Checker reports no missing components before export.
+
 
 #### Bad
 
-- A script dynamically loads a utility library at runtime using a custom loadScript() function. The utility library is not included in the solution, and the script fails silently in the target environment after import.
-- Two JavaScript libraries are added to a form without specifying their load order, causing intermittent "function is not defined" errors.
+##### A script dynamically loads a utility library at runtime using a custom
+
+A script dynamically loads a utility library at runtime using a custom loadScript() function. The utility library is not included in the solution, and the script fails silently in the target environment after import.
+
+##### Two JavaScript libraries are added to a form without specifying their load
+
+Two JavaScript libraries are added to a form without specifying their load order, causing intermittent "function is not defined" errors.
+
 
 ### More Information
 
@@ -383,7 +440,7 @@ Declare dependencies between web resources explicitly using the dependency confi
 
 ### Title
 
-Periodically audit and remove unused web resources from the solution
+Periodically audit and remove unused web resources from the solution.
 
 ### Description
 
@@ -408,12 +465,21 @@ Periodically audit and remove unused web resources from the solution.
 
 #### Good
 
-- A quarterly review identifies three JavaScript libraries that were replaced six months ago. They are verified as unused via Show Dependencies and removed from the solution.
+##### A quarterly review identifies three JavaScript libraries that were replaced six
+
+A quarterly review identifies three JavaScript libraries that were replaced six months ago. They are verified as unused via Show Dependencies and removed from the solution.
+
 
 #### Bad
 
-- A solution contains 40 web resources, but only 15 are actively used. The remaining 25 are leftovers from previous development cycles that no one has reviewed or cleaned up.
-- A developer deletes a web resource without checking dependencies, breaking a form that still references it.
+##### A solution contains 40 web resources, but only 15 are actively used.
+
+A solution contains 40 web resources, but only 15 are actively used. The remaining 25 are leftovers from previous development cycles that no one has reviewed or cleaned up.
+
+##### A developer deletes a web resource without checking dependencies, breaking a
+
+A developer deletes a web resource without checking dependencies, breaking a form that still references it.
+
 
 ### More Information
 
@@ -423,7 +489,7 @@ Periodically audit and remove unused web resources from the solution.
 
 ### Title
 
-Use RESX web resources for multi-language support instead of hardcoding strings in HTML...
+Use RESX web resources for multi-language support instead of hardcoding strings
 
 ### Description
 
@@ -450,7 +516,8 @@ Use RESX web resources for multi-language support instead of hardcoding strings 
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```xml
 <!-- contoso_/resx/Strings.resx (default — English) -->
 <data name="greeting_message" xml:space="preserve">
@@ -460,7 +527,9 @@ Good example code snippet.
     <value>Save</value>
 </data>
 ```
-Good example code snippet.
+
+##### Compliant code example
+
 ```xml
 <!-- contoso_/resx/Strings.1036.resx (French) -->
 <data name="greeting_message" xml:space="preserve">
@@ -470,26 +539,33 @@ Good example code snippet.
     <value>Enregistrer</value>
 </data>
 ```
-Good example code snippet.
+
+##### Compliant code example
+
 ```javascript
 // Retrieving a localized string at runtime
 var greeting = Xrm.Utility.getResourceString("contoso_/resx/Strings", "greeting_message");
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```javascript
 // Hardcoded strings in JavaScript — no localization support
 var greeting = "Welcome to the Customer Portal";
 var saveLabel = "Save";
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```html
 <!-- Hardcoded strings in HTML — requires code change for every language -->
 <h1>Welcome to the Customer Portal</h1>
 <button>Save</button>
 ```
+
 
 ### More Information
 

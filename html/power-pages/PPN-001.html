@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PPN-001 - End-users access web pages for the portal</title>
+    <title>PPN-001 - End-users access web pages for the portal.</title>
     <style>
         * {
             margin: 0;
@@ -176,34 +176,28 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .step-card .step-icon {
             width: 32px;
             height: 32px;
-            background: #0078d4;
-            color: #ffffff;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            border-radius: 50%;
+            background: #edf4fc;
+            border: 1px solid #d9e8f8;
         }
 
-        .step-card .step-icon svg {
+        .step-card .step-icon img {
             width: 18px;
             height: 18px;
         }
 
-        .step-card .step-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1b2a4a;
-        }
-
         .step-card .step-description {
-            font-size: 13px;
+            font-size: 14px;
             color: #555;
             line-height: 1.5;
         }
@@ -211,9 +205,10 @@
         /* Examples section */
         .examples-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 16px;
             overflow: hidden;
+            margin-bottom: 24px;
         }
 
         .example-box {
@@ -235,27 +230,28 @@
         .example-box .example-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .example-box .example-kind {
+            display: flex;
+            align-items: center;
             gap: 8px;
-            margin-bottom: 14px;
         }
 
-        .example-box .example-icon {
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .example-box.do .example-icon {
-            color: #27ae60;
-        }
-
-        .example-box.dont .example-icon {
-            color: #c0392b;
+        .example-box .example-kind-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
         }
 
         .example-box .example-label {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
         .example-box.do .example-label {
@@ -266,51 +262,87 @@
             color: #c0392b;
         }
 
-        .example-box ul {
-            list-style: none;
-            padding: 0;
+        .example-box .example-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1b2a4a;
         }
 
-        .example-box ul li {
+        .example-content {
             font-size: 13px;
             color: #333;
-            padding: 5px 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
+            line-height: 1.55;
         }
 
-        .example-box ul li .icon {
+        .example-prose-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .example-prose-row .example-prose-icon {
+            width: 18px;
+            height: 18px;
             flex-shrink: 0;
-            font-weight: 700;
-            font-size: 12px;
-            margin-top: 1px;
         }
 
-        .example-box.do ul li .icon {
-            color: #27ae60;
-        }
-
-        .example-box.dont ul li .icon {
-            color: #c0392b;
-        }
-
-        .example-box ul li .text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .example-box ul li .text code {
+        .example-content pre {
             font-family: 'Consolas', 'Courier New', monospace;
-            font-size: 11px;
-            font-weight: 600;
-            word-break: break-all;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            background: #ffffff;
+            border: 1px solid #d8dee8;
+            border-radius: 6px;
+            padding: 10px;
+            color: #1f2a44;
         }
 
-        .example-box ul li .text .reason {
-            font-size: 11px;
-            color: #777;
-            font-style: italic;
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1b2a4a;
+            margin-bottom: 12px;
+        }
+
+        .info-card {
+            margin-top: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .section-header-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .references-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .references-list li {
+            margin-bottom: 6px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 20px;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -322,7 +354,7 @@
             <div class="header-subtitle">Component Naming / power-pages</div>
             <div class="title-row">
                 <a href="#"><span class="rule-id">PPN-001</span></a>
-                <a href="#"><span class="rule-title">End-users access web pages for the portal</span></a>
+                <a href="#"><span class="rule-title">End-users access web pages for the portal.</span></a>
             </div>
         </div>
 
@@ -344,10 +376,11 @@
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">1</div>
-                        <div class="step-title">Guideline 1</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/database.svg" alt="Guideline icon" />
+                        </div>
                     </div>
-                    <div class="step-description">End-users access web pages for the portal. These web pages are organized into a hierarchy as part of the solution architecture. As such, it makes sense to name portal components (such as web pages) using a hierarchical pattern. > Note: A portal component is any portal configuration table record. i.e. > > - Web Page > - Web Template > - Content Snippet Follow the below guidance when naming portal components: | Convention | Do ✔  | Don't ❌ | |--|--|--| | Prefix vendor specific components with the vendor name/acronym. | VendorName | Contoso | | Prefix customer specific components with the customer name/acronym. | Contoso | VendorName | | Use forward slashes (/) as the delimiter of components in the hierarchy. | VendorName/FeatureOne | VendorName-FeatureOne | | Abbreviate component names without sacrificing clarity. | VendorName/FeatureOne | VendorName/TheVeryFirstFeature | | Do not use component type names in component names. | Web Page: VendorName/FeatureOne<br>Content Snippet: VendorName/FeatureOne/Title | Web Page: VendorName/FeatureOneWebPage<br>Content Snippet: VendorName/FeatureOne/TitleSnippet | | Child components should inherit their parent components name. | Parent: VendorName/FeatureOne<br>Child: VendorName/FeatureOne/ChildFeature | Parent: VendorName/FeatureOne<br>Child: VendorName/ChildFeature | | Other components types for the same feature should share names. | Web Page: VendorName/FeatureOne<br>Page Template: VendorName/FeatureOne<br>Web Template: VendorName/FeatureOne | Web Page: VendorName/FeatureOne<br>Page Template: VendorName/FirstFeature<br>Web Template: VendorName/Feature1Template | | Using PascalCase when naming hierarchy components. | VendorName/FeatureOne | VendorName/featureOne | | Do not use spaces or dashes (-). | VendorName/FeatureOne | VendorName-Feature One | | Extend the existing hierarchy instead of creating a new one. | Current: ../FeatureOne/ChildFeatureOne<br>New feature: ../FeatureOne/ChildFeatureTwo | Current: ../FeatureOne/ChildFeatureOne<br>New feature: ../FeatureOneChildFeatureTwo |</div>
+                    <div class="step-description">End-users access web pages for the portal. These web pages are organized into a hierarchy as part of the solution architecture. As such, it makes sense to name portal components (such as web pages) using a hierarchical pattern. > Note: A portal component is any portal configuration table record. i.e. > > - Web Page > - Web Template > - Content Snippet Follow the below guidance when naming portal components: | Convention | Do ✔ | Don't ❌ | |--|--|--| | Prefix vendor specific components with the vendor name/acronym. | VendorName | Contoso | | Prefix customer specific components with the customer name/acronym. | Contoso | VendorName | | Use forward slashes (/) as the delimiter of components in the hierarchy. | VendorName/FeatureOne | VendorName-FeatureOne | | Abbreviate component names without sacrificing clarity. | VendorName/FeatureOne | VendorName/TheVeryFirstFeature | | Do not use component type names in component names. | Web Page: VendorName/FeatureOne<br>Content Snippet: VendorName/FeatureOne/Title | Web Page: VendorName/FeatureOneWebPage<br>Content Snippet: VendorName/FeatureOne/TitleSnippet | | Child components should inherit their parent components name. | Parent: VendorName/FeatureOne<br>Child: VendorName/FeatureOne/ChildFeature | Parent: VendorName/FeatureOne<br>Child: VendorName/ChildFeature | | Other components types for the same feature should share names. | Web Page: VendorName/FeatureOne<br>Page Template: VendorName/FeatureOne<br>Web Template: VendorName/FeatureOne | Web Page: VendorName/FeatureOne<br>Page Template: VendorName/FirstFeature<br>Web Template: VendorName/Feature1Template | | Using PascalCase when naming hierarchy components. | VendorName/FeatureOne | VendorName/featureOne | | Do not use spaces or dashes (-). | VendorName/FeatureOne | VendorName-Feature One | | Extend the existing hierarchy instead of creating a new one. | Current: ../FeatureOne/ChildFeatureOne<br>New feature: ../FeatureOne/ChildFeatureTwo | Current: ../FeatureOne/ChildFeatureOne<br>New feature: ../FeatureOneChildFeatureTwo |</div>
                 </div>
                 
             </div>
@@ -357,16 +390,18 @@
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">1</div>
-                        <div class="step-title">Rationale 1</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/lightbulb.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Hierarchy of the portal structure is clear.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">2</div>
-                        <div class="step-title">Rationale 2</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/pencil.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Simple naming of source control files and folders.</div>
                 </div>
@@ -374,70 +409,80 @@
             </div>
 
             <!-- Examples -->
+            <div class="section-title">Examples</div>
             <div class="examples-grid">
+                
                 <div class="example-box do">
                     <div class="example-header">
-                        <span class="example-icon">&#10003;</span>
-                        <span class="example-label">Do</span>
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">Table Permissions</div>
                     </div>
-                    <ul>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>Table Permissions</code>
-                                
-                                <span class="reason">For this record type, it is best to provide a descriptive name.</span>
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/shield-alert.svg" alt="Example icon" />
+                            <span>Table Permissions</span>
+                        </div>
+                        <div>Value: Table Permissions For this record type, it is best to provide a descriptive name.</div>
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>Millage may vary</code>
-                                
-                                <span class="reason">Name is subjective and each record type should be evaluated based on what makes sense.</span>
-                                
-                            </span>
-                        </li>
-                        
-                    </ul>
+                    </div>
                 </div>
+                
+                <div class="example-box do">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">Millage may vary</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/pencil.svg" alt="Example icon" />
+                            <span>Millage may vary</span>
+                        </div>
+                        <div>Value: Millage may vary Name is subjective and each record type should be evaluated based on what makes sense.</div>
+                        
+                    </div>
+                </div>
+                
+
+                
                 <div class="example-box dont">
                     <div class="example-header">
-                        <span class="example-icon">&#10007;</span>
-                        <span class="example-label">Don't</span>
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">Violates the rule requirements.</div>
                     </div>
-                    <ul>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>Violates the rule requirements.</code>
-                                
-                                
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/lightbulb.svg" alt="Example icon" />
+                            <span>Violates the rule requirements.</span>
+                        </div>
+                        <div>Violates the rule requirements.</div>
                         
-                    </ul>
+                    </div>
                 </div>
+                
             </div>
 
             
 
             
-            <div class="step-card" style="margin-top: 24px;">
-                <div class="step-header">
-                    <div class="step-icon">i</div>
-                    <div class="step-title">More Information</div>
+            <div class="step-card info-card">
+                <div class="section-header">
+                    <img class="section-header-icon" src="../img/icons/info.svg" alt="More information" />
+                    <div class="section-title" style="margin-bottom: 0;">More Information</div>
                 </div>
                 <div class="step-description">
-                    <ul>
+                    <ul class="references-list">
                         
                         <li><a href="https://learn.microsoft.com/en-us/power-platform/" target="_blank" rel="noopener noreferrer">Microsoft Learn - Power Platform Documentation</a></li>
                         

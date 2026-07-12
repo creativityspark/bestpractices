@@ -6,7 +6,7 @@ Good practices for Dataverse Security Roles.
 
 ### Title
 
-Never modify out-of-the-box (OOB) security roles
+Never modify out-of-the-box (OOB) security roles.
 
 ### Description
 
@@ -32,13 +32,25 @@ Never modify out-of-the-box (OOB) security roles. Always create custom security 
 
 #### Good
 
-- A custom role named cspAccountManager created by copying the Salesperson role and removing unnecessary privileges such as marketing list management.
-- A custom role named cspReadOnly_Auditor with only Read privileges on business data tables, used for compliance reviews.
+##### A custom role named cspAccountManager created by copying the Salesperson role
+
+A custom role named cspAccountManager created by copying the Salesperson role and removing unnecessary privileges such as marketing list management.
+
+##### A custom role named cspReadOnly_Auditor with only Read privileges on business
+
+A custom role named cspReadOnly_Auditor with only Read privileges on business data tables, used for compliance reviews.
+
 
 #### Bad
 
-- Editing the OOB Salesperson role directly to remove privileges, which may be overwritten in the next platform update.
-- A custom role named Role1 with no indication of its purpose or target audience.
+##### Editing the OOB Salesperson role directly to remove privileges, which may be
+
+Editing the OOB Salesperson role directly to remove privileges, which may be overwritten in the next platform update.
+
+##### A custom role named Role1 with no indication of its purpose or target audience.
+
+A custom role named Role1 with no indication of its purpose or target audience.
+
 
 ### More Information
 
@@ -49,7 +61,7 @@ Never modify out-of-the-box (OOB) security roles. Always create custom security 
 
 ### Title
 
-Apply the Principle of Least Privilege when assigning security role permissions
+Apply the Principle of Least Privilege when assigning security role permissions.
 
 ### Description
 
@@ -75,11 +87,17 @@ Apply the Principle of Least Privilege when assigning security role permissions.
 
 #### Good
 
-- Conforms to the rule requirements.
+##### Conforms to the rule requirements.
+
+Conforms to the rule requirements.
+
 
 #### Bad
 
-- Violates the rule requirements.
+##### Violates the rule requirements.
+
+Violates the rule requirements.
+
 
 ### More Information
 
@@ -90,7 +108,7 @@ Apply the Principle of Least Privilege when assigning security role permissions.
 
 ### Title
 
-Assign security roles to teams instead of individual users whenever possible
+Assign security roles to teams instead of individual users whenever possible.
 
 ### Description
 
@@ -116,13 +134,25 @@ Assign security roles to teams instead of individual users whenever possible.
 
 #### Good
 
-- An Owner Team named Sales Team - North America with the cspSalesRep role assigned. New sales reps are added to the team and immediately inherit the correct permissions.
-- An Azure AD Group Team linked to the Finance Department security group in Azure AD, with the cspFinanceAnalyst role assigned. User membership is managed centrally in Azure AD.
+##### An Owner Team named Sales Team - North America with the cspSalesRep role
+
+An Owner Team named Sales Team - North America with the cspSalesRep role assigned. New sales reps are added to the team and immediately inherit the correct permissions.
+
+##### An Azure AD Group Team linked to the Finance Department security group in Azure
+
+An Azure AD Group Team linked to the Finance Department security group in Azure AD, with the cspFinanceAnalyst role assigned. User membership is managed centrally in Azure AD.
+
 
 #### Bad
 
-- Each of the 50 sales reps has the cspSalesRep role assigned directly to their user record. When the role changes, all 50 assignments must be updated manually.
-- An Access Team used to grant broad table-level Read/Write permissions instead of sharing individual records.
+##### Each of the 50 sales reps has the cspSalesRep role assigned directly to their
+
+Each of the 50 sales reps has the cspSalesRep role assigned directly to their user record. When the role changes, all 50 assignments must be updated manually.
+
+##### An Access Team used to grant broad table-level Read/Write permissions instead
+
+An Access Team used to grant broad table-level Read/Write permissions instead of sharing individual records.
+
 
 ### More Information
 
@@ -133,7 +163,7 @@ Assign security roles to teams instead of individual users whenever possible.
 
 ### Title
 
-Separate security roles by functional purpose: one set for application access and anoth...
+Separate security roles by functional purpose: one set for application access
 
 ### Description
 
@@ -157,13 +187,25 @@ Separate security roles by functional purpose: one set for application access an
 
 #### Good
 
-- A user has two roles: cspCRMAppAccess (grants access to the CRM model-driven app and its sitemap areas) and cspAccountManagerData (grants Read/Write on Account, Contact, and Opportunity at the Business Unit level).
-- When a new model-driven app is introduced, a new app access role is created without modifying existing data roles.
+##### A user has two roles
+
+Value: A user has two roles cspCRMAppAccess (grants access to the CRM model-driven app and its sitemap areas) and cspAccountManagerData (grants Read/Write on Account, Contact, and Opportunity at the Business Unit level).
+
+##### When a new model-driven app is introduced, a new app access role is created
+
+When a new model-driven app is introduced, a new app access role is created without modifying existing data roles.
+
 
 #### Bad
 
-- A single role cspCRMFull that includes app access, table CRUD permissions, and custom entity permissions all in one. Changing a data permission requires editing a role that also controls app navigation.
-- Five nearly identical roles that differ only in which app they grant access to, each duplicating the same data permissions.
+##### A single role cspCRMFull that includes app access, table CRUD permissions, and
+
+A single role cspCRMFull that includes app access, table CRUD permissions, and custom entity permissions all in one. Changing a data permission requires editing a role that also controls app navigation.
+
+##### Five nearly identical roles that differ only in which app they grant access to
+
+Five nearly identical roles that differ only in which app they grant access to, each duplicating the same data permissions.
+
 
 ### More Information
 
@@ -173,7 +215,7 @@ Separate security roles by functional purpose: one set for application access an
 
 ### Title
 
-Set the appropriate access level (User, Business Unit, Parent: Child Business Units, Or...
+Set the appropriate access level (User, Business Unit, Parent: Child Business
 
 ### Description
 
@@ -198,11 +240,17 @@ Set the appropriate access level (User, Business Unit, Parent: Child Business Un
 
 #### Good
 
-- Conforms to the rule requirements.
+##### Conforms to the rule requirements.
+
+Conforms to the rule requirements.
+
 
 #### Bad
 
-- Violates the rule requirements.
+##### Violates the rule requirements.
+
+Violates the rule requirements.
+
 
 ### More Information
 
@@ -213,7 +261,7 @@ Set the appropriate access level (User, Business Unit, Parent: Child Business Un
 
 ### Title
 
-Review and audit security role assignments on a regular schedule
+Review and audit security role assignments on a regular schedule.
 
 ### Description
 
@@ -239,13 +287,25 @@ Review and audit security role assignments on a regular schedule.
 
 #### Good
 
-- A quarterly review process where the security team exports all user-role assignments, compares them against the HR system of record, and removes stale assignments.
-- A documented role matrix mapping each security role to the job titles and departments that should hold it, used as the baseline for each review.
+##### A quarterly review process where the security team exports all user-role
+
+A quarterly review process where the security team exports all user-role assignments, compares them against the HR system of record, and removes stale assignments.
+
+##### A documented role matrix mapping each security role to the job titles and
+
+A documented role matrix mapping each security role to the job titles and departments that should hold it, used as the baseline for each review.
+
 
 #### Bad
 
-- No review process in place. A user who moved from Finance to Marketing two years ago still has the cspFinanceAdmin role.
-- 30 custom security roles exist in the environment, but no one can explain the difference between cspSalesUser, cspSalesAccess, and cspSalesBasic.
+##### No review process in place.
+
+No review process in place. A user who moved from Finance to Marketing two years ago still has the cspFinanceAdmin role.
+
+##### 30 custom security roles exist in the environment, but no one can explain the
+
+30 custom security roles exist in the environment, but no one can explain the difference between cspSalesUser, cspSalesAccess, and cspSalesBasic.
+
 
 ### More Information
 
@@ -256,7 +316,7 @@ Review and audit security role assignments on a regular schedule.
 
 ### Title
 
-Test security roles in a non-production environment before deploying to production
+Test security roles in a non-production environment before deploying
 
 ### Description
 
@@ -281,13 +341,25 @@ Test security roles in a non-production environment before deploying to producti
 
 #### Good
 
-- A test user named testsalesrep@contoso.com with only the cspSalesRep role, used to verify that the user can create and edit Opportunities but cannot delete Accounts.
-- A test checklist that includes: "Verify that the Finance Viewer role cannot export data from the Employee table."
+##### A test user named testsalesrep@contoso.com with only the cspSalesRep role, used
+
+A test user named testsalesrep@contoso.com with only the cspSalesRep role, used to verify that the user can create and edit Opportunities but cannot delete Accounts.
+
+##### A test checklist that includes
+
+Value: A test checklist that includes "Verify that the Finance Viewer role cannot export data from the Employee table."
+
 
 #### Bad
 
-- Testing all security roles by logging in as System Administrator and assuming "it works for everyone."
-- Deploying a new security role to production without testing, resulting in 200 users losing access to critical forms on a Monday morning.
+##### Testing all security roles by logging in as System Administrator and assuming
+
+Testing all security roles by logging in as System Administrator and assuming "it works for everyone."
+
+##### Deploying a new security role to production without testing, resulting in 200
+
+Deploying a new security role to production without testing, resulting in 200 users losing access to critical forms on a Monday morning.
+
 
 ### More Information
 

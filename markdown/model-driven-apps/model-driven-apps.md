@@ -6,7 +6,7 @@ Good practices for Model Driven Apps.
 
 ### Title
 
-Create separate Model Driven Apps for each distinct user role or business function inst...
+Create separate Model Driven Apps for each distinct user role or business
 
 ### Description
 
@@ -32,14 +32,29 @@ Create separate Model Driven Apps for each distinct user role or business functi
 
 #### Good
 
-- A "Customer Service Hub" app containing Cases, Knowledge Articles, and Queues - tailored for support agents.
-- A "Sales Operations" app containing Leads, Opportunities, and Quotes - tailored for the sales team.
-- A "Back Office Administration" app containing configuration tables, security roles, and audit logs - tailored for system administrators.
+##### A "Customer Service Hub" app containing Cases, Knowledge Articles, and Queues
+
+A "Customer Service Hub" app containing Cases, Knowledge Articles, and Queues - tailored for support agents.
+
+##### A "Sales Operations" app containing Leads, Opportunities, and Quotes - tailored
+
+A "Sales Operations" app containing Leads, Opportunities, and Quotes - tailored for the sales team.
+
+##### A "Back Office Administration" app containing configuration tables, security
+
+A "Back Office Administration" app containing configuration tables, security roles, and audit logs - tailored for system administrators.
+
 
 #### Bad
 
-- A single "CRM App" that includes every table in the system, forcing sales reps to scroll past support tables and admin settings to find what they need.
-- One app shared across all roles with no security role restrictions, giving every user access to every feature.
+##### A single "CRM App" that includes every table in the system, forcing sales reps
+
+A single "CRM App" that includes every table in the system, forcing sales reps to scroll past support tables and admin settings to find what they need.
+
+##### One app shared across all roles with no security role restrictions, giving
+
+One app shared across all roles with no security role restrictions, giving every user access to every feature.
+
 
 ### More Information
 
@@ -50,7 +65,7 @@ Create separate Model Driven Apps for each distinct user role or business functi
 
 ### Title
 
-Design the sitemap navigation with logical grouping, clear labels, and minimal nesting
+Design the sitemap navigation with logical grouping, clear labels, and minimal
 
 ### Description
 
@@ -77,14 +92,36 @@ Design the sitemap navigation with logical grouping, clear labels, and minimal n
 
 #### Good
 
-- Leads
-- Opportunities
-- Quotes
-- Accounts
-- Contacts
-- Active Cases
-- Knowledge Articles
-Good example code snippet.
+##### Leads
+
+Value: Leads
+
+##### Opportunities
+
+Value: Opportunities
+
+##### Quotes
+
+Value: Quotes
+
+##### Accounts
+
+Value: Accounts
+
+##### Contacts
+
+Value: Contacts
+
+##### Active Cases
+
+Value: Active Cases
+
+##### Knowledge Articles
+
+Value: Knowledge Articles
+
+##### Compliant code example
+
 ```Plain Text
 Area: Sales
   Group: Pipeline
@@ -101,18 +138,47 @@ Area: Service
     - Knowledge Articles
 ```
 
+
 #### Bad
 
-- tbl_lead
-- tbl_opp
-- tbl_quot
-- tbl_acc
-- tbl_cont
-- tbl_case
-- tbl_ka
-- tbl_ord
-- tbl_inv
-Bad example code snippet.
+##### tbl_lead
+
+Value: tbl_lead
+
+##### tbl_opp
+
+Value: tbl_opp
+
+##### tbl_quot
+
+Value: tbl_quot
+
+##### tbl_acc
+
+Value: tbl_acc
+
+##### tbl_cont
+
+Value: tbl_cont
+
+##### tbl_case
+
+Value: tbl_case
+
+##### tbl_ka
+
+Value: tbl_ka
+
+##### tbl_ord
+
+Value: tbl_ord
+
+##### tbl_inv
+
+Value: tbl_inv
+
+##### Non-compliant code example
+
 ```Plain Text
 Area: Area1
   Group: Group1
@@ -128,6 +194,7 @@ Area: Area1
       - tbl_inv
 ```
 
+
 ### More Information
 
 1. [Create a model-driven app site map - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/create-site-map-app)
@@ -137,7 +204,7 @@ Area: Area1
 
 ### Title
 
-Design system views to be focused, performant, and aligned with how users consume data
+Design system views to be focused, performant, and aligned with how users
 
 ### Description
 
@@ -164,11 +231,17 @@ Design system views to be focused, performant, and aligned with how users consum
 
 #### Good
 
-- Conforms to the rule requirements.
+##### Conforms to the rule requirements.
+
+Conforms to the rule requirements.
+
 
 #### Bad
 
-- Violates the rule requirements.
+##### Violates the rule requirements.
+
+Violates the rule requirements.
+
 
 ### More Information
 
@@ -179,7 +252,7 @@ Design system views to be focused, performant, and aligned with how users consum
 
 ### Title
 
-Design dashboards to surface actionable insights, not just raw data
+Design dashboards to surface actionable insights, not just raw data.
 
 ### Description
 
@@ -206,16 +279,37 @@ Design dashboards to surface actionable insights, not just raw data.
 
 #### Good
 
-- A "Service Manager Dashboard" with:
-- Chart: Cases by Priority (last 30 days)
-- Chart: Average Resolution Time (trend)
-- List: Cases Escalated Today
-- List: SLA Violations This Week
+##### A "Service Manager Dashboard" with:
+
+Value: A "Service Manager Dashboard" with:
+
+##### Chart
+
+Value: Chart Cases by Priority (last 30 days)
+
+##### Chart
+
+Value: Chart Average Resolution Time (trend)
+
+##### List
+
+Value: List Cases Escalated Today
+
+##### List
+
+Value: List SLA Violations This Week
+
 
 #### Bad
 
-- A single "Main Dashboard" with 10+ charts and lists covering Sales, Service, Marketing, and Admin data - used by everyone regardless of role.
-- A dashboard with lists showing all records (unfiltered), providing no insight beyond what a view already offers.
+##### A single "Main Dashboard" with 10+ charts and lists covering Sales, Service
+
+A single "Main Dashboard" with 10+ charts and lists covering Sales, Service, Marketing, and Admin data - used by everyone regardless of role.
+
+##### A dashboard with lists showing all records (unfiltered), providing no insight
+
+A dashboard with lists showing all records (unfiltered), providing no insight beyond what a view already offers.
+
 
 ### More Information
 
@@ -225,7 +319,7 @@ Design dashboards to surface actionable insights, not just raw data.
 
 ### Title
 
-Follow client scripting best practices when writing JavaScript for Model Driven Apps
+Follow client scripting best practices when writing JavaScript for Model Driven
 
 ### Description
 
@@ -254,7 +348,8 @@ Follow client scripting best practices when writing JavaScript for Model Driven 
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```javascript
 var Contoso = Contoso || {};
 Contoso.Account = {
@@ -275,9 +370,11 @@ Contoso.Account = {
 };
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```javascript
 // No namespace — pollutes global scope
 function onLoad() {
@@ -291,6 +388,7 @@ function onLoad() {
 }
 ```
 
+
 ### More Information
 
 1. [Client scripting in model-driven apps - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/clientapi/client-scripting)
@@ -301,7 +399,7 @@ function onLoad() {
 
 ### Title
 
-Create custom security roles following the principle of least privilege instead of modi...
+Create custom security roles following the principle of least privilege instead
 
 ### Description
 
@@ -328,15 +426,33 @@ Create custom security roles following the principle of least privilege instead 
 
 #### Good
 
-- Clone the "Customer Service Representative" role, remove access to financial tables, and name it "Tier 1 Support Agent".
-- Create a field security profile to restrict the credit_limit column on the Account table to the Finance team only.
-- Assign the "Sales Representative" role to the "Sales Team" Azure AD security group.
+##### Clone the "Customer Service Representative" role, remove access to financial
+
+Clone the "Customer Service Representative" role, remove access to financial tables, and name it "Tier 1 Support Agent".
+
+##### Create a field security profile to restrict the credit_limit column on the
+
+Create a field security profile to restrict the credit_limit column on the Account table to the Finance team only.
+
+##### Assign the "Sales Representative" role to the "Sales Team" Azure AD security
+
+Assign the "Sales Representative" role to the "Sales Team" Azure AD security group.
+
 
 #### Bad
 
-- Granting the "System Administrator" role to all users to avoid access-related support tickets.
-- Editing the out-of-the-box "Salesperson" role directly instead of cloning it, risking changes being overwritten on platform updates.
-- Assigning security roles to individual users one by one, making it difficult to track who has what access.
+##### Granting the "System Administrator" role to all users to avoid access-related
+
+Granting the "System Administrator" role to all users to avoid access-related support tickets.
+
+##### Editing the out-of-the-box "Salesperson" role directly instead of cloning it
+
+Editing the out-of-the-box "Salesperson" role directly instead of cloning it, risking changes being overwritten on platform updates.
+
+##### Assigning security roles to individual users one by one, making it difficult to
+
+Assigning security roles to individual users one by one, making it difficult to track who has what access.
+
 
 ### More Information
 
@@ -347,7 +463,7 @@ Create custom security roles following the principle of least privilege instead 
 
 ### Title
 
-Package all customizations in managed solutions and follow a structured solution strategy
+Package all customizations in managed solutions and follow a structured solution
 
 ### Description
 
@@ -375,7 +491,8 @@ Package all customizations in managed solutions and follow a structured solution
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```Plain Text
 Solution: Contoso Core (contoso_core)
   → Tables, fields, relationships, option sets
@@ -387,11 +504,21 @@ Solution: Contoso Service App (contoso_service)
   → Service-specific forms, views, dashboards, sitemap
 ```
 
+
 #### Bad
 
-- All customizations in a single monolithic solution that takes 30+ minutes to import and cannot be partially rolled back.
-- Making quick fixes directly in the production environment as unmanaged customizations, bypassing the development and testing process.
-- Different developers using different publisher prefixes, resulting in mixed prefixes across tables and fields.
+##### All customizations in a single monolithic solution that takes 30+ minutes to
+
+All customizations in a single monolithic solution that takes 30+ minutes to import and cannot be partially rolled back.
+
+##### Making quick fixes directly in the production environment as unmanaged
+
+Making quick fixes directly in the production environment as unmanaged customizations, bypassing the development and testing process.
+
+##### Different developers using different publisher prefixes, resulting in mixed
+
+Different developers using different publisher prefixes, resulting in mixed prefixes across tables and fields.
+
 
 ### More Information
 
@@ -403,7 +530,7 @@ Solution: Contoso Service App (contoso_service)
 
 ### Title
 
-Every Model Driven App must have a description that explains its purpose, target audien...
+Have a description that explains its purpose, target audience, and scope.
 
 ### Description
 
@@ -427,13 +554,25 @@ Every Model Driven App must have a description that explains its purpose, target
 
 #### Good
 
-- "Customer Service Hub for the Tier 1 and Tier 2 support teams. Includes Cases, Knowledge Articles, Queues, and the Case Resolution dashboard. Assigned to the Customer Service Representative and Customer Service Manager security roles."
-- "Sales Operations app for the inside sales team. Covers Leads, Opportunities, Quotes, and the Sales Pipeline dashboard. Restricted to the Sales Representative and Sales Manager roles."
+##### "Customer Service Hub for the Tier 1 and Tier 2 support teams.
+
+"Customer Service Hub for the Tier 1 and Tier 2 support teams. Includes Cases, Knowledge Articles, Queues, and the Case Resolution dashboard. Assigned to the Customer Service Representative and Customer Service Manager security roles."
+
+##### "Sales Operations app for the inside sales team.
+
+"Sales Operations app for the inside sales team. Covers Leads, Opportunities, Quotes, and the Sales Pipeline dashboard. Restricted to the Sales Representative and Sales Manager roles."
+
 
 #### Bad
 
-- "App 1" - provides no context about the app's purpose or audience.
-- No description at all - administrators must open and inspect the app to understand what it contains.
+##### "App 1" - provides no context about the app's purpose or audience.
+
+"App 1" - provides no context about the app's purpose or audience.
+
+##### No description at all - administrators must open and inspect the app to
+
+No description at all - administrators must open and inspect the app to understand what it contains.
+
 
 ### More Information
 

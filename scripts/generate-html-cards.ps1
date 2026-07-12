@@ -1,6 +1,7 @@
 param(
 	[string]$rulesetRoot = (Join-Path (Split-Path -Parent $PSScriptRoot) "ruleset"),
 	[string]$htmlRoot = (Join-Path (Split-Path -Parent $PSScriptRoot) "html"),
+	[string]$imgRoot = (Join-Path (Split-Path -Parent $PSScriptRoot) "img"),
 	[string]$templateFile = (Join-Path $PSScriptRoot "html-card.liquid"),
 	[string]$renderScript = (Join-Path $PSScriptRoot "render-template.ps1")
 )
@@ -25,6 +26,14 @@ Import-Module powershell-yaml -ErrorAction Stop
 
 New-Item -ItemType Directory -Path $htmlRoot -Force | Out-Null
 
+$targetImgRoot = Join-Path $htmlRoot "img"
+if (Test-Path -Path $imgRoot) {
+	if (Test-Path -Path $targetImgRoot) {
+		Remove-Item -Path $targetImgRoot -Recurse -Force
+	}
+	Copy-Item -Path $imgRoot -Destination $targetImgRoot -Recurse -Force
+}
+
 $yamlFiles = Get-ChildItem -Path $rulesetRoot -Recurse -File -Include *.yaml |
 	Where-Object { $_.Name -ne "rules.schema.yaml" }
 
@@ -42,6 +51,20 @@ foreach ($yamlFile in $yamlFiles) {
 	}
 	else {
 		Join-Path $htmlRoot $relativeDirectory
+	}
+
+	$segmentCount = if ([string]::IsNullOrWhiteSpace($relativeDirectory)) {
+		0
+	}
+	else {
+		(($relativeDirectory -split "[\\/]") | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }).Count
+	}
+
+	$assetImgPrefix = if ($segmentCount -eq 0) {
+		"./img"
+	}
+	else {
+		("../" * $segmentCount) + "img"
 	}
 
 	New-Item -ItemType Directory -Path $targetDirectory -Force | Out-Null
@@ -73,6 +96,7 @@ foreach ($yamlFile in $yamlFiles) {
 			topic = $ruleset.topic
 			ruleset_description = $ruleset.description
 			breadcrumb = $relativeDirectory -replace "\\", " / "
+			asset_img_prefix = $assetImgPrefix
 			rationale_columns = $rationaleColumns
 			prev_url = if ($prevRule) { "./$($prevRule.id).html" } else { "#" }
 			next_url = if ($nextRule) { "./$($nextRule.id).html" } else { "#" }

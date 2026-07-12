@@ -6,7 +6,7 @@ Good practices for Power Apps Canvas Apps.
 
 ### Title
 
-Never reference controls from one screen on another screen
+Never reference controls from one screen on another screen.
 
 ### Description
 
@@ -31,7 +31,8 @@ Never reference controls from one screen on another screen. Each screen's formul
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```Plain Text
 // On scrHome: navigate and pass the selected order via context variable
 Navigate(scrDetails, ScreenTransition.None, {locSelectedOrder: galOrders.Selected})
@@ -41,14 +42,17 @@ lblOrderTitle.Text: locSelectedOrder.Title
 lblOrderStatus.Text: locSelectedOrder.Status
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```Plain Text
 // On scrDetails: directly referencing a gallery on scrHome
 lblOrderTitle.Text: scrHome.galOrders.Selected.Title
 lblOrderStatus.Text: scrHome.galOrders.Selected.Status
 ```
+
 
 ### More Information
 

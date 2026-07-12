@@ -6,7 +6,7 @@ Good practices for Dataverse Forms.
 
 ### Title
 
-Every table main form must have a hidden Admin tab containing all the system attributes...
+Have a hidden Admin tab containing all the system attributes, including state
 
 ### Description
 
@@ -27,11 +27,17 @@ Every table main form must have a hidden Admin tab containing all the system att
 
 #### Good
 
-- Conforms to the rule requirements.
+##### Conforms to the rule requirements.
+
+Conforms to the rule requirements.
+
 
 #### Bad
 
-- Violates the rule requirements.
+##### Violates the rule requirements.
+
+Violates the rule requirements.
+
 
 ### More Information
 
@@ -41,7 +47,7 @@ Every table main form must have a hidden Admin tab containing all the system att
 
 ### Title
 
-Organize form content using tabs and sections with clear, descriptive names
+Organize form content using tabs and sections with clear, descriptive names.
 
 ### Description
 
@@ -68,7 +74,8 @@ Organize form content using tabs and sections with clear, descriptive names.
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```Plain Text
 Tab: General
   Section: Customer Information     → Name, Email, Phone
@@ -78,15 +85,18 @@ Tab: Order History
   Section: Recent Orders            → Subgrid with last 10 orders
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```Plain Text
 Tab: Tab1
   Section: Section1  → Name, Email, Phone, Street, City, Country,
                         Order Date, Total, Status, Notes, Category,
                         Priority, Source, Rating, ...
 ```
+
 
 ### More Information
 
@@ -96,7 +106,7 @@ Tab: Tab1
 
 ### Title
 
-Optimize form load performance by minimizing the number of controls and scripts loaded...
+Optimize form load performance by minimizing the number of controls and scripts
 
 ### Description
 
@@ -122,13 +132,25 @@ Optimize form load performance by minimizing the number of controls and scripts 
 
 #### Good
 
-- A form with 2 subgrids in the "Related Records" tab, which is collapsed by default.
-- JavaScript web resources loaded only on forms that require them, using asynchronous Xrm.WebApi calls.
+##### A form with 2 subgrids in the "Related Records" tab, which is collapsed by
+
+A form with 2 subgrids in the "Related Records" tab, which is collapsed by default.
+
+##### JavaScript web resources loaded only on forms that require them, using
+
+JavaScript web resources loaded only on forms that require them, using asynchronous Xrm.WebApi calls.
+
 
 #### Bad
 
-- A form with 6 subgrids all visible on the first tab, causing 6+ simultaneous data queries on form load.
-- A synchronous XMLHttpRequest call in the OnLoad event that blocks form rendering for several seconds.
+##### A form with 6 subgrids all visible on the first tab, causing 6+ simultaneous
+
+A form with 6 subgrids all visible on the first tab, causing 6+ simultaneous data queries on form load.
+
+##### A synchronous XMLHttpRequest call in the OnLoad event that blocks form
+
+A synchronous XMLHttpRequest call in the OnLoad event that blocks form rendering for several seconds.
+
 
 ### More Information
 
@@ -138,7 +160,7 @@ Optimize form load performance by minimizing the number of controls and scripts 
 
 ### Title
 
-When using business rules on forms, set the scope appropriately and avoid duplicating l...
+When using business rules on forms, set the scope appropriately and avoid
 
 ### Description
 
@@ -163,12 +185,21 @@ When using business rules on forms, set the scope appropriately and avoid duplic
 
 #### Good
 
-- A business rule named Contact - Set Phone Required When Type Is Customer scoped to the Table level, ensuring the phone number is always required regardless of how the Contact is created.
+##### A business rule named Contact - Set Phone Required When Type Is Customer scoped
+
+A business rule named Contact - Set Phone Required When Type Is Customer scoped to the Table level, ensuring the phone number is always required regardless of how the Contact is created.
+
 
 #### Bad
 
-- A business rule that hides a field, combined with a JavaScript OnLoad handler that also hides the same field, causing confusion about which one controls the behavior.
-- A form-scoped business rule that sets a field as required, but records created via data import skip the rule entirely, resulting in incomplete data.
+##### A business rule that hides a field, combined with a JavaScript OnLoad handler
+
+A business rule that hides a field, combined with a JavaScript OnLoad handler that also hides the same field, causing confusion about which one controls the behavior.
+
+##### A form-scoped business rule that sets a field as required, but records created
+
+A form-scoped business rule that sets a field as required, but records created via data import skip the rule entirely, resulting in incomplete data.
+
 
 ### More Information
 
@@ -178,7 +209,7 @@ When using business rules on forms, set the scope appropriately and avoid duplic
 
 ### Title
 
-Use Quick View Forms to display related record information without requiring navigation...
+Use Quick View Forms to display related record information without requiring
 
 ### Description
 
@@ -203,12 +234,21 @@ Use Quick View Forms to display related record information without requiring nav
 
 #### Good
 
-- A Quick View Form on the Case form showing the related Customer's name, phone number, and account tier - just enough context for the support agent.
+##### A Quick View Form on the Case form showing the related Customer's name, phone
+
+A Quick View Form on the Case form showing the related Customer's name, phone number, and account tier - just enough context for the support agent.
+
 
 #### Bad
 
-- A Quick View Form on the Case form displaying 15+ fields from the Customer record, including fields that are rarely relevant to case handling.
-- Three Quick View Forms on the same form tab, each loading data from different related tables simultaneously.
+##### A Quick View Form on the Case form displaying 15+ fields from the Customer
+
+A Quick View Form on the Case form displaying 15+ fields from the Customer record, including fields that are rarely relevant to case handling.
+
+##### Three Quick View Forms on the same form tab, each loading data from different
+
+Three Quick View Forms on the same form tab, each loading data from different related tables simultaneously.
+
 
 ### More Information
 
@@ -218,7 +258,7 @@ Use Quick View Forms to display related record information without requiring nav
 
 ### Title
 
-Every form must have a description that explains its purpose and intended audience
+Have a description that explains its purpose and intended audience.
 
 ### Description
 
@@ -242,13 +282,25 @@ Every form must have a description that explains its purpose and intended audien
 
 #### Good
 
-- "Main form for the Customer Service team. Displays case details, communication history, and SLA timers. Includes a business rule to enforce phone number when origin is Phone."
-- "Quick create form for the Sales team. Captures essential lead information (name, email, source) for rapid entry during phone calls."
+##### "Main form for the Customer Service team.
+
+"Main form for the Customer Service team. Displays case details, communication history, and SLA timers. Includes a business rule to enforce phone number when origin is Phone."
+
+##### "Quick create form for the Sales team.
+
+"Quick create form for the Sales team. Captures essential lead information (name, email, source) for rapid entry during phone calls."
+
 
 #### Bad
 
-- "Main form" - meaningless, does not differentiate from other forms.
-- No description at all - administrators have no way to tell forms apart beyond their name.
+##### "Main form" - meaningless, does not differentiate from other forms.
+
+"Main form" - meaningless, does not differentiate from other forms.
+
+##### No description at all - administrators have no way to tell forms apart beyond
+
+No description at all - administrators have no way to tell forms apart beyond their name.
+
 
 ### More Information
 

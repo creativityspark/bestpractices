@@ -6,7 +6,7 @@ Good practices for Power Apps Component Framework (PCF) code components.
 
 ### Title
 
-Always deploy production builds of code components to Dataverse
+Always deploy production builds of code components to Dataverse.
 
 ### Description
 
@@ -30,28 +30,39 @@ Always deploy production builds of code components to Dataverse. Never deploy de
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```shell
 npm run build -- --buildMode production
 ```
-Good example code snippet.
+
+##### Compliant code example
+
 ```shell
 msbuild /p:configuration=Release
 ```
 
+
 #### Bad
 
-- script: npm run build
-Bad example code snippet.
+##### script
+
+Value: script npm run build
+
+##### Non-compliant code example
+
 ```shell
 npm run build
 # Then importing the solution without switching to production mode
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```yaml
 # Missing --buildMode production flag
 - script: npm run build
 ```
+
 
 ### More Information
 
@@ -62,7 +73,7 @@ Bad example code snippet.
 
 ### Title
 
-Always clean up resources inside the destroy method
+Always clean up resources inside the destroy method.
 
 ### Description
 
@@ -87,7 +98,8 @@ Always clean up resources inside the destroy method. Remove event listeners, clo
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```typescript
 public destroy(): void {
     window.removeEventListener("resize", this._onResize);
@@ -96,15 +108,19 @@ public destroy(): void {
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```typescript
 public destroy(): void {
     // Empty destroy method — resources are never cleaned up
 }
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```typescript
 // Adding a global event listener without ever removing it
 public init(context: ComponentFramework.Context<IInputs>): void {
@@ -116,6 +132,7 @@ public destroy(): void {
 }
 ```
 
+
 ### More Information
 
 1. [Control.destroy - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/component-framework/reference/control/destroy)
@@ -125,7 +142,7 @@ public destroy(): void {
 
 ### Title
 
-Minimize calls to notifyOutputChanged
+Minimize calls to notifyOutputChanged.
 
 ### Description
 
@@ -149,7 +166,8 @@ Minimize calls to notifyOutputChanged. Avoid calling it on every keystroke or mo
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```typescript
 private _onInputBlur = (): void => {
     this._value = this._inputElement.value;
@@ -160,7 +178,9 @@ public init(context: ComponentFramework.Context<IInputs>): void {
     this._inputElement.addEventListener("blur", this._onInputBlur);
 }
 ```
-Good example code snippet.
+
+##### Compliant code example
+
 ```typescript
 private _debouncedNotify = debounce(() => {
     this._notifyOutputChanged();
@@ -172,9 +192,11 @@ private _onInput = (): void => {
 };
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```typescript
 // Calling notifyOutputChanged on every keystroke
 private _onKeyPress = (): void => {
@@ -182,7 +204,9 @@ private _onKeyPress = (): void => {
     this._notifyOutputChanged();
 };
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```typescript
 // Calling notifyOutputChanged on mouse move
 private _onMouseMove = (event: MouseEvent): void => {
@@ -190,6 +214,7 @@ private _onMouseMove = (event: MouseEvent): void => {
     this._notifyOutputChanged();
 };
 ```
+
 
 ### More Information
 
@@ -199,7 +224,7 @@ private _onMouseMove = (event: MouseEvent): void => {
 
 ### Title
 
-Always handle null or undefined property values in the updateView method
+Always handle null or undefined property values in the updateView method.
 
 ### Description
 
@@ -223,7 +248,8 @@ Always handle null or undefined property values in the updateView method. Data m
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```typescript
 public updateView(context: ComponentFramework.Context<IInputs>): void {
     const value = context.parameters.inputValue.raw;
@@ -238,9 +264,11 @@ public updateView(context: ComponentFramework.Context<IInputs>): void {
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```typescript
 public updateView(context: ComponentFramework.Context<IInputs>): void {
     // Directly using the value without null checking — will throw if null
@@ -248,6 +276,7 @@ public updateView(context: ComponentFramework.Context<IInputs>): void {
     this._container.innerText = value.toString();
 }
 ```
+
 
 ### More Information
 
@@ -258,7 +287,7 @@ public updateView(context: ComponentFramework.Context<IInputs>): void {
 
 ### Title
 
-Always scope CSS rules to your code component's container
+Always scope CSS rules to your code component's container.
 
 ### Description
 
@@ -283,7 +312,8 @@ Always scope CSS rules to your code component's container. Never use global CSS 
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```css
 .SampleNamespace\.LinearInputComponent .slider-control {
     width: 100%;
@@ -296,9 +326,11 @@ Good example code snippet.
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```css
 /* Global selector — affects ALL inputs on the page */
 input {
@@ -312,13 +344,16 @@ div {
     margin: 5px;
 }
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```css
 /* Unscoped class name — may conflict with other components */
 .slider-control {
     width: 100%;
 }
 ```
+
 
 ### More Information
 
@@ -328,7 +363,7 @@ Bad example code snippet.
 
 ### Title
 
-Avoid using innerHTML to render dynamic content
+Avoid using innerHTML to render dynamic content.
 
 ### Description
 
@@ -353,32 +388,40 @@ Avoid using innerHTML to render dynamic content. Use DOM APIs such as document.c
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```typescript
 const label = document.createElement("span");
 label.textContent = context.parameters.displayText.raw ?? "";
 this._container.appendChild(label);
 ```
-Good example code snippet.
+
+##### Compliant code example
+
 ```tsx
 const MyComponent: React.FC<{ text: string }> = ({ text }) => (
     <div>{text}</div>
 );
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```typescript
 // Directly injecting data into innerHTML — XSS vulnerability
 this._container.innerHTML =
     `<span>${context.parameters.displayText.raw}</span>`;
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```typescript
 // User-controlled data rendered as HTML
 this._container.innerHTML = userProvidedHtml;
 ```
+
 
 ### More Information
 
@@ -389,7 +432,7 @@ this._container.innerHTML = userProvidedHtml;
 
 ### Title
 
-Use path-based imports when importing from Fluent UI React to reduce bundle size
+Use path-based imports when importing from Fluent UI React to reduce bundle
 
 ### Description
 
@@ -413,20 +456,24 @@ Use path-based imports when importing from Fluent UI React to reduce bundle size
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```typescript
 import { PrimaryButton } from "@fluentui/react/lib/Button";
 import { TextField } from "@fluentui/react/lib/TextField";
 import { Dropdown } from "@fluentui/react/lib/Dropdown";
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```typescript
 // Imports the entire Fluent UI library into the bundle
 import { PrimaryButton, TextField, Dropdown } from "@fluentui/react";
 ```
+
 
 ### More Information
 
@@ -437,7 +484,7 @@ import { PrimaryButton, TextField, Dropdown } from "@fluentui/react";
 
 ### Title
 
-Use the init method to request network resources such as metadata or configuration data
+Use the init method to request network resources such as metadata
 
 ### Description
 
@@ -461,7 +508,8 @@ Use the init method to request network resources such as metadata or configurati
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```typescript
 public init(
     context: ComponentFramework.Context<IInputs>,
@@ -487,9 +535,11 @@ public updateView(context: ComponentFramework.Context<IInputs>): void {
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```typescript
 // Fetching data inside updateView — runs on every re-render
 public updateView(context: ComponentFramework.Context<IInputs>): void {
@@ -501,6 +551,7 @@ public updateView(context: ComponentFramework.Context<IInputs>): void {
 }
 ```
 
+
 ### More Information
 
 1. [Control.init - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/component-framework/reference/control/init)
@@ -510,7 +561,7 @@ public updateView(context: ComponentFramework.Context<IInputs>): void {
 
 ### Title
 
-Always check API availability before using platform-specific APIs
+Always check API availability before using platform-specific APIs.
 
 ### Description
 
@@ -534,7 +585,8 @@ Always check API availability before using platform-specific APIs. Not all APIs 
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```typescript
 public updateView(context: ComponentFramework.Context<IInputs>): void {
     if (context.webAPI) {
@@ -549,9 +601,11 @@ public updateView(context: ComponentFramework.Context<IInputs>): void {
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```typescript
 // Calling webAPI without checking availability — fails in canvas apps
 public updateView(context: ComponentFramework.Context<IInputs>): void {
@@ -560,6 +614,7 @@ public updateView(context: ComponentFramework.Context<IInputs>): void {
         .then((result) => this._renderRecords(result.entities));
 }
 ```
+
 
 ### More Information
 
@@ -570,7 +625,7 @@ public updateView(context: ComponentFramework.Context<IInputs>): void {
 
 ### Title
 
-Do not use window
+Do not use window.localStorage or window.sessionStorage to persist data in code
 
 ### Description
 
@@ -594,7 +649,8 @@ Do not use window.localStorage or window.sessionStorage to persist data in code 
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```typescript
 // Using bound properties to persist data
 public getOutputs(): IOutputs {
@@ -615,9 +671,11 @@ public init(
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```typescript
 // Storing data in localStorage — insecure and unreliable
 public init(
@@ -631,6 +689,7 @@ public updateView(context: ComponentFramework.Context<IInputs>): void {
 }
 ```
 
+
 ### More Information
 
 1. [Best practices and guidance for code components - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/component-framework/code-components-best-practices)
@@ -639,7 +698,7 @@ public updateView(context: ComponentFramework.Context<IInputs>): void {
 
 ### Title
 
-Bundle all required modules as part of your code component
+Bundle all required modules as part of your code component.
 
 ### Description
 
@@ -663,11 +722,14 @@ Bundle all required modules as part of your code component. Do not rely on exter
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```shell
 npm install chart.js
 ```
-Good example code snippet.
+
+##### Compliant code example
+
 ```typescript
 import { Chart } from "chart.js";
 
@@ -678,9 +740,11 @@ public init(context: ComponentFramework.Context<IInputs>): void {
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```typescript
 // Injecting a script tag to load an external library
 public init(context: ComponentFramework.Context<IInputs>): void {
@@ -689,7 +753,9 @@ public init(context: ComponentFramework.Context<IInputs>): void {
     document.head.appendChild(script);
 }
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```typescript
 // Assuming a globally available library
 public init(context: ComponentFramework.Context<IInputs>): void {
@@ -697,6 +763,7 @@ public init(context: ComponentFramework.Context<IInputs>): void {
     const chart = new (window as any).Chart(canvas, { /* config */ });
 }
 ```
+
 
 ### More Information
 
@@ -706,7 +773,7 @@ public init(context: ComponentFramework.Context<IInputs>): void {
 
 ### Title
 
-Ensure code components are accessible
+Ensure code components are accessible.
 
 ### Description
 
@@ -731,7 +798,8 @@ Ensure code components are accessible. Provide keyboard navigation alternatives 
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```typescript
 const button = document.createElement("button");
 button.textContent = "Submit";
@@ -743,7 +811,9 @@ button.addEventListener("keydown", (e) => {
 });
 this._container.appendChild(button);
 ```
-Good example code snippet.
+
+##### Compliant code example
+
 ```tsx
 <Dropdown
     label="Select a country"
@@ -753,9 +823,11 @@ Good example code snippet.
 />
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```typescript
 // Using a div as a button — not keyboard accessible, no ARIA role
 const fakeButton = document.createElement("div");
@@ -763,7 +835,9 @@ fakeButton.textContent = "Submit";
 fakeButton.onclick = () => this._onSubmit();
 this._container.appendChild(fakeButton);
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```typescript
 // No ARIA attributes — screen readers cannot describe the control
 const input = document.createElement("input");
@@ -771,6 +845,7 @@ input.type = "text";
 // Missing: aria-label or associated label element
 this._container.appendChild(input);
 ```
+
 
 ### More Information
 
@@ -782,7 +857,7 @@ this._container.appendChild(input);
 
 ### Title
 
-Make PCF controls easy to debug during development and after deployment
+Make PCF controls easy to debug during development and after deployment.
 
 ### Description
 
@@ -807,15 +882,30 @@ Make PCF controls easy to debug during development and after deployment. Use the
 
 #### Good
 
-- Run the control locally with the test harness.
-- Reproduce environment-specific issues in Dataverse.
-- Use Fiddler or Requestly to map the deployed bundle request to the local build output.
-- Inspect the behavior with browser developer tools.
-Good example code snippet.
+##### Run the control locally with the test harness.
+
+Run the control locally with the test harness.
+
+##### Reproduce environment-specific issues in Dataverse.
+
+Reproduce environment-specific issues in Dataverse.
+
+##### Use Fiddler or Requestly to map the deployed bundle request to the local build
+
+Use Fiddler or Requestly to map the deployed bundle request to the local build output.
+
+##### Inspect the behavior with browser developer tools.
+
+Inspect the behavior with browser developer tools.
+
+##### Compliant code example
+
 ```shell
 npm start watch
 ```
-Good example code snippet.
+
+##### Compliant code example
+
 ```text
 1. Run the control locally with the test harness.
 2. Reproduce environment-specific issues in Dataverse.
@@ -823,16 +913,21 @@ Good example code snippet.
 4. Inspect the behavior with browser developer tools.
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```text
 Deploy every small change to Dataverse and debug only there, without using the test harness.
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```text
 Ignore tools like Fiddler or Requestly and treat deployed-only issues as impossible to debug locally.
 ```
+
 
 ### More Information
 
@@ -843,7 +938,7 @@ Ignore tools like Fiddler or Requestly and treat deployed-only issues as impossi
 
 ### Title
 
-Always provide unit tests with PCF controls
+Always provide unit tests with PCF controls.
 
 ### Description
 
@@ -868,7 +963,8 @@ Always provide unit tests with PCF controls. Changes to a control must include a
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```json
 {
   "scripts": {
@@ -876,7 +972,9 @@ Good example code snippet.
   }
 }
 ```
-Good example code snippet.
+
+##### Compliant code example
+
 ```typescript
 it("shows the validation message when submit is called with no file selected", () => {
     const control = new fileUpload(context, htmlDivElement, () => {});
@@ -888,19 +986,24 @@ it("shows the validation message when submit is called with no file selected", (
 });
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```text
 Ship a PCF control with no automated tests and rely only on manual verification in the test harness.
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```typescript
 // Fixing a bug without adding a regression test for the broken scenario
 public submit(): void {
     this._notifyOutputChanged();
 }
 ```
+
 
 ### More Information
 

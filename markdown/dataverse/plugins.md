@@ -6,7 +6,7 @@ Good practices for Dataverse C# Plugins.
 
 ### Title
 
-Plugin class names must use a namespace-based naming convention that describes the plug...
+Use a namespace-based naming convention that describes the plugin's purpose.
 
 ### Description
 
@@ -31,17 +31,41 @@ Plugin class names must use a namespace-based naming convention that describes t
 
 #### Good
 
-- CRM.Plugins.Accounts.ValidateEmail - a plugin under the CRM app namespace, specific to the Accounts table.
-- CRM.Plugins.Contacts.SendWelcomeNotification - specific to the Contacts table.
-- CRM.Plugins.EnforceBusinessHours - a cross-table plugin that applies to multiple tables.
-- Sales.Plugins.Orders.PreventActiveDeletion - under the Sales app namespace, specific to Orders.
+##### CRM.Plugins.Accounts.ValidateEmail - a plugin under the CRM app namespace
+
+CRM.Plugins.Accounts.ValidateEmail - a plugin under the CRM app namespace, specific to the Accounts table.
+
+##### CRM.Plugins.Contacts.SendWelcomeNotification - specific to the Contacts table.
+
+CRM.Plugins.Contacts.SendWelcomeNotification - specific to the Contacts table.
+
+##### CRM.Plugins.EnforceBusinessHours - a cross-table plugin that applies to
+
+CRM.Plugins.EnforceBusinessHours - a cross-table plugin that applies to multiple tables.
+
+##### Sales.Plugins.Orders.PreventActiveDeletion - under the Sales app namespace
+
+Sales.Plugins.Orders.PreventActiveDeletion - under the Sales app namespace, specific to Orders.
+
 
 #### Bad
 
-- AccountPreOpUpdate_ValidateEmail - hardcodes the table schema, pipeline stage, and event into the name.
-- Plugin1 - meaningless, provides no context about the purpose.
-- AccountPlugin - too generic; does not indicate what it does.
-- DoStuff - no naming structure whatsoever.
+##### AccountPreOpUpdate_ValidateEmail - hardcodes the table schema, pipeline stage
+
+AccountPreOpUpdate_ValidateEmail - hardcodes the table schema, pipeline stage, and event into the name.
+
+##### Plugin1 - meaningless, provides no context about the purpose.
+
+Plugin1 - meaningless, provides no context about the purpose.
+
+##### AccountPlugin - too generic; does not indicate what it does.
+
+AccountPlugin - too generic; does not indicate what it does.
+
+##### DoStuff - no naming structure whatsoever.
+
+DoStuff - no naming structure whatsoever.
+
 
 ### More Information
 
@@ -51,7 +75,7 @@ Plugin class names must use a namespace-based naming convention that describes t
 
 ### Title
 
-Always throw InvalidPluginExecutionException for business rule violations and validatio...
+Always throw InvalidPluginExecutionException for business rule violations
 
 ### Description
 
@@ -75,7 +99,8 @@ Always throw InvalidPluginExecutionException for business rule violations and va
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```csharp
 if (string.IsNullOrEmpty(email))
 {
@@ -83,7 +108,9 @@ if (string.IsNullOrEmpty(email))
         "The Email field is required. Please provide a valid email address before saving.");
 }
 ```
-Good example code snippet.
+
+##### Compliant code example
+
 ```csharp
 try
 {
@@ -97,18 +124,23 @@ catch (Exception ex)
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```csharp
 // Throws a generic exception — user sees "ISV Unexpected" with no useful message
 throw new Exception("Something went wrong");
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```csharp
 // Exposes stack trace and internal details to the end user
 throw new InvalidPluginExecutionException(ex.ToString());
 ```
+
 
 ### More Information
 
@@ -118,7 +150,7 @@ throw new InvalidPluginExecutionException(ex.ToString());
 
 ### Title
 
-Always use ITracingService to log diagnostic information at key points in the plugin ex...
+Always use ITracingService to log diagnostic information at key points
 
 ### Description
 
@@ -142,7 +174,8 @@ Always use ITracingService to log diagnostic information at key points in the pl
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```csharp
 public void Execute(IServiceProvider serviceProvider)
 {
@@ -166,9 +199,11 @@ public void Execute(IServiceProvider serviceProvider)
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```csharp
 // No tracing at all — impossible to diagnose issues in production
 public void Execute(IServiceProvider serviceProvider)
@@ -177,11 +212,14 @@ public void Execute(IServiceProvider serviceProvider)
     // Business logic with no trace statements
 }
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```csharp
 // Using Console.WriteLine — output is lost in the Dataverse sandbox environment
 Console.WriteLine("Plugin started");
 ```
+
 
 ### More Information
 
@@ -192,7 +230,7 @@ Console.WriteLine("Plugin started");
 
 ### Title
 
-Plugins must be stateless
+Be stateless.
 
 ### Description
 
@@ -215,7 +253,8 @@ Plugins must be stateless. Do not use instance variables, static fields, or sing
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```csharp
 public class AccountPostCreate : IPlugin
 {
@@ -236,9 +275,11 @@ public class AccountPostCreate : IPlugin
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```csharp
 public class AccountPostCreate : IPlugin
 {
@@ -253,6 +294,7 @@ public class AccountPostCreate : IPlugin
 }
 ```
 
+
 ### More Information
 
 1. [Write a plug-in - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/write-plug-in)
@@ -262,7 +304,7 @@ public class AccountPostCreate : IPlugin
 
 ### Title
 
-Design plugins to be idempotent instead of relying on execution depth checks
+Design plugins to be idempotent instead of relying on execution depth checks.
 
 ### Description
 
@@ -286,7 +328,8 @@ Design plugins to be idempotent instead of relying on execution depth checks.
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```csharp
 public void Execute(IServiceProvider serviceProvider)
 {
@@ -310,9 +353,11 @@ public void Execute(IServiceProvider serviceProvider)
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```csharp
 public void Execute(IServiceProvider serviceProvider)
 {
@@ -334,6 +379,7 @@ public void Execute(IServiceProvider serviceProvider)
 }
 ```
 
+
 ### More Information
 
 1. [IPluginExecutionContext.Depth Property - Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/api/microsoft.xrm.sdk.ipluginexecutioncontext.depth)
@@ -343,7 +389,7 @@ public void Execute(IServiceProvider serviceProvider)
 
 ### Title
 
-Never use new ColumnSet(true) when retrieving records
+Never use new ColumnSet(true) when retrieving records.
 
 ### Description
 
@@ -366,11 +412,14 @@ Never use new ColumnSet(true) when retrieving records. Always specify only the c
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```csharp
 var account = service.Retrieve("account", accountId, new ColumnSet("name", "emailaddress1"));
 ```
-Good example code snippet.
+
+##### Compliant code example
+
 ```csharp
 var query = new QueryExpression("contact")
 {
@@ -380,14 +429,18 @@ query.Criteria.AddCondition("statecode", ConditionOperator.Equal, 0);
 var contacts = service.RetrieveMultiple(query);
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```csharp
 // Retrieves ALL columns — wasteful and fragile
 var account = service.Retrieve("account", accountId, new ColumnSet(true));
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```csharp
 var query = new QueryExpression("contact")
 {
@@ -395,6 +448,7 @@ var query = new QueryExpression("contact")
 };
 var contacts = service.RetrieveMultiple(query);
 ```
+
 
 ### More Information
 
@@ -404,7 +458,7 @@ var contacts = service.RetrieveMultiple(query);
 
 ### Title
 
-Use pre-images and post-images instead of issuing additional Retrieve calls to access f...
+Use pre-images and post-images instead of issuing additional Retrieve calls
 
 ### Description
 
@@ -428,7 +482,8 @@ Use pre-images and post-images instead of issuing additional Retrieve calls to a
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```csharp
 if (context.PreEntityImages.Contains("PreImage"))
 {
@@ -444,14 +499,17 @@ if (context.PreEntityImages.Contains("PreImage"))
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```csharp
 // Issues an unnecessary Retrieve call to get the previous value
 var previousRecord = service.Retrieve("account", target.Id, new ColumnSet("statuscode"));
 var previousStatus = previousRecord.GetAttributeValue<OptionSetValue>("statuscode");
 ```
+
 
 ### More Information
 
@@ -462,7 +520,7 @@ var previousStatus = previousRecord.GetAttributeValue<OptionSetValue>("statuscod
 
 ### Title
 
-Register plugins in the correct pipeline stage based on the type of logic they perform
+Register plugins in the correct pipeline stage based on the type of logic they
 
 ### Description
 
@@ -486,7 +544,8 @@ Register plugins in the correct pipeline stage based on the type of logic they p
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```csharp
 // Pre-Validation: reject deletion of active orders early, before the transaction starts
 if (context.MessageName == "Delete")
@@ -498,7 +557,9 @@ if (context.MessageName == "Delete")
     }
 }
 ```
-Good example code snippet.
+
+##### Compliant code example
+
 ```csharp
 // Pre-Operation: set a computed field before the record is saved
 var target = (Entity)context.InputParameters["Target"];
@@ -506,9 +567,11 @@ target["fullname"] = $"{target.GetAttributeValue<string>("firstname")} {target.G
 // No Update call needed — changes are saved as part of the transaction
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```csharp
 // Post-Operation: modifying the target and calling Update — extra database round-trip
 // This should have been done in Pre-Operation
@@ -516,6 +579,7 @@ var target = (Entity)context.InputParameters["Target"];
 target["fullname"] = $"{target["firstname"]} {target["lastname"]}";
 service.Update(target); // Unnecessary Update call
 ```
+
 
 ### More Information
 
@@ -526,7 +590,7 @@ service.Update(target); // Unnecessary Update call
 
 ### Title
 
-Do not use ExecuteMultipleRequest inside plugin code
+Do not use ExecuteMultipleRequest inside plugin code.
 
 ### Description
 
@@ -549,7 +613,8 @@ Do not use ExecuteMultipleRequest inside plugin code. Use it only from external 
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```csharp
 // Create related records individually inside the plugin
 foreach (var detail in orderDetails)
@@ -562,9 +627,11 @@ foreach (var detail in orderDetails)
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```csharp
 // Using ExecuteMultiple inside a plugin — risk of recursion and timeouts
 var request = new ExecuteMultipleRequest
@@ -579,6 +646,7 @@ foreach (var detail in orderDetails)
 service.Execute(request); // Avoid this inside plugins
 ```
 
+
 ### More Information
 
 1. [Do not use batch request types in plug-ins and workflow activities - Microsoft Learn](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/best-practices/business-logic/do-not-use-batch-request-types-in-plug-ins-and-workflow-activities)
@@ -587,7 +655,7 @@ service.Execute(request); // Avoid this inside plugins
 
 ### Title
 
-Register plugins only for the specific messages and tables required
+Register plugins only for the specific messages and tables required.
 
 ### Description
 
@@ -611,12 +679,21 @@ Register plugins only for the specific messages and tables required. Register on
 
 #### Good
 
-- A plugin registered on the Update message of the Account table with filtering attributes set to emailaddress1, statuscode - it only fires when the email or status changes.
+##### A plugin registered on the Update message of the Account table with filtering
+
+A plugin registered on the Update message of the Account table with filtering attributes set to emailaddress1, statuscode - it only fires when the email or status changes.
+
 
 #### Bad
 
-- A plugin registered on the Update message of the Account table with no filtering attributes - it fires on every single field update, including irrelevant changes like modifying the description.
-- A plugin registered on all messages of a table when it only needs to run on Create.
+##### A plugin registered on the Update message of the Account table with no
+
+A plugin registered on the Update message of the Account table with no filtering attributes - it fires on every single field update, including irrelevant changes like modifying the description.
+
+##### A plugin registered on all messages of a table when it only needs to run on
+
+A plugin registered on all messages of a table when it only needs to run on Create.
+
 
 ### More Information
 
@@ -626,7 +703,7 @@ Register plugins only for the specific messages and tables required. Register on
 
 ### Title
 
-Do not use multithreading, Task
+Do not use multithreading, Task.Run, Parallel.ForEach, or any form
 
 ### Description
 
@@ -649,7 +726,8 @@ Do not use multithreading, Task.Run, Parallel.ForEach, or any form of asynchrono
 
 #### Good
 
-Good example code snippet.
+##### Compliant code example
+
 ```csharp
 // Sequential processing — safe and predictable
 foreach (var record in recordsToProcess)
@@ -658,9 +736,11 @@ foreach (var record in recordsToProcess)
 }
 ```
 
+
 #### Bad
 
-Bad example code snippet.
+##### Non-compliant code example
+
 ```csharp
 // Parallel processing inside a plugin — unstable and unsupported
 Parallel.ForEach(recordsToProcess, record =>
@@ -668,11 +748,14 @@ Parallel.ForEach(recordsToProcess, record =>
     service.Update(record);
 });
 ```
-Bad example code snippet.
+
+##### Non-compliant code example
+
 ```csharp
 // async/await inside a plugin — not supported in the sandbox
 await Task.Run(() => service.Update(record));
 ```
+
 
 ### More Information
 
@@ -682,7 +765,7 @@ await Task.Run(() => service.Update(record));
 
 ### Title
 
-Keep synchronous plugins lightweight
+Keep synchronous plugins lightweight.
 
 ### Description
 
@@ -706,13 +789,25 @@ Keep synchronous plugins lightweight. Offload long-running or non-critical work 
 
 #### Good
 
-- A synchronous Pre-Operation plugin that validates a field format - executes in milliseconds.
-- An asynchronous Post-Operation plugin that sends an email notification after a Case is created.
+##### A synchronous Pre-Operation plugin that validates a field format - executes in
+
+A synchronous Pre-Operation plugin that validates a field format - executes in milliseconds.
+
+##### An asynchronous Post-Operation plugin that sends an email notification after a
+
+An asynchronous Post-Operation plugin that sends an email notification after a Case is created.
+
 
 #### Bad
 
-- A synchronous Post-Operation plugin that calls an external REST API to validate an address, adding 3–5 seconds of network latency to every save.
-- A synchronous plugin that processes 500 related records in a loop, causing a 30-second delay on the form.
+##### A synchronous Post-Operation plugin that calls an external REST API to validate
+
+A synchronous Post-Operation plugin that calls an external REST API to validate an address, adding 3–5 seconds of network latency to every save.
+
+##### A synchronous plugin that processes 500 related records in a loop, causing a
+
+A synchronous plugin that processes 500 related records in a loop, causing a 30-second delay on the form.
+
 
 ### More Information
 

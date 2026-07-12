@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PA-005 - Name variables with typed camelCase</title>
+    <title>PA-005 - Use camelCase notation and a short type prefix so the data type is immediately</title>
     <style>
         * {
             margin: 0;
@@ -176,34 +176,28 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .step-card .step-icon {
             width: 32px;
             height: 32px;
-            background: #0078d4;
-            color: #ffffff;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            border-radius: 50%;
+            background: #edf4fc;
+            border: 1px solid #d9e8f8;
         }
 
-        .step-card .step-icon svg {
+        .step-card .step-icon img {
             width: 18px;
             height: 18px;
         }
 
-        .step-card .step-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1b2a4a;
-        }
-
         .step-card .step-description {
-            font-size: 13px;
+            font-size: 14px;
             color: #555;
             line-height: 1.5;
         }
@@ -211,9 +205,10 @@
         /* Examples section */
         .examples-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 16px;
             overflow: hidden;
+            margin-bottom: 24px;
         }
 
         .example-box {
@@ -235,27 +230,28 @@
         .example-box .example-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .example-box .example-kind {
+            display: flex;
+            align-items: center;
             gap: 8px;
-            margin-bottom: 14px;
         }
 
-        .example-box .example-icon {
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .example-box.do .example-icon {
-            color: #27ae60;
-        }
-
-        .example-box.dont .example-icon {
-            color: #c0392b;
+        .example-box .example-kind-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
         }
 
         .example-box .example-label {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
         .example-box.do .example-label {
@@ -266,51 +262,87 @@
             color: #c0392b;
         }
 
-        .example-box ul {
-            list-style: none;
-            padding: 0;
+        .example-box .example-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1b2a4a;
         }
 
-        .example-box ul li {
+        .example-content {
             font-size: 13px;
             color: #333;
-            padding: 5px 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
+            line-height: 1.55;
         }
 
-        .example-box ul li .icon {
+        .example-prose-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .example-prose-row .example-prose-icon {
+            width: 18px;
+            height: 18px;
             flex-shrink: 0;
-            font-weight: 700;
-            font-size: 12px;
-            margin-top: 1px;
         }
 
-        .example-box.do ul li .icon {
-            color: #27ae60;
-        }
-
-        .example-box.dont ul li .icon {
-            color: #c0392b;
-        }
-
-        .example-box ul li .text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .example-box ul li .text code {
+        .example-content pre {
             font-family: 'Consolas', 'Courier New', monospace;
-            font-size: 11px;
-            font-weight: 600;
-            word-break: break-all;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            background: #ffffff;
+            border: 1px solid #d8dee8;
+            border-radius: 6px;
+            padding: 10px;
+            color: #1f2a44;
         }
 
-        .example-box ul li .text .reason {
-            font-size: 11px;
-            color: #777;
-            font-style: italic;
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1b2a4a;
+            margin-bottom: 12px;
+        }
+
+        .info-card {
+            margin-top: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .section-header-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .references-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .references-list li {
+            margin-bottom: 6px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 20px;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -322,7 +354,7 @@
             <div class="header-subtitle">Cloud Flows / power-automate</div>
             <div class="title-row">
                 <a href="#"><span class="rule-id">PA-005</span></a>
-                <a href="#"><span class="rule-title">Name variables with typed camelCase</span></a>
+                <a href="#"><span class="rule-title">Use camelCase notation and a short type prefix so the data type is immediately</span></a>
             </div>
         </div>
 
@@ -344,32 +376,36 @@
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">1</div>
-                        <div class="step-title">Guideline 1</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/pencil.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Use a short type prefix such as str, int, bool, arr, obj, or flt at the start of each variable name.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">2</div>
-                        <div class="step-title">Guideline 2</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/lightbulb.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Use camelCase after the type prefix.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">3</div>
-                        <div class="step-title">Guideline 3</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/code-xml.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Use descriptive names that clearly indicate the purpose of the variable.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">4</div>
-                        <div class="step-title">Guideline 4</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/circle-alert.svg" alt="Guideline icon" />
+                        </div>
                     </div>
                     <div class="step-description">Avoid abbreviations, generic names, and meaningless one-character identifiers.</div>
                 </div>
@@ -381,32 +417,36 @@
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">1</div>
-                        <div class="step-title">Rationale 1</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/database.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Type prefixes make it immediately clear what kind of data the variable holds without inspecting its initialization.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">2</div>
-                        <div class="step-title">Rationale 2</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/lightbulb.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">camelCase notation is consistent with the expression language used in Power Automate.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">3</div>
-                        <div class="step-title">Rationale 3</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/pencil.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Descriptive variable names make the flow self-documenting and easier to maintain.</div>
                 </div>
                 
                 <div class="step-card">
                     <div class="step-header">
-                        <div class="step-icon">4</div>
-                        <div class="step-title">Rationale 4</div>
+                        <div class="step-icon">
+                            <img src="../img/icons/link.svg" alt="Rationale icon" />
+                        </div>
                     </div>
                     <div class="step-description">Clear variable names reduce confusion and errors when variables are referenced in expressions.</div>
                 </div>
@@ -414,147 +454,213 @@
             </div>
 
             <!-- Examples -->
+            <div class="section-title">Examples</div>
             <div class="examples-grid">
+                
                 <div class="example-box do">
                     <div class="example-header">
-                        <span class="example-icon">&#10003;</span>
-                        <span class="example-label">Do</span>
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">strCustomerFullName</div>
                     </div>
-                    <ul>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>strCustomerFullName</code>
-                                
-                                <span class="reason">String variable with a descriptive name.</span>
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/pencil.svg" alt="Example icon" />
+                            <span>strCustomerFullName</span>
+                        </div>
+                        <div>Value: strCustomerFullName String variable with a descriptive name.</div>
                         
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>intNumberOfRetries</code>
-                                
-                                <span class="reason">Integer variable that clearly expresses its purpose.</span>
-                                
-                            </span>
-                        </li>
-                        
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>boolIsEligibleForDiscount</code>
-                                
-                                <span class="reason">Boolean variable that reads as a condition.</span>
-                                
-                            </span>
-                        </li>
-                        
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>arrPendingApprovals</code>
-                                
-                                <span class="reason">Array variable with a meaningful collection name.</span>
-                                
-                            </span>
-                        </li>
-                        
-                        <li>
-                            <span class="icon">&#10003;</span>
-                            <span class="text">
-                                
-                                <code>objOrderDetails</code>
-                                
-                                <span class="reason">Object variable that clearly identifies its contents.</span>
-                                
-                            </span>
-                        </li>
-                        
-                    </ul>
+                    </div>
                 </div>
+                
+                <div class="example-box do">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">intNumberOfRetries</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/lightbulb.svg" alt="Example icon" />
+                            <span>intNumberOfRetries</span>
+                        </div>
+                        <div>Value: intNumberOfRetries Integer variable that clearly expresses its purpose.</div>
+                        
+                    </div>
+                </div>
+                
+                <div class="example-box do">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">boolIsEligibleForDiscount</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/book-open.svg" alt="Example icon" />
+                            <span>boolIsEligibleForDiscount</span>
+                        </div>
+                        <div>Value: boolIsEligibleForDiscount Boolean variable that reads as a condition.</div>
+                        
+                    </div>
+                </div>
+                
+                <div class="example-box do">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">arrPendingApprovals</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/check.svg" alt="Example icon" />
+                            <span>arrPendingApprovals</span>
+                        </div>
+                        <div>Value: arrPendingApprovals Array variable with a meaningful collection name.</div>
+                        
+                    </div>
+                </div>
+                
+                <div class="example-box do">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/circle-check-big.svg" alt="Good example" />
+                            <span class="example-label">Do</span>
+                        </div>
+                        <div class="example-title">objOrderDetails</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/circle-alert.svg" alt="Example icon" />
+                            <span>objOrderDetails</span>
+                        </div>
+                        <div>Value: objOrderDetails Object variable that clearly identifies its contents.</div>
+                        
+                    </div>
+                </div>
+                
+
+                
                 <div class="example-box dont">
                     <div class="example-header">
-                        <span class="example-icon">&#10007;</span>
-                        <span class="example-label">Don't</span>
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">x</div>
                     </div>
-                    <ul>
+                    <div class="example-content">
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>x</code>
-                                
-                                <span class="reason">No indication of purpose or type.</span>
-                                
-                            </span>
-                        </li>
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/settings.svg" alt="Example icon" />
+                            <span>x</span>
+                        </div>
+                        <div>Value: x No indication of purpose or type.</div>
                         
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>temp</code>
-                                
-                                <span class="reason">Generic and unclear.</span>
-                                
-                            </span>
-                        </li>
-                        
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>var1</code>
-                                
-                                <span class="reason">Generic and unclear.</span>
-                                
-                            </span>
-                        </li>
-                        
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>name</code>
-                                
-                                <span class="reason">Missing a type prefix and ambiguous.</span>
-                                
-                            </span>
-                        </li>
-                        
-                        <li>
-                            <span class="icon">&#10007;</span>
-                            <span class="text">
-                                
-                                <code>n</code>
-                                
-                                <span class="reason">Single-character name with no meaning.</span>
-                                
-                            </span>
-                        </li>
-                        
-                    </ul>
+                    </div>
                 </div>
+                
+                <div class="example-box dont">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">temp</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/workflow.svg" alt="Example icon" />
+                            <span>temp</span>
+                        </div>
+                        <div>Value: temp Generic and unclear.</div>
+                        
+                    </div>
+                </div>
+                
+                <div class="example-box dont">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">var1</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/database.svg" alt="Example icon" />
+                            <span>var1</span>
+                        </div>
+                        <div>Value: var1 Generic and unclear.</div>
+                        
+                    </div>
+                </div>
+                
+                <div class="example-box dont">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">name</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/link.svg" alt="Example icon" />
+                            <span>name</span>
+                        </div>
+                        <div>Value: name Missing a type prefix and ambiguous.</div>
+                        
+                    </div>
+                </div>
+                
+                <div class="example-box dont">
+                    <div class="example-header">
+                        <div class="example-kind">
+                            <img class="example-kind-icon" src="../img/icons/x.svg" alt="Bad example" />
+                            <span class="example-label">Don't</span>
+                        </div>
+                        <div class="example-title">n</div>
+                    </div>
+                    <div class="example-content">
+                        
+                        <div class="example-prose-row">
+                            <img class="example-prose-icon" src="../img/icons/users.svg" alt="Example icon" />
+                            <span>n</span>
+                        </div>
+                        <div>Value: n Single-character name with no meaning.</div>
+                        
+                    </div>
+                </div>
+                
             </div>
 
             
 
             
-            <div class="step-card" style="margin-top: 24px;">
-                <div class="step-header">
-                    <div class="step-icon">i</div>
-                    <div class="step-title">More Information</div>
+            <div class="step-card info-card">
+                <div class="section-header">
+                    <img class="section-header-icon" src="../img/icons/info.svg" alt="More information" />
+                    <div class="section-title" style="margin-bottom: 0;">More Information</div>
                 </div>
                 <div class="step-description">
-                    <ul>
+                    <ul class="references-list">
                         
                         <li><a href="https://learn.microsoft.com/en-us/power-automate/" target="_blank" rel="noopener noreferrer">Microsoft Learn - Power Automate Documentation</a></li>
                         
