@@ -16,13 +16,13 @@
 ### Guidelines
 
 {%- for guideline in rule.guidelines -%}
-1. {{ guideline }}
+1. {{ guideline.text }}
 {%- endfor -%}
 
 ### Rationale
 
 {%- for item in rule.rationale -%}
-1. {{ item }}
+1. {{ item.text }}
 {%- endfor -%}
 
 {%- if rule.pattern -%}
@@ -48,35 +48,31 @@
 #### Good
 
 {%- for example in rule.examples.good -%}
-{%- if example.value -%}
-- {{ example.value }}{% if example.note %}: {{ example.note }}{% endif %}
-{%- elsif example.code -%}
-{%- if example.description -%}
-{{ example.description }}
-{% endif -%}
+##### {{ example.title }}
+
+{%- if example.code -%}
 ```{% if example.language %}{{ example.language }}{% endif %}
 {{ example.code }}
 ```
-{%- elsif example.description -%}
-- {{ example.description }}
+{%- elsif example.text -%}
+{{ example.text }}
 {%- endif -%}
+
 {%- endfor -%}
 
 #### Bad
 
 {%- for example in rule.examples.bad -%}
-{%- if example.value -%}
-- {{ example.value }}{% if example.note %}: {{ example.note }}{% endif %}
-{%- elsif example.code -%}
-{%- if example.description -%}
-{{ example.description }}
-{% endif -%}
+##### {{ example.title }}
+
+{%- if example.code -%}
 ```{% if example.language %}{{ example.language }}{% endif %}
 {{ example.code }}
 ```
-{%- elsif example.description -%}
-- {{ example.description }}
+{%- elsif example.text -%}
+{{ example.text }}
 {%- endif -%}
+
 {%- endfor -%}
 
 ### More Information

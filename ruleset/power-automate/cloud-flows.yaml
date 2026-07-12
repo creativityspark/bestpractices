@@ -1,493 +1,722 @@
 topic: Cloud Flows
 description: Good practices for Power Automate flows.
 rules:
-  - id: PA-001
-    title: Name cloud flows using the standard pattern
-    description: Cloud flow names must follow a consistent pattern that identifies the owning app, trigger connector, data source, triggering event, and business purpose.
-    guidelines:
-      - Use the pattern "[App Prefix] - [Connector Prefix] - [Data Store] - [Event Name Code(s)] - [Action/Purpose]" when naming cloud flows.
-      - Use a 3-letter app prefix to group flows that belong to the same application.
-      - Omit the app prefix when the flow is shared across multiple applications.
-      - Use the connector prefix to identify the connector used by the trigger.
-      - Use the data store segment to identify the table, list, mailbox, app, schedule, or other trigger-backed store.
-      - Omit the data store segment when the trigger does not have an associated data store, such as a manual trigger.
-      - Use event name codes such as NEW, MOD, and DEL, and combine codes when multiple events trigger the flow.
-      - Use a brief action or purpose segment that clearly describes what the flow does.
-    rationale:
-      - Having naming conventions in place makes the task of choosing names easier.
-      - The app prefix groups all flows belonging to the same application together in alphabetical lists, making them easier to find and manage.
-      - Including the trigger prefix and data store name makes it easier to identify and select flows in the UI.
-      - Consistent naming conventions make it easier to group similar flows together by name.
-      - The action or purpose segment makes it easy to understand what the flow is doing.
-    examples:
-      good:
-        - value: ORM - DV - Contact - NEWMOD - Send Notifications
-          note: Sends a notification when a Dataverse Contact record is created or modified for the Orders Management app.
-        - value: ORM - DV - Account - MOD - Validations
-          note: Performs validations when an Account record is updated in Dataverse for the Orders Management app.
-        - value: ORM - SP - Orders - MOD - Move out of notice wait period
-          note: Handles updates to the Orders SharePoint list for the Orders Management app.
-        - value: HRO - CF - Set Reference Number
-          note: Names a child flow that sets a reference number for the HR Onboarding app.
-        - value: HRO - SCH - Daily - Set Status
-          note: Names a scheduled flow that runs daily and sets status for the HR Onboarding app.
-        - value: PA - Orders Management - Cancel Record
-          note: Omits the app prefix because the flow is shared across multiple apps and is triggered from Power Apps.
-      bad:
-        - value: Send Notifications
-          note: Omits the app, connector, data store, and event segments required to make the name self-descriptive.
-        - value: ORM - Contact - Send Notifications
-          note: Omits the connector prefix and event code segments.
-    references:
-      - title: Matthew Devaney - Power Automate Coding Standards
-        url: https://www.matthewdevaney.com/power-automate-coding-standards-for-cloud-flows/
-      - title: Microsoft Power Platform Guidance - Naming Conventions
-        url: https://learn.microsoft.com/en-us/power-platform/guidance/adoption/naming-conventions
-    pattern: "[App Prefix] - [Connector Prefix] - [Data Store] - [Event Name Code(s)] - [Action/Purpose]"
-    pattern_segments:
-      - name: App Prefix
-        description: A 3-letter code that identifies the application the flow belongs to.
-        optional: true
-      - name: Connector Prefix
-        description: Identifies the connector used in the trigger of the flow.
-      - name: Data Store
-        description: Identifies the data source behind the trigger, such as a Dataverse table, SharePoint list, mailbox, schedule period, or app name.
-        optional: true
-      - name: Event Name Code(s)
-        description: Identifies the event that triggered the flow, such as create, update, delete, or a combination of those events.
-      - name: Action/Purpose
-        description: Brief text describing the purpose or the action taken by the flow.
-  - id: PA-002
-    title: Add meaningful descriptions to all flows
-    description: Every flow must have a description that summarizes its purpose, the business process it supports, and important details about how it behaves.
-    guidelines:
-      - State the purpose of the flow in one or two sentences.
-      - Mention what triggers the flow.
-      - Include the business process or requirement the flow supports.
-      - Note any child flows, external APIs, or shared resources the flow relies on.
-    rationale:
-      - Providing a description for each flow ensures that anyone reviewing or maintaining it can quickly understand its purpose and functionality.
-      - Descriptions help document the flow's behavior, making it easier to troubleshoot and update in the future.
-      - Well-documented flows improve collaboration by providing context and reducing the learning curve for new team members.
-      - Descriptions also help stakeholders understand the business logic implemented in the flow.
-    examples:
-      good:
-        - value: Triggered when a Contact record is created or modified in Dataverse. Sends an email notification to the account manager with the updated contact details. Calls the CF - Send Notification Email child flow.
-          note: Clearly states the trigger, purpose, and dependency.
-        - value: Runs daily at 6:00 AM. Queries all open orders older than 30 days and updates their status to Expired. Part of the Order Lifecycle Management process.
-          note: Includes timing, behavior, and business context.
-      bad:
-        - value: My flow
-          note: Meaningless and provides no context.
-        - value: Handles stuff
-          note: Vague and not actionable for maintainers.
-        - description: No description at all.
-    references:
-      - title: Microsoft Learn - Power Automate Documentation
-        url: https://learn.microsoft.com/en-us/power-automate/
-  - id: PA-003
-    title: Give triggers clear descriptive names
-    description: Trigger names should be clear and descriptive so reviewers can quickly understand what initiates the flow.
-    guidelines:
-      - Use a verb-noun format for trigger names.
-      - Include key details such as the data store and triggering event.
-      - Avoid abbreviations and prefer full words for clarity.
-    rationale:
-      - Clear and descriptive trigger names make it easier to understand what initiates the flow.
-      - Well-named triggers serve as documentation for team members and stakeholders.
-      - Descriptive names simplify troubleshooting by providing immediate context.
-    examples:
-      good:
-        - value: When a new item is created
-          note: Clearly describes the event in plain language.
-        - value: When a new contact is added to Dataverse
-          note: Includes both the event and the data source.
-        - value: When a file is created in SharePoint
-          note: Uses full words and identifies the source system.
-      bad:
-        - value: File Created SP
-          note: Abbreviated and unclear.
-        - value: Manually trigger a flow
-          note: Default name that does not describe the business purpose.
-        - value: Recurrence
-          note: Default name with no indication of what the schedule is for.
-    references:
-      - title: Microsoft Power Platform Guidance - Naming Conventions
-        url: https://learn.microsoft.com/en-us/power-platform/guidance/adoption/naming-conventions
-  - id: PA-004
-    title: Rename actions with clear descriptive names
-    description: All actions must be renamed from their default names to clear, descriptive names that explain what each action does.
-    guidelines:
-      - Use a verb-noun format for action names.
-      - Include key details such as the data source and entity being acted on.
-      - Use a consistent naming style, such as Title Case, across all actions in a flow.
-      - Never leave default auto-generated action names such as Apply_to_each, Condition, Compose, or HTTP.
-    rationale:
-      - Descriptive action names make the flow self-documenting and easier to understand at a glance.
-      - In run history, descriptive action names make it immediately obvious where a failure occurred.
-      - Expressions that reference other actions are much more readable when actions are named descriptively.
-      - Clear action names reduce the need for additional documentation when multiple team members work on the same flow.
-    examples:
-      good:
-        - value: Get Customer by Email
-          note: Describes both the action and the lookup key.
-        - value: Send Approval Email to Manager
-          note: Explains the action and the recipient.
-        - value: Filter Active Orders
-          note: Clearly describes the filtering purpose.
-        - value: Update Contact Status to Inactive
-          note: Identifies both the entity and intended state change.
-        - value: Apply to Each Invoice Line
-          note: Makes the loop target explicit.
-        - value: Check if Account Exists
-          note: Explains the condition being evaluated.
-        - value: Parse JSON Response from API
-          note: Identifies both the action and the data source.
-      bad:
-        - value: Get_item
-          note: Default name and unclear which item is retrieved.
-        - value: Compose
-          note: Default name with no business meaning.
-        - value: Apply_to_each
-          note: Default name and unclear what is being iterated.
-        - value: Condition
-          note: Default name and unclear what is being evaluated.
-        - value: HTTP
-          note: Default name and unclear what endpoint is being called.
-    references:
-      - title: Microsoft Learn - Power Automate Documentation
-        url: https://learn.microsoft.com/en-us/power-automate/
-  - id: PA-005
-    title: Name variables with typed camelCase
-    description: Variable names must use camelCase notation and a short type prefix so the data type is immediately obvious.
-    guidelines:
-      - Use a short type prefix such as str, int, bool, arr, obj, or flt at the start of each variable name.
-      - Use camelCase after the type prefix.
-      - Use descriptive names that clearly indicate the purpose of the variable.
-      - Avoid abbreviations, generic names, and meaningless one-character identifiers.
-    rationale:
-      - Type prefixes make it immediately clear what kind of data the variable holds without inspecting its initialization.
-      - camelCase notation is consistent with the expression language used in Power Automate.
-      - Descriptive variable names make the flow self-documenting and easier to maintain.
-      - Clear variable names reduce confusion and errors when variables are referenced in expressions.
-    examples:
-      good:
-        - value: strCustomerFullName
-          note: String variable with a descriptive name.
-        - value: intNumberOfRetries
-          note: Integer variable that clearly expresses its purpose.
-        - value: boolIsEligibleForDiscount
-          note: Boolean variable that reads as a condition.
-        - value: arrPendingApprovals
-          note: Array variable with a meaningful collection name.
-        - value: objOrderDetails
-          note: Object variable that clearly identifies its contents.
-      bad:
-        - value: x
-          note: No indication of purpose or type.
-        - value: temp
-          note: Generic and unclear.
-        - value: var1
-          note: Generic and unclear.
-        - value: name
-          note: Missing a type prefix and ambiguous.
-        - value: n
-          note: Single-character name with no meaning.
-    references:
-      - title: Microsoft Learn - Power Automate Documentation
-        url: https://learn.microsoft.com/en-us/power-automate/
-  - id: PA-006
-    title: Name connection references using the standard pattern
-    description: Connection reference names must follow a standard pattern that identifies the solution publisher, the connector, and the purpose or context of the connection.
-    guidelines:
-      - Use the pattern "[Publisher Prefix] - [Connector Name] - [Purpose/Context]" for connection references.
-      - Use the solution publisher prefix to identify the owning solution.
-      - Use the connector name segment to identify the connector, such as Dataverse, SharePoint, Outlook, or Teams.
-      - Use a purpose or context segment that briefly describes how the connection is used or what environment it belongs to.
-      - Use service accounts instead of personal user accounts for connections.
-      - Reuse connection references across flows in the same solution instead of creating duplicates.
-      - Document the connection with a description that explains its purpose and the account used.
-    rationale:
-      - Descriptive connection reference names make it easier to manage connections across environments during solution deployment.
-      - Using service accounts prevents failures when individual users leave the organization or change roles.
-      - Reusing connection references reduces the number of connections that must be configured when deploying solutions to new environments.
-      - Including the purpose in the name helps administrators identify and troubleshoot connection issues quickly.
-    examples:
-      good:
-        - value: csp - Dataverse - Main Application
-          note: Identifies the publisher, connector, and business context.
-        - value: csp - SharePoint - Document Library
-          note: Names the connector reference according to the required structure.
-        - value: csp - Outlook - Service Notifications
-          note: Describes how the connection is used.
-        - value: csp - Teams - Approval Notifications
-          note: Includes the publisher prefix and purpose.
-      bad:
-        - value: My Connection
-          note: No structure and no context.
-        - value: Dataverse
-          note: Missing the publisher prefix and purpose.
-        - value: John's SharePoint
-          note: Uses a personal account reference and no standard format.
-        - value: New Connection Reference
-          note: Default name with no meaning.
-    references:
-      - title: Microsoft Learn - Solutions Overview
-        url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/solutions-overview
-    pattern: "[Publisher Prefix] - [Connector Name] - [Purpose/Context]"
-    pattern_segments:
-      - name: Publisher Prefix
-        description: The solution publisher prefix that identifies the owning solution.
-      - name: Connector Name
-        description: The connector name, such as Dataverse, SharePoint, Outlook, or Teams.
-      - name: Purpose/Context
-        description: A brief description of what the connection is used for or the environment context.
-  - id: PA-007
-    title: Implement scope-based try-catch-finally error handling
-    description: All cloud flows must implement error handling using the Scope-based Try-Catch-Finally pattern.
-    guidelines:
-      - Put the main business logic inside a Try scope.
-      - Configure a Catch scope to run after the Try scope has failed, timed out, or been skipped.
-      - Configure a Finally scope to run after the Catch scope regardless of outcome.
-      - In the Catch scope, log the flow name, failed action, and error message to a centralized location.
-      - In the Catch scope, send a notification to the flow owner or support team.
-      - In the Catch scope, terminate the flow with a Failed status and include the error message.
-    rationale:
-      - Without error handling, flow failures can go unnoticed, leading to data inconsistencies and broken business processes.
-      - The scope-based pattern is the standard approach to error handling in Power Automate because there is no native try-catch construct.
-      - Centralized error logging provides a single place to monitor and troubleshoot flow failures.
-      - Sending notifications helps ensure failures are addressed promptly.
-    examples:
-      good:
-        - description: Uses dedicated Try, Catch, and Finally scopes to group business logic, error handling, and cleanup.
-          code: |
-            Scope: Try - Process Invoice
-                Get Invoice from SharePoint
-                Validate Invoice Data
-                Create Record in Dataverse
-            Scope: Catch - Handle Errors (Run after: Try has failed, timed out, skipped)
-                Log Error to Dataverse Errors Table
-                Send Error Notification to Support Team
-                Terminate with Failed Status
-            Scope: Finally - Cleanup (Run after: Catch)
-                Update Processing Status
-          language: Plain Text
-      bad:
-        - description: No error handling at all, so the flow silently fails.
-        - description: Uses individual Configure Run After settings on each action instead of grouping logic into scopes.
-        - description: Catches errors but does not log them or notify anyone.
-    references:
-      - title: Microsoft Learn - Power Automate Limits and Configuration
-        url: https://learn.microsoft.com/en-us/power-automate/limits-and-config
-  - id: PA-008
-    title: Initialize all variables at the start of the flow
-    description: All variables must be initialized at the beginning of the flow before any other actions or logic.
-    guidelines:
-      - Group all Initialize Variable actions together at the top of the flow.
-      - Use a scope named Initialize Variables to group the initialization actions visually.
-      - Do not initialize variables inside conditions, loops, or other branches.
-    rationale:
-      - Power Automate requires variables to be initialized at the top level of the flow and not inside conditions, loops, or parallel scopes.
-      - Grouping variable initialization at the top provides a clear overview of all data used by the flow.
-      - Keeping default values together makes them easier to identify and update.
-      - A dedicated initialization scope keeps the flow organized and collapsible.
-    examples:
-      good:
-        - description: Groups all variable initialization actions at the top of the flow inside a dedicated scope.
-          code: |
-            Scope: Initialize Variables
-                Initialize strCustomerEmail
-                Initialize intRetryCount
-                Initialize boolIsProcessed
-                Initialize arrResults
-            Scope: Try - Main Logic
-                ...
-          language: Plain Text
-      bad:
-        - description: Mixes initialization with other actions and initializes a variable inside a condition branch.
-          code: |
-            Get Items from SharePoint
+- id: PA-001
+  title: Follow a consistent pattern that identifies the owning app, trigger connector
+  description: Cloud flow names must follow a consistent pattern that identifies the owning app, trigger connector, data source, triggering event, and business purpose.
+  guidelines:
+  - text: Use the pattern "[App Prefix] - [Connector Prefix] - [Data Store] - [Event Name Code(s)] - [Action/Purpose]" when naming cloud flows.
+    icon: icons/database.svg
+  - text: Use a 3-letter app prefix to group flows that belong to the same application.
+    icon: icons/pencil.svg
+  - text: Omit the app prefix when the flow is shared across multiple applications.
+    icon: icons/workflow.svg
+  - text: Use the connector prefix to identify the connector used by the trigger.
+    icon: icons/lightbulb.svg
+  - text: Use the data store segment to identify the table, list, mailbox, app, schedule, or other trigger-backed store.
+    icon: icons/check.svg
+  - text: Omit the data store segment when the trigger does not have an associated data store, such as a manual trigger.
+    icon: icons/circle-alert.svg
+  - text: Use event name codes such as NEW, MOD, and DEL, and combine codes when multiple events trigger the flow.
+    icon: icons/code-xml.svg
+  - text: Use a brief action or purpose segment that clearly describes what the flow does.
+    icon: icons/settings.svg
+  rationale:
+  - text: Having naming conventions in place makes the task of choosing names easier.
+    icon: icons/pencil.svg
+  - text: The app prefix groups all flows belonging to the same application together in alphabetical lists, making them easier to find and manage.
+    icon: icons/workflow.svg
+  - text: Including the trigger prefix and data store name makes it easier to identify and select flows in the UI.
+    icon: icons/database.svg
+  - text: Consistent naming conventions make it easier to group similar flows together by name.
+    icon: icons/lightbulb.svg
+  - text: The action or purpose segment makes it easy to understand what the flow is doing.
+    icon: icons/check.svg
+  examples:
+    good:
+    - title: ORM - DV - Contact - NEWMOD - Send Notifications
+      text: 'ORM - DV - Contact - NEWMOD - Send Notifications Sends a notification when a Dataverse Contact record is created or modified for the Orders Management app.'
+      icon: icons/database.svg
+    - title: ORM - DV - Account - MOD - Validations
+      text: 'ORM - DV - Account - MOD - Validations Performs validations when an Account record is updated in Dataverse for the Orders Management app.'
+      icon: icons/lightbulb.svg
+    - title: ORM - SP - Orders - MOD - Move out of notice wait period
+      text: 'ORM - SP - Orders - MOD - Move out of notice wait period Handles updates to the Orders SharePoint list for the Orders Management app.'
+      icon: icons/check.svg
+    - title: HRO - CF - Set Reference Number
+      text: 'HRO - CF - Set Reference Number Names a child flow that sets a reference number for the HR Onboarding app.'
+      icon: icons/pencil.svg
+    - title: HRO - SCH - Daily - Set Status
+      text: 'HRO - SCH - Daily - Set Status Names a scheduled flow that runs daily and sets status for the HR Onboarding app.'
+      icon: icons/workflow.svg
+    - title: PA - Orders Management - Cancel Record
+      text: 'PA - Orders Management - Cancel Record Omits the app prefix because the flow is shared across multiple apps and is triggered from Power Apps.'
+      icon: icons/circle-alert.svg
+    bad:
+    - title: Send Notifications
+      text: 'Send Notifications Omits the app, connector, data store, and event segments required to make the name self-descriptive.'
+      icon: icons/code-xml.svg
+    - title: ORM - Contact - Send Notifications
+      text: 'ORM - Contact - Send Notifications Omits the connector prefix and event code segments.'
+      icon: icons/settings.svg
+  references:
+  - title: Matthew Devaney - Power Automate Coding Standards
+    url: https://www.matthewdevaney.com/power-automate-coding-standards-for-cloud-flows/
+  - title: Microsoft Power Platform Guidance - Naming Conventions
+    url: https://learn.microsoft.com/en-us/power-platform/guidance/adoption/naming-conventions
+  pattern: '[App Prefix] - [Connector Prefix] - [Data Store] - [Event Name Code(s)] - [Action/Purpose]'
+  pattern_segments:
+  - name: App Prefix
+    description: A 3-letter code that identifies the application the flow belongs to.
+    optional: true
+  - name: Connector Prefix
+    description: Identifies the connector used in the trigger of the flow.
+  - name: Data Store
+    description: Identifies the data source behind the trigger, such as a Dataverse table, SharePoint list, mailbox, schedule period, or app name.
+    optional: true
+  - name: Event Name Code(s)
+    description: Identifies the event that triggered the flow, such as create, update, delete, or a combination of those events.
+  - name: Action/Purpose
+    description: Brief text describing the purpose or the action taken by the flow.
+- id: PA-002
+  title: Have a description that summarizes its purpose, the business process it
+  description: Every flow must have a description that summarizes its purpose, the business process it supports, and important details about how it behaves.
+  guidelines:
+  - text: State the purpose of the flow in one or two sentences.
+    icon: icons/workflow.svg
+  - text: Mention what triggers the flow.
+    icon: icons/lightbulb.svg
+  - text: Include the business process or requirement the flow supports.
+    icon: icons/check.svg
+  - text: Note any child flows, external APIs, or shared resources the flow relies on.
+    icon: icons/file-text.svg
+  rationale:
+  - text: Providing a description for each flow ensures that anyone reviewing or maintaining it can quickly understand its purpose and functionality.
+    icon: icons/workflow.svg
+  - text: Descriptions help document the flow's behavior, making it easier to troubleshoot and update in the future.
+    icon: icons/file-text.svg
+  - text: Well-documented flows improve collaboration by providing context and reducing the learning curve for new team members.
+    icon: icons/link.svg
+  - text: Descriptions also help stakeholders understand the business logic implemented in the flow.
+    icon: icons/code-xml.svg
+  examples:
+    good:
+    - title: Triggered when a Contact record is created or modified in Dataverse.
+      text: 'Triggered when a Contact record is created or modified in Dataverse. Sends an email notification to the account manager with the updated contact details. Calls the CF - Send Notification Email child flow. Clearly states the trigger, purpose, and dependency.'
+      icon: icons/database.svg
+    - title: Runs daily at 6:00 AM.
+      text: 'Runs daily at 6:00 AM. Queries all open orders older than 30 days and updates their status to Expired. Part of the Order Lifecycle Management process. Includes timing, behavior, and business context.'
+      icon: icons/workflow.svg
+    bad:
+    - title: My flow
+      text: 'My flow Meaningless and provides no context.'
+      icon: icons/lightbulb.svg
+    - title: Handles stuff
+      text: 'Handles stuff Vague and not actionable for maintainers.'
+      icon: icons/check.svg
+    - title: No description at all.
+      text: No description at all.
+      icon: icons/file-text.svg
+  references:
+  - title: Microsoft Learn - Power Automate Documentation
+    url: https://learn.microsoft.com/en-us/power-automate/
+- id: PA-003
+  title: Be clear and descriptive so reviewers can quickly understand what initiates
+  description: Trigger names should be clear and descriptive so reviewers can quickly understand what initiates the flow.
+  guidelines:
+  - text: Use a verb-noun format for trigger names.
+    icon: icons/pencil.svg
+  - text: Include key details such as the data store and triggering event.
+    icon: icons/database.svg
+  - text: Avoid abbreviations and prefer full words for clarity.
+    icon: icons/circle-alert.svg
+  rationale:
+  - text: Clear and descriptive trigger names make it easier to understand what initiates the flow.
+    icon: icons/pencil.svg
+  - text: Well-named triggers serve as documentation for team members and stakeholders.
+    icon: icons/workflow.svg
+  - text: Descriptive names simplify troubleshooting by providing immediate context.
+    icon: icons/code-xml.svg
+  examples:
+    good:
+    - title: When a new item is created
+      text: 'When a new item is created Clearly describes the event in plain language.'
+      icon: icons/lightbulb.svg
+    - title: When a new contact is added to Dataverse
+      text: 'When a new contact is added to Dataverse Includes both the event and the data source.'
+      icon: icons/database.svg
+    - title: When a file is created in SharePoint
+      text: 'When a file is created in SharePoint Uses full words and identifies the source system.'
+      icon: icons/folder-open.svg
+    bad:
+    - title: File Created SP
+      text: 'File Created SP Abbreviated and unclear.'
+      icon: icons/check.svg
+    - title: Manually trigger a flow
+      text: 'Manually trigger a flow Default name that does not describe the business purpose.'
+      icon: icons/pencil.svg
+    - title: Recurrence
+      text: 'Recurrence Default name with no indication of what the schedule is for.'
+      icon: icons/circle-alert.svg
+  references:
+  - title: Microsoft Power Platform Guidance - Naming Conventions
+    url: https://learn.microsoft.com/en-us/power-platform/guidance/adoption/naming-conventions
+- id: PA-004
+  title: Be renamed from their default names to clear, descriptive names that explain
+  description: All actions must be renamed from their default names to clear, descriptive names that explain what each action does.
+  guidelines:
+  - text: Use a verb-noun format for action names.
+    icon: icons/pencil.svg
+  - text: Include key details such as the data source and entity being acted on.
+    icon: icons/database.svg
+  - text: Use a consistent naming style, such as Title Case, across all actions in a flow.
+    icon: icons/workflow.svg
+  - text: Never leave default auto-generated action names such as Apply_to_each, Condition, Compose, or HTTP.
+    icon: icons/circle-alert.svg
+  rationale:
+  - text: Descriptive action names make the flow self-documenting and easier to understand at a glance.
+    icon: icons/pencil.svg
+  - text: In run history, descriptive action names make it immediately obvious where a failure occurred.
+    icon: icons/workflow.svg
+  - text: Expressions that reference other actions are much more readable when actions are named descriptively.
+    icon: icons/link.svg
+  - text: Clear action names reduce the need for additional documentation when multiple team members work on the same flow.
+    icon: icons/users.svg
+  examples:
+    good:
+    - title: Get Customer by Email
+      text: 'Get Customer by Email Describes both the action and the lookup key.'
+      icon: icons/workflow.svg
+    - title: Send Approval Email to Manager
+      text: 'Send Approval Email to Manager Explains the action and the recipient.'
+      icon: icons/lightbulb.svg
+    - title: Filter Active Orders
+      text: 'Filter Active Orders Clearly describes the filtering purpose.'
+      icon: icons/check.svg
+    - title: Update Contact Status to Inactive
+      text: 'Update Contact Status to Inactive Identifies both the entity and intended state change.'
+      icon: icons/circle-alert.svg
+    - title: Apply to Each Invoice Line
+      text: 'Apply to Each Invoice Line Makes the loop target explicit.'
+      icon: icons/settings.svg
+    - title: Check if Account Exists
+      text: 'Check if Account Exists Explains the condition being evaluated.'
+      icon: icons/database.svg
+    - title: Parse JSON Response from API
+      text: 'Parse JSON Response from API Identifies both the action and the data source.'
+      icon: icons/link.svg
+    bad:
+    - title: Get_item
+      text: 'Get_item Default name and unclear which item is retrieved.'
+      icon: icons/pencil.svg
+    - title: Compose
+      text: 'Compose Default name with no business meaning.'
+      icon: icons/users.svg
+    - title: Apply_to_each
+      text: 'Apply_to_each Default name and unclear what is being iterated.'
+      icon: icons/file-text.svg
+    - title: Condition
+      text: 'Condition Default name and unclear what is being evaluated.'
+      icon: icons/eye.svg
+    - title: HTTP
+      text: 'HTTP Default name and unclear what endpoint is being called.'
+      icon: icons/package.svg
+  references:
+  - title: Microsoft Learn - Power Automate Documentation
+    url: https://learn.microsoft.com/en-us/power-automate/
+- id: PA-005
+  title: Use camelCase notation and a short type prefix so the data type is immediately
+  description: Variable names must use camelCase notation and a short type prefix so the data type is immediately obvious.
+  guidelines:
+  - text: Use a short type prefix such as str, int, bool, arr, obj, or flt at the start of each variable name.
+    icon: icons/pencil.svg
+  - text: Use camelCase after the type prefix.
+    icon: icons/lightbulb.svg
+  - text: Use descriptive names that clearly indicate the purpose of the variable.
+    icon: icons/code-xml.svg
+  - text: Avoid abbreviations, generic names, and meaningless one-character identifiers.
+    icon: icons/circle-alert.svg
+  rationale:
+  - text: Type prefixes make it immediately clear what kind of data the variable holds without inspecting its initialization.
+    icon: icons/database.svg
+  - text: camelCase notation is consistent with the expression language used in Power Automate.
+    icon: icons/lightbulb.svg
+  - text: Descriptive variable names make the flow self-documenting and easier to maintain.
+    icon: icons/pencil.svg
+  - text: Clear variable names reduce confusion and errors when variables are referenced in expressions.
+    icon: icons/link.svg
+  examples:
+    good:
+    - title: strCustomerFullName
+      text: 'strCustomerFullName String variable with a descriptive name.'
+      icon: icons/pencil.svg
+    - title: intNumberOfRetries
+      text: 'intNumberOfRetries Integer variable that clearly expresses its purpose.'
+      icon: icons/lightbulb.svg
+    - title: boolIsEligibleForDiscount
+      text: 'boolIsEligibleForDiscount Boolean variable that reads as a condition.'
+      icon: icons/book-open.svg
+    - title: arrPendingApprovals
+      text: 'arrPendingApprovals Array variable with a meaningful collection name.'
+      icon: icons/check.svg
+    - title: objOrderDetails
+      text: 'objOrderDetails Object variable that clearly identifies its contents.'
+      icon: icons/circle-alert.svg
+    bad:
+    - title: x
+      text: 'x No indication of purpose or type.'
+      icon: icons/settings.svg
+    - title: temp
+      text: 'temp Generic and unclear.'
+      icon: icons/workflow.svg
+    - title: var1
+      text: 'var1 Generic and unclear.'
+      icon: icons/database.svg
+    - title: name
+      text: 'name Missing a type prefix and ambiguous.'
+      icon: icons/link.svg
+    - title: "n"
+      text: 'n Single-character name with no meaning.'
+      icon: icons/users.svg
+  references:
+  - title: Microsoft Learn - Power Automate Documentation
+    url: https://learn.microsoft.com/en-us/power-automate/
+- id: PA-006
+  title: Follow a standard pattern that identifies the solution publisher, the connector
+  description: Connection reference names must follow a standard pattern that identifies the solution publisher, the connector, and the purpose or context of the connection.
+  guidelines:
+  - text: Use the pattern "[Publisher Prefix] - [Connector Name] - [Purpose/Context]" for connection references.
+    icon: icons/pencil.svg
+  - text: Use the solution publisher prefix to identify the owning solution.
+    icon: icons/package.svg
+  - text: Use the connector name segment to identify the connector, such as Dataverse, SharePoint, Outlook, or Teams.
+    icon: icons/database.svg
+  - text: Use a purpose or context segment that briefly describes how the connection is used or what environment it belongs to.
+    icon: icons/lightbulb.svg
+  - text: Use service accounts instead of personal user accounts for connections.
+    icon: icons/users.svg
+  - text: Reuse connection references across flows in the same solution instead of creating duplicates.
+    icon: icons/workflow.svg
+  - text: Document the connection with a description that explains its purpose and the account used.
+    icon: icons/file-text.svg
+  rationale:
+  - text: Descriptive connection reference names make it easier to manage connections across environments during solution deployment.
+    icon: icons/pencil.svg
+  - text: Using service accounts prevents failures when individual users leave the organization or change roles.
+    icon: icons/shield-alert.svg
+  - text: Reusing connection references reduces the number of connections that must be configured when deploying solutions to new environments.
+    icon: icons/link.svg
+  - text: Including the purpose in the name helps administrators identify and troubleshoot connection issues quickly.
+    icon: icons/lightbulb.svg
+  examples:
+    good:
+    - title: csp - Dataverse - Main Application
+      text: 'csp - Dataverse - Main Application Identifies the publisher, connector, and business context.'
+      icon: icons/database.svg
+    - title: csp - SharePoint - Document Library
+      text: 'csp - SharePoint - Document Library Names the connector reference according to the required structure.'
+      icon: icons/pencil.svg
+    - title: csp - Outlook - Service Notifications
+      text: 'csp - Outlook - Service Notifications Describes how the connection is used.'
+      icon: icons/lightbulb.svg
+    - title: csp - Teams - Approval Notifications
+      text: 'csp - Teams - Approval Notifications Includes the publisher prefix and purpose.'
+      icon: icons/users.svg
+    bad:
+    - title: My Connection
+      text: 'My Connection No structure and no context.'
+      icon: icons/check.svg
+    - title: Dataverse
+      text: 'Dataverse Missing the publisher prefix and purpose.'
+      icon: icons/circle-alert.svg
+    - title: John's SharePoint
+      text: "John's SharePoint Uses a personal account reference and no standard format."
+      icon: icons/link.svg
+    - title: New Connection Reference
+      text: 'New Connection Reference Default name with no meaning.'
+      icon: icons/settings.svg
+  references:
+  - title: Microsoft Learn - Solutions Overview
+    url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/solutions-overview
+  pattern: '[Publisher Prefix] - [Connector Name] - [Purpose/Context]'
+  pattern_segments:
+  - name: Publisher Prefix
+    description: The solution publisher prefix that identifies the owning solution.
+  - name: Connector Name
+    description: The connector name, such as Dataverse, SharePoint, Outlook, or Teams.
+  - name: Purpose/Context
+    description: A brief description of what the connection is used for or the environment context.
+- id: PA-007
+  title: Implement error handling using the Scope-based Try-Catch-Finally pattern.
+  description: All cloud flows must implement error handling using the Scope-based Try-Catch-Finally pattern.
+  guidelines:
+  - text: Put the main business logic inside a Try scope.
+    icon: icons/lightbulb.svg
+  - text: Configure a Catch scope to run after the Try scope has failed, timed out, or been skipped.
+    icon: icons/circle-alert.svg
+  - text: Configure a Finally scope to run after the Catch scope regardless of outcome.
+    icon: icons/settings.svg
+  - text: In the Catch scope, log the flow name, failed action, and error message to a centralized location.
+    icon: icons/pencil.svg
+  - text: In the Catch scope, send a notification to the flow owner or support team.
+    icon: icons/workflow.svg
+  - text: In the Catch scope, terminate the flow with a Failed status and include the error message.
+    icon: icons/check.svg
+  rationale:
+  - text: Without error handling, flow failures can go unnoticed, leading to data inconsistencies and broken business processes.
+    icon: icons/database.svg
+  - text: The scope-based pattern is the standard approach to error handling in Power Automate because there is no native try-catch construct.
+    icon: icons/circle-alert.svg
+  - text: Centralized error logging provides a single place to monitor and troubleshoot flow failures.
+    icon: icons/workflow.svg
+  - text: Sending notifications helps ensure failures are addressed promptly.
+    icon: icons/lightbulb.svg
+  examples:
+    good:
+    - title: Uses dedicated Try, Catch, and Finally scopes to group business logic, error
+      code: |
+        Scope: Try - Process Invoice
+            Get Invoice from SharePoint
+            Validate Invoice Data
+            Create Record in Dataverse
+        Scope: Catch - Handle Errors (Run after: Try has failed, timed out, skipped)
+            Log Error to Dataverse Errors Table
+            Send Error Notification to Support Team
+            Terminate with Failed Status
+        Scope: Finally - Cleanup (Run after: Catch)
+            Update Processing Status
+      language: Plain Text
+    bad:
+    - title: No error handling at all, so the flow silently fails.
+      text: No error handling at all, so the flow silently fails.
+      icon: icons/workflow.svg
+    - title: Uses individual Configure Run After settings on each action instead of grouping
+      text: Uses individual Configure Run After settings on each action instead of grouping logic into scopes.
+      icon: icons/settings.svg
+    - title: Catches errors but does not log them or notify anyone.
+      text: Catches errors but does not log them or notify anyone.
+      icon: icons/circle-alert.svg
+  references:
+  - title: Microsoft Learn - Power Automate Limits and Configuration
+    url: https://learn.microsoft.com/en-us/power-automate/limits-and-config
+- id: PA-008
+  title: Be initialized at the beginning of the flow before any other actions or logic.
+  description: All variables must be initialized at the beginning of the flow before any other actions or logic.
+  guidelines:
+  - text: Group all Initialize Variable actions together at the top of the flow.
+    icon: icons/workflow.svg
+  - text: Use a scope named Initialize Variables to group the initialization actions visually.
+    icon: icons/pencil.svg
+  - text: Do not initialize variables inside conditions, loops, or other branches.
+    icon: icons/circle-alert.svg
+  rationale:
+  - text: Power Automate requires variables to be initialized at the top level of the flow and not inside conditions, loops, or parallel scopes.
+    icon: icons/workflow.svg
+  - text: Grouping variable initialization at the top provides a clear overview of all data used by the flow.
+    icon: icons/database.svg
+  - text: Keeping default values together makes them easier to identify and update.
+    icon: icons/lightbulb.svg
+  - text: A dedicated initialization scope keeps the flow organized and collapsible.
+    icon: icons/check.svg
+  examples:
+    good:
+    - title: Groups all variable initialization actions at the top of the flow inside a
+      code: |
+        Scope: Initialize Variables
             Initialize strCustomerEmail
-            Condition: Check Status
-                Yes: Initialize intCount
-                No: ...
-          language: Plain Text
-    references:
-      - title: Microsoft Learn - Power Automate Documentation
-        url: https://learn.microsoft.com/en-us/power-automate/
-  - id: PA-009
-    title: Use environment variables instead of hardcoded values
-    description: Avoid hardcoding URLs, email addresses, IDs, or configuration settings directly in flow actions or expressions, and use environment variables instead.
-    guidelines:
-      - Store configurable values in environment variables within the solution.
-      - Reference environment variables in flow expressions.
-      - Treat environment variables as mandatory for values that change between development, test, and production environments.
-    rationale:
-      - Hardcoded values break flows during deployment across environments because URLs, IDs, and endpoints differ.
-      - Environment variables can be updated without modifying the flow definition, reducing the risk of introducing errors.
-      - Environment variables make configurable values easier to find and manage in one place.
-      - They simplify multi-environment deployment through solution management.
-    examples:
-      good:
-        - value: "@{parameters('env_SharePointSiteUrl')}"
-          note: References an environment variable for a SharePoint site URL.
-        - value: "@{parameters('env_SupportTeamEmail')}"
-          note: References an environment variable for a notification email address.
-        - value: "@{parameters('env_ExternalApiKey')}"
-          note: References an environment variable for an API key.
-      bad:
-        - value: https://contoso.sharepoint.com/sites/Operations
-          note: Hardcoded SharePoint URL.
-        - value: support@contoso.com
-          note: Hardcoded email address.
-        - value: a1b2c3d4-e5f6-7890-abcd-ef1234567890
-          note: Hardcoded record GUID.
-    references:
-      - title: Microsoft Learn - Solutions Overview
-        url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/solutions-overview
-  - id: PA-010
-    title: Extract reusable logic into child flows
-    description: Reusable logic should be extracted into child flows to avoid duplicating the same actions across multiple cloud flows.
-    guidelines:
-      - Use child flows for single, well-defined tasks.
-      - Define clear input and output parameters for each child flow.
-      - Name child flows with the CF prefix as described in PA-001.
-      - Make child flows solution-aware so they can be deployed across environments.
-    rationale:
-      - Duplicating the same logic across multiple flows creates maintenance problems because fixes and changes must be applied everywhere.
-      - Child flows promote modular design and help each flow keep a single responsibility.
-      - Child flows reduce the number of actions in parent flows, helping stay under designer and platform limits.
-      - Shared logic only needs to be updated in one place when child flows are used.
-    examples:
-      good:
-        - value: CF - Set Reference Number
-          note: Child flow that generates and assigns a reference number for reuse across multiple parent flows.
-        - value: CF - Send Notification Email
-          note: Child flow that accepts recipient, subject, and body inputs for reuse across notification scenarios.
-        - value: CF - Validate Address
-          note: Child flow that validates and standardizes address data for reuse by multiple record creation flows.
-      bad:
-        - description: Copying and pasting the same 15 actions for sending a notification email into 10 different flows.
-        - description: A single monolithic flow with more than 400 actions that handles multiple unrelated processes.
-        - description: Creating child flows for trivial single-action operations where the overhead is not justified.
-    references:
-      - title: Microsoft Learn - Power Automate Documentation
-        url: https://learn.microsoft.com/en-us/power-automate/
-  - id: PA-011
-    title: Use notes to document complex logic
-    description: Use the built-in Notes feature to document complex expressions, business logic, and non-obvious design decisions within the flow.
-    guidelines:
-      - Add notes to actions that contain complex expressions or formulas.
-      - Document the business rule or requirement behind a condition or branch.
-      - Explain any workaround or non-obvious implementation detail.
-    rationale:
-      - Power Automate expressions can be difficult to read, especially when they involve nested functions, so notes provide essential human-readable context.
-      - Business rules are often not obvious from flow structure alone, and notes help maintainers understand why the logic exists.
-      - Notes are visible directly in the designer, which makes them more discoverable than external documentation.
-      - Notes can save significant troubleshooting time by explaining expected behavior.
-    examples:
-      good:
-        - description: 'Add a note to a complex Compose action: "Calculates the fiscal quarter based on the invoice date. Fiscal year starts in April."'
-        - description: 'Add a note to a Condition action: "Checks if the order total exceeds the auto-approval threshold defined by Finance ($5,000)."'
-        - description: 'Add a note to an HTTP action: "Calls the external tax calculation API. Retry logic is handled by the parent Scope."'
-      bad:
-        - description: No notes anywhere in a flow with more than 50 actions and complex expressions.
-        - description: 'Adding obvious notes like "This sends an email" on a Send an email action.'
-    references:
-      - title: Microsoft Learn - Power Automate Documentation
-        url: https://learn.microsoft.com/en-us/power-automate/
-  - id: PA-012
-    title: Create all cloud flows inside solutions
-    description: All cloud flows must be created inside solutions and should not be created as non-solution flows or personal My Flows.
-    guidelines:
-      - Create all flows within a managed or unmanaged solution.
-      - Use a consistent solution publisher prefix.
-      - Keep related components such as connection references, environment variables, and child flows in the same solution.
-    rationale:
-      - Solution-aware flows can be exported and imported across environments, enabling proper ALM.
-      - Non-solution flows are difficult to migrate between environments and are tied to the creator's account.
-      - Solution-aware flows support connection references, which decouple flows from specific user connections.
-      - Solutions enable version control, change tracking, and managed deployments through pipelines.
-    examples:
-      good:
-        - description: Creating a flow inside the Orders Management solution alongside its related tables, connection references, and environment variables.
-        - value: csp
-          note: Uses a consistent solution publisher prefix and groups related flows in one solution.
-      bad:
-        - description: Creating a flow from the My Flows section of the Power Automate portal.
-        - description: Having related flows scattered across multiple solutions with no clear organization.
-        - description: Creating flows outside of solutions and manually recreating them in each environment.
-    references:
-      - title: Microsoft Learn - Solutions Overview
-        url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/solutions-overview
-  - id: PA-013
-    title: Filter Dataverse triggers by columns and conditions
-    description: Dataverse triggers must specify the columns that should trigger the flow and include filter expressions that limit triggering events to the intended business scenario.
-    guidelines:
-      - In the trigger's Column filter property, specify only the columns that should cause the flow to run.
-      - Never leave the Column filter empty when only specific field changes are relevant.
-      - In the trigger's Filter rows property, add OData conditions that limit when the flow fires.
-      - Use column filters and row filters together so the flow only runs when relevant data changes meet the expected criteria.
-    rationale:
-      - Without a column filter, the flow triggers on every update, including irrelevant field changes, which wastes runs and API calls.
-      - Trigger-level filter expressions prevent the flow from running when data changes do not match the business scenario.
-      - Properly filtered triggers improve environment performance and reduce the risk of hitting execution limits.
-      - Explicit trigger configuration makes intended behavior easier to understand and maintain.
-    examples:
-      good:
-        - description: Column filter set to statuscode and filter expression statuscode eq 5 so the flow only triggers when Status Reason changes to Approved.
-        - description: Column filter set to emailaddress1,telephone1 so the flow only triggers when the primary email or phone number changes.
-        - description: Column filter set to csp_review_status and filter expression csp_review_status eq 100000001 so the flow only triggers when review status changes to Complete.
-      bad:
-        - description: No column filter set, so the flow triggers on every field update including system fields such as modifiedon.
-        - description: No filter expression, so the flow triggers for all status values instead of just the required business state.
-        - description: Using a Condition action inside the flow to check field values instead of filtering at the trigger level, which wastes a flow run for every non-matching event.
-    references:
-      - title: Microsoft Learn - Dataverse Connector Triggers
-        url: https://learn.microsoft.com/en-us/connectors/commondataserviceforapps/#triggers
-      - title: Microsoft Learn - Limits of Triggers in Dataverse
-        url: https://learn.microsoft.com/en-us/power-automate/dataverse/trigger-limits
-  - id: PA-014
-    title: Minimize Dataverse query columns and rows
-    description: When querying Dataverse, retrieve only the columns and rows required by the flow to improve performance and reduce API consumption.
-    guidelines:
-      - Use Select columns or FetchXML attribute elements to retrieve only the fields the flow needs.
-      - Never retrieve all columns.
-      - When using FetchXML, set the count attribute on the fetch element to limit the number of rows per page.
-      - Add filter elements in FetchXML or OData filter expressions to restrict rows to only those needed by the flow.
-      - Never use List Rows or FetchXML queries without a filter that constrains the result set.
-    rationale:
-      - Retrieving all columns increases payload size, slows the flow, and consumes more API throughput capacity.
-      - Without a row count limit, large tables can return thousands of rows and cause timeouts or API limit issues.
-      - Filters reduce load on Dataverse, improving performance for both the flow and other users in the environment.
-      - Optimized queries reduce API request consumption and help stay within daily Power Platform request limits.
-    examples:
-      good:
-        - description: FetchXML with selected attributes, a count limit, and a filter.
-          code: |
-            <fetch count="50">
-              <entity name="contact">
-                <attribute name="fullname" />
-                <attribute name="emailaddress1" />
-                <filter>
-                  <condition attribute="statuscode" operator="eq" value="1" />
-                </filter>
-              </entity>
-            </fetch>
-          language: XML
-        - description: List Rows action configured with selected columns, a filter, and a row count.
-          code: |
-            Select columns: fullname,emailaddress1
-            Filter rows: statuscode eq 1
-            Row count: 50
-          language: Plain Text
-      bad:
-        - description: Using List Rows with no column selection, which retrieves all columns for every row.
-        - description: Using FetchXML without a count attribute, which retrieves all matching rows without pagination.
-        - description: Applying no filter, which retrieves the entire table regardless of how many rows are needed.
-        - description: Using <all-attributes /> in FetchXML instead of specifying individual attribute elements.
-    references:
-      - title: Microsoft Learn - Query Data Using FetchXML
-        url: https://learn.microsoft.com/en-us/power-apps/developer/data-platform/use-fetchxml-construct-query
-      - title: Microsoft Learn - Optimize Performance for Dataverse
-        url: https://learn.microsoft.com/en-us/power-apps/developer/data-platform/optimize-performance
+            Initialize intRetryCount
+            Initialize boolIsProcessed
+            Initialize arrResults
+        Scope: Try - Main Logic
+            ...
+      language: Plain Text
+    bad:
+    - title: Mixes initialization with other actions and initializes a variable inside a
+      code: |
+        Get Items from SharePoint
+        Initialize strCustomerEmail
+        Condition: Check Status
+            Yes: Initialize intCount
+            No: ...
+      language: Plain Text
+  references:
+  - title: Microsoft Learn - Power Automate Documentation
+    url: https://learn.microsoft.com/en-us/power-automate/
+- id: PA-009
+  title: Avoid hardcoding URLs, email addresses, IDs, or configuration settings directly
+  description: Avoid hardcoding URLs, email addresses, IDs, or configuration settings directly in flow actions or expressions, and use environment variables instead.
+  guidelines:
+  - text: Store configurable values in environment variables within the solution.
+    icon: icons/package.svg
+  - text: Reference environment variables in flow expressions.
+    icon: icons/workflow.svg
+  - text: Treat environment variables as mandatory for values that change between development, test, and production environments.
+    icon: icons/check.svg
+  rationale:
+  - text: Hardcoded values break flows during deployment across environments because URLs, IDs, and endpoints differ.
+    icon: icons/workflow.svg
+  - text: Environment variables can be updated without modifying the flow definition, reducing the risk of introducing errors.
+    icon: icons/circle-alert.svg
+  - text: Environment variables make configurable values easier to find and manage in one place.
+    icon: icons/lightbulb.svg
+  - text: They simplify multi-environment deployment through solution management.
+    icon: icons/package.svg
+  examples:
+    good:
+    - title: "@{parameters('env_SharePointSiteUrl')}"
+      text: "@{parameters('env_SharePointSiteUrl')} References an environment variable for a SharePoint site URL."
+      icon: icons/link.svg
+    - title: "@{parameters('env_SupportTeamEmail')}"
+      text: "@{parameters('env_SupportTeamEmail')} References an environment variable for a notification email address."
+      icon: icons/users.svg
+    - title: "@{parameters('env_ExternalApiKey')}"
+      text: "@{parameters('env_ExternalApiKey')} References an environment variable for an API key."
+      icon: icons/settings.svg
+    bad:
+    - title: https://contoso.sharepoint.com/sites/Operations
+      text: 'https://contoso.sharepoint.com/sites/Operations Hardcoded SharePoint URL.'
+      icon: icons/code-xml.svg
+    - title: support@contoso.com
+      text: 'support@contoso.com Hardcoded email address.'
+      icon: icons/lightbulb.svg
+    - title: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+      text: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890 Hardcoded record GUID.'
+      icon: icons/check.svg
+  references:
+  - title: Microsoft Learn - Solutions Overview
+    url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/solutions-overview
+- id: PA-010
+  title: Be extracted into child flows to avoid duplicating the same actions across
+  description: Reusable logic should be extracted into child flows to avoid duplicating the same actions across multiple cloud flows.
+  guidelines:
+  - text: Use child flows for single, well-defined tasks.
+    icon: icons/workflow.svg
+  - text: Define clear input and output parameters for each child flow.
+    icon: icons/settings.svg
+  - text: Name child flows with the CF prefix as described in PA-001.
+    icon: icons/pencil.svg
+  - text: Make child flows solution-aware so they can be deployed across environments.
+    icon: icons/package.svg
+  rationale:
+  - text: Duplicating the same logic across multiple flows creates maintenance problems because fixes and changes must be applied everywhere.
+    icon: icons/workflow.svg
+  - text: Child flows promote modular design and help each flow keep a single responsibility.
+    icon: icons/lightbulb.svg
+  - text: Child flows reduce the number of actions in parent flows, helping stay under designer and platform limits.
+    icon: icons/check.svg
+  - text: Shared logic only needs to be updated in one place when child flows are used.
+    icon: icons/circle-alert.svg
+  examples:
+    good:
+    - title: CF - Set Reference Number
+      text: 'CF - Set Reference Number Child flow that generates and assigns a reference number for reuse across multiple parent flows.'
+      icon: icons/workflow.svg
+    - title: CF - Send Notification Email
+      text: 'CF - Send Notification Email Child flow that accepts recipient, subject, and body inputs for reuse across notification scenarios.'
+      icon: icons/lightbulb.svg
+    - title: CF - Validate Address
+      text: 'CF - Validate Address Child flow that validates and standardizes address data for reuse by multiple record creation flows.'
+      icon: icons/database.svg
+    bad:
+    - title: Copying and pasting the same 15 actions for sending a notification email into
+      text: Copying and pasting the same 15 actions for sending a notification email into 10 different flows.
+      icon: icons/check.svg
+    - title: A single monolithic flow with more than 400 actions that handles multiple
+      text: A single monolithic flow with more than 400 actions that handles multiple unrelated processes.
+      icon: icons/circle-alert.svg
+    - title: Creating child flows for trivial single-action operations where the overhead is
+      text: Creating child flows for trivial single-action operations where the overhead is not justified.
+      icon: icons/settings.svg
+  references:
+  - title: Microsoft Learn - Power Automate Documentation
+    url: https://learn.microsoft.com/en-us/power-automate/
+- id: PA-011
+  title: Use the built-in Notes feature to document complex expressions, business logic
+  description: Use the built-in Notes feature to document complex expressions, business logic, and non-obvious design decisions within the flow.
+  guidelines:
+  - text: Add notes to actions that contain complex expressions or formulas.
+    icon: icons/workflow.svg
+  - text: Document the business rule or requirement behind a condition or branch.
+    icon: icons/file-text.svg
+  - text: Explain any workaround or non-obvious implementation detail.
+    icon: icons/lightbulb.svg
+  rationale:
+  - text: Power Automate expressions can be difficult to read, especially when they involve nested functions, so notes provide essential human-readable context.
+    icon: icons/file-text.svg
+  - text: Business rules are often not obvious from flow structure alone, and notes help maintainers understand why the logic exists.
+    icon: icons/workflow.svg
+  - text: Notes are visible directly in the designer, which makes them more discoverable than external documentation.
+    icon: icons/link.svg
+  - text: Notes can save significant troubleshooting time by explaining expected behavior.
+    icon: icons/lightbulb.svg
+  examples:
+    good:
+    - title: 'Add a note to a complex Compose action: "Calculates the fiscal quarter based on'
+      text: 'Add a note to a complex Compose action: "Calculates the fiscal quarter based on the invoice date. Fiscal year starts in April."'
+      icon: icons/workflow.svg
+    - title: 'Add a note to a Condition action: "Checks if the order total exceeds the'
+      text: 'Add a note to a Condition action: "Checks if the order total exceeds the auto-approval threshold defined by Finance ($5,000)."'
+      icon: icons/file-text.svg
+    - title: 'Add a note to an HTTP action: "Calls the external tax calculation API.'
+      text: 'Add a note to an HTTP action: "Calls the external tax calculation API. Retry logic is handled by the parent Scope."'
+      icon: icons/lightbulb.svg
+    bad:
+    - title: No notes anywhere in a flow with more than 50 actions and complex expressions.
+      text: No notes anywhere in a flow with more than 50 actions and complex expressions.
+      icon: icons/check.svg
+    - title: Adding obvious notes like "This sends an email" on a Send an email action.
+      text: Adding obvious notes like "This sends an email" on a Send an email action.
+      icon: icons/circle-alert.svg
+  references:
+  - title: Microsoft Learn - Power Automate Documentation
+    url: https://learn.microsoft.com/en-us/power-automate/
+- id: PA-012
+  title: Be created inside solutions and should not be created as non-solution flows
+  description: All cloud flows must be created inside solutions and should not be created as non-solution flows or personal My Flows.
+  guidelines:
+  - text: Create all flows within a managed or unmanaged solution.
+    icon: icons/workflow.svg
+  - text: Use a consistent solution publisher prefix.
+    icon: icons/pencil.svg
+  - text: Keep related components such as connection references, environment variables, and child flows in the same solution.
+    icon: icons/link.svg
+  rationale:
+  - text: Solution-aware flows can be exported and imported across environments, enabling proper ALM.
+    icon: icons/workflow.svg
+  - text: Non-solution flows are difficult to migrate between environments and are tied to the creator's account.
+    icon: icons/package.svg
+  - text: Solution-aware flows support connection references, which decouple flows from specific user connections.
+    icon: icons/link.svg
+  - text: Solutions enable version control, change tracking, and managed deployments through pipelines.
+    icon: icons/lightbulb.svg
+  examples:
+    good:
+    - title: Creating a flow inside the Orders Management solution alongside its related
+      text: Creating a flow inside the Orders Management solution alongside its related tables, connection references, and environment variables.
+      icon: icons/database.svg
+    - title: csp
+      text: 'csp Uses a consistent solution publisher prefix and groups related flows in one solution.'
+      icon: icons/pencil.svg
+    bad:
+    - title: Creating a flow from the My Flows section of the Power Automate portal.
+      text: Creating a flow from the My Flows section of the Power Automate portal.
+      icon: icons/workflow.svg
+    - title: Having related flows scattered across multiple solutions with no clear
+      text: Having related flows scattered across multiple solutions with no clear organization.
+      icon: icons/package.svg
+    - title: Creating flows outside of solutions and manually recreating them in each
+      text: Creating flows outside of solutions and manually recreating them in each environment.
+      icon: icons/lightbulb.svg
+  references:
+  - title: Microsoft Learn - Solutions Overview
+    url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/solutions-overview
+- id: PA-013
+  title: Specify the columns that should trigger the flow and include filter expressions
+  description: Dataverse triggers must specify the columns that should trigger the flow and include filter expressions that limit triggering events to the intended business scenario.
+  guidelines:
+  - text: In the trigger's Column filter property, specify only the columns that should cause the flow to run.
+    icon: icons/database.svg
+  - text: Never leave the Column filter empty when only specific field changes are relevant.
+    icon: icons/circle-alert.svg
+  - text: In the trigger's Filter rows property, add OData conditions that limit when the flow fires.
+    icon: icons/workflow.svg
+  - text: Use column filters and row filters together so the flow only runs when relevant data changes meet the expected criteria.
+    icon: icons/lightbulb.svg
+  rationale:
+  - text: Without a column filter, the flow triggers on every update, including irrelevant field changes, which wastes runs and API calls.
+    icon: icons/database.svg
+  - text: Trigger-level filter expressions prevent the flow from running when data changes do not match the business scenario.
+    icon: icons/workflow.svg
+  - text: Properly filtered triggers improve environment performance and reduce the risk of hitting execution limits.
+    icon: icons/circle-alert.svg
+  - text: Explicit trigger configuration makes intended behavior easier to understand and maintain.
+    icon: icons/lightbulb.svg
+  examples:
+    good:
+    - title: Column filter set to statuscode and filter expression statuscode eq 5 so the
+      text: Column filter set to statuscode and filter expression statuscode eq 5 so the flow only triggers when Status Reason changes to Approved.
+      icon: icons/database.svg
+    - title: Column filter set to emailaddress1,telephone1 so the flow only triggers when
+      text: Column filter set to emailaddress1,telephone1 so the flow only triggers when the primary email or phone number changes.
+      icon: icons/workflow.svg
+    - title: Column filter set to csp_review_status and filter expression csp_review_status
+      text: Column filter set to csp_review_status and filter expression csp_review_status eq 100000001 so the flow only triggers when review status changes to Complete.
+      icon: icons/eye.svg
+    bad:
+    - title: No column filter set, so the flow triggers on every field update including
+      text: No column filter set, so the flow triggers on every field update including system fields such as modifiedon.
+      icon: icons/lightbulb.svg
+    - title: No filter expression, so the flow triggers for all status values instead of
+      text: No filter expression, so the flow triggers for all status values instead of just the required business state.
+      icon: icons/check.svg
+    - title: Using a Condition action inside the flow to check field values instead of
+      text: Using a Condition action inside the flow to check field values instead of filtering at the trigger level, which wastes a flow run for every non-matching event.
+      icon: icons/circle-alert.svg
+  references:
+  - title: Microsoft Learn - Dataverse Connector Triggers
+    url: https://learn.microsoft.com/en-us/connectors/commondataserviceforapps/#triggers
+  - title: Microsoft Learn - Limits of Triggers in Dataverse
+    url: https://learn.microsoft.com/en-us/power-automate/dataverse/trigger-limits
+- id: PA-014
+  title: When querying Dataverse, retrieve only the columns and rows required by the flow
+  description: When querying Dataverse, retrieve only the columns and rows required by the flow to improve performance and reduce API consumption.
+  guidelines:
+  - text: Use Select columns or FetchXML attribute elements to retrieve only the fields the flow needs.
+    icon: icons/database.svg
+  - text: Never retrieve all columns.
+    icon: icons/circle-alert.svg
+  - text: When using FetchXML, set the count attribute on the fetch element to limit the number of rows per page.
+    icon: icons/lightbulb.svg
+  - text: Add filter elements in FetchXML or OData filter expressions to restrict rows to only those needed by the flow.
+    icon: icons/workflow.svg
+  - text: Never use List Rows or FetchXML queries without a filter that constrains the result set.
+    icon: icons/check.svg
+  rationale:
+  - text: Retrieving all columns increases payload size, slows the flow, and consumes more API throughput capacity.
+    icon: icons/database.svg
+  - text: Without a row count limit, large tables can return thousands of rows and cause timeouts or API limit issues.
+    icon: icons/lightbulb.svg
+  - text: Filters reduce load on Dataverse, improving performance for both the flow and other users in the environment.
+    icon: icons/workflow.svg
+  - text: Optimized queries reduce API request consumption and help stay within daily Power Platform request limits.
+    icon: icons/check.svg
+  examples:
+    good:
+    - title: FetchXML with selected attributes, a count limit, and a filter.
+      code: |
+        <fetch count="50">
+          <entity name="contact">
+            <attribute name="fullname" />
+            <attribute name="emailaddress1" />
+            <filter>
+              <condition attribute="statuscode" operator="eq" value="1" />
+            </filter>
+          </entity>
+        </fetch>
+      language: XML
+    - title: List Rows action configured with selected columns, a filter, and a row count.
+      code: |
+        Select columns: fullname,emailaddress1
+        Filter rows: statuscode eq 1
+        Row count: 50
+      language: Plain Text
+    bad:
+    - title: Using List Rows with no column selection, which retrieves all columns for every
+      text: Using List Rows with no column selection, which retrieves all columns for every row.
+      icon: icons/database.svg
+    - title: Using FetchXML without a count attribute, which retrieves all matching rows
+      text: Using FetchXML without a count attribute, which retrieves all matching rows without pagination.
+      icon: icons/lightbulb.svg
+    - title: Applying no filter, which retrieves the entire table regardless of how many
+      text: Applying no filter, which retrieves the entire table regardless of how many rows are needed.
+      icon: icons/check.svg
+    - title: Using <all-attributes /> in FetchXML instead of specifying individual attribute
+      text: Using <all-attributes /> in FetchXML instead of specifying individual attribute elements.
+      icon: icons/circle-alert.svg
+  references:
+  - title: Microsoft Learn - Query Data Using FetchXML
+    url: https://learn.microsoft.com/en-us/power-apps/developer/data-platform/use-fetchxml-construct-query
+  - title: Microsoft Learn - Optimize Performance for Dataverse
+    url: https://learn.microsoft.com/en-us/power-apps/developer/data-platform/optimize-performance
+
+

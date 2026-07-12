@@ -1,7 +1,7 @@
 $schema: "http://json-schema.org/draft-07/schema#"
 $id: "rules.schema.yaml"
 title: Power Platform best practices ruleset schema
-description: Schema for a YAML file that documents best practices for Power Platform development.
+description: Schema for a YAML file that documents best practices for Power Platform development. Rule titles are limited to 80 characters.
 type: object
 required:
   - topic
@@ -13,9 +13,14 @@ properties:
     description: The name of the topic covered by this best practices document.
     examples:
       - Plugins
+  sub_topic:
+    type: string
+    description: Optional sub-topic label for breadcrumb navigation and grouping in generated outputs.
+    examples:
+      - ALM
   description:
     type: string
-    description: A short summary of what this best practices document covers.
+    description: A short summary of what this best practices document covers. Markdown formatting is allowed.
     examples:
       - Good practices for Power Platform development.
   rules:
@@ -46,26 +51,25 @@ $defs:
           - PLG-001
       title:
         type: string
-        description: Short human-readable summary of the rule. Written as an imperative statement.
+        maxLength: 80
+        description: Short human-readable summary of the rule. Written as an imperative statement. Maximum length is 80 characters.
         examples:
           - Use namespace-based naming conventions for plugin classes
       description:
         type: string
-        description: Full statement of the rule, providing complete context for developers.
+        description: Full statement of the rule, providing complete context for developers. Markdown formatting is allowed.
       guidelines:
         type: array
-        description: Actionable steps developers must follow to comply with the rule.
+        description: Actionable steps developers must follow to comply with the rule. Icon values may be reused across different rules, but within a single rule each guideline icon should be unique.
         minItems: 1
         items:
-          type: string
-          description: A single actionable guideline in imperative form.
+          $ref: "#/$defs/guideline_item"
       rationale:
         type: array
-        description: Reasons explaining why the rule exists and the consequences of not following it.
+        description: Reasons explaining why the rule exists and the consequences of not following it. Icon values may be reused across different rules, but within a single rule each rationale icon should be unique.
         minItems: 1
         items:
-          type: string
-          description: A single rationale statement.
+          $ref: "#/$defs/rationale_item"
       examples:
         type: object
         description: Illustrative examples showing compliant and non-compliant code or configurations.
@@ -106,32 +110,35 @@ $defs:
   example:
     type: object
     description: >
-      A single illustrative example. Must have at least one of: description, value, or code.
-      Use value + note for identifier/name examples; use description + code + language for code snippets;
-      use description alone for prose-only examples.
+      A single illustrative example. Title is always required.
+      If code is provided, language is required.
+      If code is not provided, text is required and icon is optional.
+      Icon values may be reused across different rules, but prose example icons should not be repeated within the same rule section (good or bad).
     additionalProperties: false
-    anyOf:
-      - required: [description]
-      - required: [value]
-      - required: [code]
+    required:
+      - title
     allOf:
       - if:
           required: [code]
         then:
           required: [language]
+          not:
+            required: [icon]
+      - if:
+          not:
+            required: [code]
+        then:
+          required: [text]
     properties:
-      description:
+      title:
         type: string
-        description: Prose explanation of what the example demonstrates.
-      value:
+        description: Short title that summarizes the example.
+      text:
         type: string
-        description: >
-          A concrete identifier, class name, or short literal that is the subject of the example
-          (e.g., a fully-qualified plugin class name).
-      note:
+        description: Explanatory text for non-code examples. Markdown formatting is allowed.
+      icon:
         type: string
-        description: >
-          A brief annotation clarifying why value is good or bad. Typically used together with value.
+        description: Optional icon path for non-code examples (for example, icons/info.svg).
       code:
         type: string
         description: >
@@ -141,6 +148,32 @@ $defs:
         type: string
         description: >
           The programming or markup language used by the code snippet (for example, JavaScript or C#).
+  guideline_item:
+    type: object
+    description: A single actionable guideline in imperative form.
+    required:
+      - text
+    additionalProperties: false
+    properties:
+      text:
+        type: string
+        description: Guideline content. Markdown formatting is allowed.
+      icon:
+        type: string
+        description: Optional icon path (for example, icons/lightbulb.svg).
+  rationale_item:
+    type: object
+    description: A single rationale statement.
+    required:
+      - text
+    additionalProperties: false
+    properties:
+      text:
+        type: string
+        description: Rationale content. Markdown formatting is allowed.
+      icon:
+        type: string
+        description: Optional icon path (for example, icons/info.svg).
   reference:
     type: object
     description: A link to an external documentation resource.

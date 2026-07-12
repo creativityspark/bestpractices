@@ -64,6 +64,46 @@
 			gap: 24px;
 		}
 
+		.summary-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+			gap: 12px;
+		}
+
+		.summary-tile {
+			display: block;
+			text-decoration: none;
+			border: 1px solid #e0e0e0;
+			border-radius: 10px;
+			padding: 14px 16px;
+			background: #f8fafc;
+			transition: transform 0.15s ease, border-color 0.15s ease;
+		}
+
+		.summary-tile:hover {
+			transform: translateY(-1px);
+			border-color: #0078d4;
+		}
+
+		.summary-topic {
+			font-size: 13px;
+			font-weight: 700;
+			color: #1b2a4a;
+			margin-bottom: 6px;
+		}
+
+		.summary-count {
+			font-size: 22px;
+			font-weight: 800;
+			color: #0078d4;
+		}
+
+		.summary-total {
+			font-size: 13px;
+			color: #51627f;
+			margin-top: -8px;
+		}
+
 		.ruleset-card {
 			border: 1px solid #e0e0e0;
 			border-radius: 12px;
@@ -91,6 +131,14 @@
 			color: #51627f;
 		}
 
+		.ruleset-card-description p:first-child {
+			margin-top: 0;
+		}
+
+		.ruleset-card-description p:last-child {
+			margin-bottom: 0;
+		}
+
 		.rules-grid {
 			display: grid;
 			grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -110,6 +158,7 @@
 
 		.rule-link:hover {
 			transform: translateY(-2px);
+			
 			border-color: #0078d4;
 			box-shadow: 0 10px 24px rgba(0, 120, 212, 0.12);
 		}
@@ -176,11 +225,21 @@
 		</div>
 
 		<div class="page-body">
+			<div class="summary-total">Total rules: {{ totalRulesCount }}</div>
+			<div class="summary-grid">
+				{% for summary in topic_summaries %}
+				<a class="summary-tile" href="{{ summary.href }}">
+					<div class="summary-topic">{{ summary.topic }}</div>
+					<div class="summary-count">{{ summary.rule_count }}</div>
+				</a>
+				{% endfor %}
+			</div>
+
 			{% for ruleset in rulesets %}
-			<section class="ruleset-card">
+			<section class="ruleset-card" id="{{ ruleset.topic | downcase | replace: ' ', '-' }}">
 				<div class="ruleset-card-header">
 					<div class="ruleset-card-title">{{ ruleset.topic }}</div>
-					<div class="ruleset-card-description">{{ ruleset.description }}</div>
+					<div class="ruleset-card-description">{{ ruleset.description_html | raw }}</div>
 				</div>
 				<div class="rules-grid">
 					{% for rule in ruleset.rules %}
