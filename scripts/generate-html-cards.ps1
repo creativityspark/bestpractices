@@ -22,7 +22,22 @@ if (-not (Get-Module -ListAvailable -Name powershell-yaml)) {
 	Install-Module -Name powershell-yaml -Scope CurrentUser -Force
 }
 
+if (-not (Get-Module -ListAvailable -Name MarkdownToHtml)) {
+	Install-Module -Name MarkdownToHtml -Scope CurrentUser -Force
+}
+
 Import-Module powershell-yaml -ErrorAction Stop
+Import-Module MarkdownToHtml -ErrorAction Stop
+
+function Convert-MarkdownToHtmlSafe {
+	param([string]$Markdown)
+
+	if ([string]::IsNullOrWhiteSpace($Markdown)) {
+		return ""
+	}
+
+	return (Convert-MarkdownToHTMLFragment -InputObject $Markdown).HtmlFragment
+}
 
 New-Item -ItemType Directory -Path $htmlRoot -Force | Out-Null
 
@@ -67,6 +82,13 @@ foreach ($yamlFile in $yamlFiles) {
 		("../" * $segmentCount) + "img"
 	}
 
+	$indexUrl = if ($segmentCount -eq 0) {
+		"./index.html"
+	}
+	else {
+		("../" * $segmentCount) + "index.html"
+	}
+
 	New-Item -ItemType Directory -Path $targetDirectory -Force | Out-Null
 
 	$yamlContent = Get-Content -Path $yamlFile.FullName -Raw
@@ -81,6 +103,22 @@ foreach ($yamlFile in $yamlFiles) {
 		$prevRule = if ($i -gt 0) { $ruleset.rules[$i - 1] } else { $null }
 		$nextRule = if ($i -lt ($ruleset.rules.Count - 1)) { $ruleset.rules[$i + 1] } else { $null }
 
+		$rule.description_html = Convert-MarkdownToHtmlSafe -Markdown $rule.description
+
+		foreach ($guideline in @($rule.guidelines)) {
+			$guideline.text_html = Convert-MarkdownToHtmlSafe -Markdown $guideline.text
+		}
+
+		foreach ($rationale in @($rule.rationale)) {
+			$rationale.text_html = Convert-MarkdownToHtmlSafe -Markdown $rationale.text
+		}
+
+		foreach ($example in @($rule.examples.good) + @($rule.examples.bad)) {
+			if (-not $example.code) {
+				$example.text_html = Convert-MarkdownToHtmlSafe -Markdown $example.text
+			}
+		}
+
 		$rationaleCount = @($rule.rationale).Count
 		if ($rationaleCount -le 1) {
 			$rationaleColumns = "1fr"
@@ -94,9 +132,12 @@ foreach ($yamlFile in $yamlFiles) {
 
 		$cardModel = [ordered]@{
 			topic = $ruleset.topic
+			sub_topic = $ruleset.sub_topic
 			ruleset_description = $ruleset.description
-			breadcrumb = $relativeDirectory -replace "\\", " / "
+			breadcrumb_topic = if ([string]::IsNullOrWhiteSpace($relativeDirectory)) { $ruleset.topic } else { ($relativeDirectory -split "[\\/]")[0] }
+			breadcrumb_sub_topic = if ($ruleset.sub_topic) { $ruleset.sub_topic } else { $ruleset.topic }
 			asset_img_prefix = $assetImgPrefix
+			index_url = $indexUrl
 			rationale_columns = $rationaleColumns
 			prev_url = if ($prevRule) { "./$($prevRule.id).html" } else { "#" }
 			next_url = if ($nextRule) { "./$($nextRule.id).html" } else { "#" }

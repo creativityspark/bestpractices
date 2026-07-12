@@ -27,29 +27,29 @@ rules:
   examples:
     good:
     - title: HR - Request Leave - clear category and action
-      text: 'Value: HR - Request Leave - clear category and action'
+      text: 'HR - Request Leave - clear category and action'
       icon: icons/workflow.svg
     - title: IT - Reset Password - grouped under IT, describes the intent
-      text: 'Value: IT - Reset Password - grouped under IT, describes the intent'
+      text: 'IT - Reset Password - grouped under IT, describes the intent'
       icon: icons/lightbulb.svg
     - title: Order - Check Status - grouped under Orders, specific action
-      text: 'Value: Order - Check Status - grouped under Orders, specific action'
+      text: 'Order - Check Status - grouped under Orders, specific action'
       icon: icons/check.svg
     - title: Order - Cancel Order - Confirmation - sub-topic clearly linked to parent
-      text: 'Value: Order - Cancel Order - Confirmation - sub-topic clearly linked to parent'
+      text: 'Order - Cancel Order - Confirmation - sub-topic clearly linked to parent'
       icon: icons/link.svg
     bad:
     - title: Topic 1 - default name, no context
-      text: 'Value: Topic 1 - default name, no context'
+      text: 'Topic 1 - default name, no context'
       icon: icons/pencil.svg
     - title: Help - too vague, could match anything
-      text: 'Value: Help - too vague, could match anything'
+      text: 'Help - too vague, could match anything'
       icon: icons/circle-alert.svg
     - title: Password - no action described, unclear intent
-      text: 'Value: Password - no action described, unclear intent'
+      text: 'Password - no action described, unclear intent'
       icon: icons/settings.svg
     - title: doStuff - meaningless and inconsistent format
-      text: 'Value: doStuff - meaningless and inconsistent format'
+      text: 'doStuff - meaningless and inconsistent format'
       icon: icons/database.svg
   references:
   - title: Create and edit topics in Copilot Studio - Microsoft Learn
@@ -82,22 +82,22 @@ rules:
   examples:
     good:
     - title: '"I need to reset my password"'
-      text: 'Value: "I need to reset my password"'
+      text: '"I need to reset my password"'
       icon: icons/lightbulb.svg
     - title: '"How do I change my password?"'
-      text: 'Value: "How do I change my password?"'
+      text: '"How do I change my password?"'
       icon: icons/check.svg
     - title: '"My password expired, what do I do?"'
-      text: 'Value: "My password expired, what do I do?"'
+      text: '"My password expired, what do I do?"'
       icon: icons/circle-alert.svg
     - title: '"I forgot my password"'
-      text: 'Value: "I forgot my password"'
+      text: '"I forgot my password"'
       icon: icons/settings.svg
     - title: '"Can you help me reset my login credentials?"'
-      text: 'Value: "Can you help me reset my login credentials?"'
+      text: '"Can you help me reset my login credentials?"'
       icon: icons/workflow.svg
     - title: '"Password reset request"'
-      text: 'Value: "Password reset request"'
+      text: '"Password reset request"'
       icon: icons/database.svg
     - title: Compliant code example
       code: |-
@@ -112,19 +112,19 @@ rules:
       language: Plain Text
     bad:
     - title: '"password" // Too vague, overlaps with other password-related topics'
-      text: 'Value: "password" // Too vague, overlaps with other password-related topics'
+      text: '"password" // Too vague, overlaps with other password-related topics'
       icon: icons/link.svg
     - title: '"help" // Matches almost anything'
-      text: 'Value: "help" // Matches almost anything'
+      text: '"help" // Matches almost anything'
       icon: icons/package.svg
     - title: '"reset" // Could apply to many unrelated topics'
-      text: 'Value: "reset" // Could apply to many unrelated topics'
+      text: '"reset" // Could apply to many unrelated topics'
       icon: icons/users.svg
     - title: '"I forgot my password" // Same phrase already in Reset Password topic'
-      text: 'Value: "I forgot my password" // Same phrase already in Reset Password topic'
+      text: '"I forgot my password" // Same phrase already in Reset Password topic'
       icon: icons/book-open.svg
     - title: "\"Can't log in\" // Ambiguous, could be either topic"
-      text: "Value: \"Can't log in\" // Ambiguous, could be either topic"
+      text: "\"Can't log in\" // Ambiguous, could be either topic"
       icon: icons/file-text.svg
     - title: Non-compliant code example
       code: |-
@@ -170,13 +170,13 @@ rules:
   examples:
     good:
     - title: Check your order status
-      text: 'Value: Check your order status'
+      text: 'Check your order status'
       icon: icons/check.svg
     - title: Reset your password
-      text: 'Value: Reset your password'
+      text: 'Reset your password'
       icon: icons/lightbulb.svg
     - title: Contact support"
-      text: 'Value: Contact support"'
+      text: 'Contact support"'
       icon: icons/circle-alert.svg
     - title: Compliant code example
       code: |-
@@ -247,7 +247,7 @@ rules:
       text: Generative answers are scoped to an internal SharePoint site and a curated FAQ document.
       icon: icons/file-text.svg
     - title: A disclaimer is appended
-      text: 'Value: A disclaimer is appended "This answer was generated from our knowledge base. Please verify with official documentation."'
+      text: 'A disclaimer is appended "This answer was generated from our knowledge base. Please verify with official documentation."'
       icon: icons/link.svg
     - title: Monthly reviews of conversation transcripts identify two new frequently asked
       text: Monthly reviews of conversation transcripts identify two new frequently asked questions that are added to the FAQ.
@@ -365,7 +365,7 @@ rules:
       text: Changes are tested in production because there is only one environment.
       icon: icons/check.svg
     - title: A flow contains a hard-coded URL https
-      text: 'Value: A flow contains a hard-coded URL https //dev-api.contoso.com that fails when imported to the production environment.'
+      text: 'A flow contains a hard-coded URL https //dev-api.contoso.com that fails when imported to the production environment.'
       icon: icons/code-xml.svg
   references:
   - title: Export and import agents using solutions - Microsoft Learn
@@ -453,13 +453,13 @@ rules:
   examples:
     good:
     - title: "\U0001F511 Password resets"
-      text: "Value: \U0001F511 Password resets"
+      text: "\U0001F511 Password resets"
       icon: icons/lightbulb.svg
     - title: "\U0001F4BB Software requests"
-      text: "Value: \U0001F4BB Software requests"
+      text: "\U0001F4BB Software requests"
       icon: icons/check.svg
     - title: "\U0001F3AB Ticket status"
-      text: "Value: \U0001F3AB Ticket status"
+      text: "\U0001F3AB Ticket status"
       icon: icons/circle-alert.svg
     - title: Compliant code example
       code: |-
@@ -520,13 +520,13 @@ rules:
   examples:
     good:
     - title: Content moderation is enabled; the agent refuses to engage with abusive or
-      text: "Value: Content moderation is enabled; the agent refuses to engage with abusive or harmful input and responds with \"I'm here to help with IT support questions. Let me know how I can assist you.\""
+      text: "Content moderation is enabled; the agent refuses to engage with abusive or harmful input and responds with \"I'm here to help with IT support questions. Let me know how I can assist you.\""
       icon: icons/lightbulb.svg
     - title: The system message instructs the agent
-      text: 'Value: The system message instructs the agent "You are an IT help desk assistant. Only answer questions related to IT support. Do not provide medical, legal, or financial advice."'
+      text: 'The system message instructs the agent "You are an IT help desk assistant. Only answer questions related to IT support. Do not provide medical, legal, or financial advice."'
       icon: icons/circle-alert.svg
     - title: When asked a medical question, the agent responds
-      text: "Value: When asked a medical question, the agent responds \"I'm not able to help with medical questions. Please consult a healthcare professional.\""
+      text: "When asked a medical question, the agent responds \"I'm not able to help with medical questions. Please consult a healthcare professional.\""
       icon: icons/check.svg
     bad:
     - title: Content moderation is disabled; the agent responds to abusive messages or
@@ -543,4 +543,7 @@ rules:
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/responsible-ai-overview
   - title: Microsoft Responsible AI principles
     url: https://www.microsoft.com/en-us/ai/responsible-ai
+
+
+
 

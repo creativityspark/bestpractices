@@ -176,7 +176,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 8px;
+            margin-bottom: 0;
         }
 
         .step-card .step-icon {
@@ -200,6 +200,14 @@
             font-size: 14px;
             color: #555;
             line-height: 1.5;
+        }
+
+        .step-card .step-description p:first-child {
+            margin-top: 0;
+        }
+
+        .step-card .step-description p:last-child {
+            margin-bottom: 0;
         }
 
         /* Examples section */
@@ -230,7 +238,6 @@
         .example-box .example-header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             gap: 12px;
             margin-bottom: 12px;
         }
@@ -262,16 +269,18 @@
             color: #c0392b;
         }
 
-        .example-box .example-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1b2a4a;
-        }
-
         .example-content {
             font-size: 13px;
             color: #333;
             line-height: 1.55;
+        }
+
+        .example-content p:first-child {
+            margin-top: 0;
+        }
+
+        .example-content p:last-child {
+            margin-bottom: 0;
         }
 
         .example-prose-row {
@@ -308,6 +317,8 @@
 
         .info-card {
             margin-top: 24px;
+            background: #f8fafc;
+            border-left: 4px solid #0078d4;
         }
 
         .section-header {
@@ -351,7 +362,7 @@
         <!-- Header -->
         <div class="card-header">
             <div class="header-title">Power Platform Best Practices</div>
-            <div class="header-subtitle">{{ topic }}{% if breadcrumb and breadcrumb != '' %} / {{ breadcrumb }}{% endif %}</div>
+            <div class="header-subtitle">{{ breadcrumb_topic }} / {{ breadcrumb_sub_topic }}</div>
             <div class="title-row">
                 <a href="#"><span class="rule-id">{{ rule.id }}</span></a>
                 <a href="#"><span class="rule-title">{{ rule.title }}</span></a>
@@ -363,12 +374,13 @@
             <!-- Navigation -->
             <div class="nav-buttons">
                 <a href="{{ prev_url }}" title="Go to the previous rule" class="{{ prev_disabled }}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 18l-6-6l6-6"/></svg></a>
+                <a href="{{ index_url }}" title="Go to index"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9.5L12 4l9 5.5M5 10v9h14v-9M9 19v-5h6v5"/></svg></a>
                 <a href="{{ next_url }}" title="Go to the next rule" class="{{ next_disabled }}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 18l6-6l-6-6"/></svg></a>
             </div>
 
             <!-- The Rule -->
             <div class="rule-statement">
-                <p>{{ rule.description }}</p>
+                {{ rule.description_html | raw }}
             </div>
 
             <!-- How to Apply -->
@@ -379,8 +391,8 @@
                         <div class="step-icon">
                             <img src="{{ asset_img_prefix }}/{% if guideline.icon %}{{ guideline.icon }}{% else %}icons/lightbulb.svg{% endif %}" alt="Guideline icon" />
                         </div>
+                        <div class="step-description">{{ guideline.text_html | raw }}</div>
                     </div>
-                    <div class="step-description">{{ guideline.text }}</div>
                 </div>
                 {% endfor %}
             </div>
@@ -393,8 +405,8 @@
                         <div class="step-icon">
                             <img src="{{ asset_img_prefix }}/{% if rationale.icon %}{{ rationale.icon }}{% else %}icons/info.svg{% endif %}" alt="Rationale icon" />
                         </div>
+                        <div class="step-description">{{ rationale.text_html | raw }}</div>
                     </div>
-                    <div class="step-description">{{ rationale.text }}</div>
                 </div>
                 {% endfor %}
             </div>
@@ -409,7 +421,6 @@
                             <img class="example-kind-icon" src="{{ asset_img_prefix }}/icons/circle-check-big.svg" alt="Good example" />
                             <span class="example-label">Do</span>
                         </div>
-                        <div class="example-title">{{ example.title }}</div>
                     </div>
                     <div class="example-content">
                         {% if example.code %}
@@ -417,9 +428,8 @@
                         {% else %}
                         <div class="example-prose-row">
                             <img class="example-prose-icon" src="{{ asset_img_prefix }}/{% if example.icon %}{{ example.icon }}{% else %}icons/file-text.svg{% endif %}" alt="Example icon" />
-                            <span>{{ example.title }}</span>
                         </div>
-                        <div>{{ example.text }}</div>
+                        <div>{{ example.text_html | raw }}</div>
                         {% endif %}
                     </div>
                 </div>
@@ -432,7 +442,6 @@
                             <img class="example-kind-icon" src="{{ asset_img_prefix }}/icons/x.svg" alt="Bad example" />
                             <span class="example-label">Don't</span>
                         </div>
-                        <div class="example-title">{{ example.title }}</div>
                     </div>
                     <div class="example-content">
                         {% if example.code %}
@@ -440,9 +449,8 @@
                         {% else %}
                         <div class="example-prose-row">
                             <img class="example-prose-icon" src="{{ asset_img_prefix }}/{% if example.icon %}{{ example.icon }}{% else %}icons/circle-alert.svg{% endif %}" alt="Example icon" />
-                            <span>{{ example.title }}</span>
                         </div>
-                        <div>{{ example.text }}</div>
+                        <div>{{ example.text_html | raw }}</div>
                         {% endif %}
                     </div>
                 </div>

@@ -35,11 +35,11 @@ rules:
   examples:
     good:
     - title: Several fields grouped logically
-      text: 'Value: Several fields grouped logically cspreviewduedate, cspreviewcompletedon, cspreviewlink.'
+      text: 'Several fields grouped logically cspreviewduedate, cspreviewcompletedon, cspreviewlink.'
       icon: icons/database.svg
     bad:
     - title: The same fields without a consistent prefix
-      text: 'Value: The same fields without a consistent prefix cspduedatereview, cspreviewcompletedon, csplinkreview - harder to identify as a group.'
+      text: 'The same fields without a consistent prefix cspduedatereview, cspreviewcompletedon, csplinkreview - harder to identify as a group.'
       icon: icons/pencil.svg
   references:
   - title: Microsoft Learn - Power Platform Documentation
@@ -60,10 +60,10 @@ rules:
   examples:
     good:
     - title: "\"The date when the customer's last order was placed."
-      text: "Value: \"The date when the customer's last order was placed. Used to calculate inactivity alerts.\""
+      text: "\"The date when the customer's last order was placed. Used to calculate inactivity alerts.\""
       icon: icons/lightbulb.svg
     - title: '"System Field.'
-      text: 'Value: "System Field. Stores the workflow processing status for automated monitoring."'
+      text: '"System Field. Stores the workflow processing status for automated monitoring."'
       icon: icons/database.svg
     bad:
     - title: No description at all - users and developers have no context about the field's
@@ -215,4 +215,5 @@ rules:
   references:
   - title: Column-level security - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-platform/admin/field-level-security
+
 

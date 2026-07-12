@@ -35,29 +35,29 @@ rules:
   examples:
     good:
     - title: ORM - DV - Contact - NEWMOD - Send Notifications
-      text: 'Value: ORM - DV - Contact - NEWMOD - Send Notifications Sends a notification when a Dataverse Contact record is created or modified for the Orders Management app.'
+      text: 'ORM - DV - Contact - NEWMOD - Send Notifications Sends a notification when a Dataverse Contact record is created or modified for the Orders Management app.'
       icon: icons/database.svg
     - title: ORM - DV - Account - MOD - Validations
-      text: 'Value: ORM - DV - Account - MOD - Validations Performs validations when an Account record is updated in Dataverse for the Orders Management app.'
+      text: 'ORM - DV - Account - MOD - Validations Performs validations when an Account record is updated in Dataverse for the Orders Management app.'
       icon: icons/lightbulb.svg
     - title: ORM - SP - Orders - MOD - Move out of notice wait period
-      text: 'Value: ORM - SP - Orders - MOD - Move out of notice wait period Handles updates to the Orders SharePoint list for the Orders Management app.'
+      text: 'ORM - SP - Orders - MOD - Move out of notice wait period Handles updates to the Orders SharePoint list for the Orders Management app.'
       icon: icons/check.svg
     - title: HRO - CF - Set Reference Number
-      text: 'Value: HRO - CF - Set Reference Number Names a child flow that sets a reference number for the HR Onboarding app.'
+      text: 'HRO - CF - Set Reference Number Names a child flow that sets a reference number for the HR Onboarding app.'
       icon: icons/pencil.svg
     - title: HRO - SCH - Daily - Set Status
-      text: 'Value: HRO - SCH - Daily - Set Status Names a scheduled flow that runs daily and sets status for the HR Onboarding app.'
+      text: 'HRO - SCH - Daily - Set Status Names a scheduled flow that runs daily and sets status for the HR Onboarding app.'
       icon: icons/workflow.svg
     - title: PA - Orders Management - Cancel Record
-      text: 'Value: PA - Orders Management - Cancel Record Omits the app prefix because the flow is shared across multiple apps and is triggered from Power Apps.'
+      text: 'PA - Orders Management - Cancel Record Omits the app prefix because the flow is shared across multiple apps and is triggered from Power Apps.'
       icon: icons/circle-alert.svg
     bad:
     - title: Send Notifications
-      text: 'Value: Send Notifications Omits the app, connector, data store, and event segments required to make the name self-descriptive.'
+      text: 'Send Notifications Omits the app, connector, data store, and event segments required to make the name self-descriptive.'
       icon: icons/code-xml.svg
     - title: ORM - Contact - Send Notifications
-      text: 'Value: ORM - Contact - Send Notifications Omits the connector prefix and event code segments.'
+      text: 'ORM - Contact - Send Notifications Omits the connector prefix and event code segments.'
       icon: icons/settings.svg
   references:
   - title: Matthew Devaney - Power Automate Coding Standards
@@ -102,17 +102,17 @@ rules:
   examples:
     good:
     - title: Triggered when a Contact record is created or modified in Dataverse.
-      text: 'Value: Triggered when a Contact record is created or modified in Dataverse. Sends an email notification to the account manager with the updated contact details. Calls the CF - Send Notification Email child flow. Clearly states the trigger, purpose, and dependency.'
+      text: 'Triggered when a Contact record is created or modified in Dataverse. Sends an email notification to the account manager with the updated contact details. Calls the CF - Send Notification Email child flow. Clearly states the trigger, purpose, and dependency.'
       icon: icons/database.svg
     - title: Runs daily at 6:00 AM.
-      text: 'Value: Runs daily at 6:00 AM. Queries all open orders older than 30 days and updates their status to Expired. Part of the Order Lifecycle Management process. Includes timing, behavior, and business context.'
+      text: 'Runs daily at 6:00 AM. Queries all open orders older than 30 days and updates their status to Expired. Part of the Order Lifecycle Management process. Includes timing, behavior, and business context.'
       icon: icons/workflow.svg
     bad:
     - title: My flow
-      text: 'Value: My flow Meaningless and provides no context.'
+      text: 'My flow Meaningless and provides no context.'
       icon: icons/lightbulb.svg
     - title: Handles stuff
-      text: 'Value: Handles stuff Vague and not actionable for maintainers.'
+      text: 'Handles stuff Vague and not actionable for maintainers.'
       icon: icons/check.svg
     - title: No description at all.
       text: No description at all.
@@ -140,23 +140,23 @@ rules:
   examples:
     good:
     - title: When a new item is created
-      text: 'Value: When a new item is created Clearly describes the event in plain language.'
+      text: 'When a new item is created Clearly describes the event in plain language.'
       icon: icons/lightbulb.svg
     - title: When a new contact is added to Dataverse
-      text: 'Value: When a new contact is added to Dataverse Includes both the event and the data source.'
+      text: 'When a new contact is added to Dataverse Includes both the event and the data source.'
       icon: icons/database.svg
     - title: When a file is created in SharePoint
-      text: 'Value: When a file is created in SharePoint Uses full words and identifies the source system.'
+      text: 'When a file is created in SharePoint Uses full words and identifies the source system.'
       icon: icons/folder-open.svg
     bad:
     - title: File Created SP
-      text: 'Value: File Created SP Abbreviated and unclear.'
+      text: 'File Created SP Abbreviated and unclear.'
       icon: icons/check.svg
     - title: Manually trigger a flow
-      text: 'Value: Manually trigger a flow Default name that does not describe the business purpose.'
+      text: 'Manually trigger a flow Default name that does not describe the business purpose.'
       icon: icons/pencil.svg
     - title: Recurrence
-      text: 'Value: Recurrence Default name with no indication of what the schedule is for.'
+      text: 'Recurrence Default name with no indication of what the schedule is for.'
       icon: icons/circle-alert.svg
   references:
   - title: Microsoft Power Platform Guidance - Naming Conventions
@@ -185,41 +185,41 @@ rules:
   examples:
     good:
     - title: Get Customer by Email
-      text: 'Value: Get Customer by Email Describes both the action and the lookup key.'
+      text: 'Get Customer by Email Describes both the action and the lookup key.'
       icon: icons/workflow.svg
     - title: Send Approval Email to Manager
-      text: 'Value: Send Approval Email to Manager Explains the action and the recipient.'
+      text: 'Send Approval Email to Manager Explains the action and the recipient.'
       icon: icons/lightbulb.svg
     - title: Filter Active Orders
-      text: 'Value: Filter Active Orders Clearly describes the filtering purpose.'
+      text: 'Filter Active Orders Clearly describes the filtering purpose.'
       icon: icons/check.svg
     - title: Update Contact Status to Inactive
-      text: 'Value: Update Contact Status to Inactive Identifies both the entity and intended state change.'
+      text: 'Update Contact Status to Inactive Identifies both the entity and intended state change.'
       icon: icons/circle-alert.svg
     - title: Apply to Each Invoice Line
-      text: 'Value: Apply to Each Invoice Line Makes the loop target explicit.'
+      text: 'Apply to Each Invoice Line Makes the loop target explicit.'
       icon: icons/settings.svg
     - title: Check if Account Exists
-      text: 'Value: Check if Account Exists Explains the condition being evaluated.'
+      text: 'Check if Account Exists Explains the condition being evaluated.'
       icon: icons/database.svg
     - title: Parse JSON Response from API
-      text: 'Value: Parse JSON Response from API Identifies both the action and the data source.'
+      text: 'Parse JSON Response from API Identifies both the action and the data source.'
       icon: icons/link.svg
     bad:
     - title: Get_item
-      text: 'Value: Get_item Default name and unclear which item is retrieved.'
+      text: 'Get_item Default name and unclear which item is retrieved.'
       icon: icons/pencil.svg
     - title: Compose
-      text: 'Value: Compose Default name with no business meaning.'
+      text: 'Compose Default name with no business meaning.'
       icon: icons/users.svg
     - title: Apply_to_each
-      text: 'Value: Apply_to_each Default name and unclear what is being iterated.'
+      text: 'Apply_to_each Default name and unclear what is being iterated.'
       icon: icons/file-text.svg
     - title: Condition
-      text: 'Value: Condition Default name and unclear what is being evaluated.'
+      text: 'Condition Default name and unclear what is being evaluated.'
       icon: icons/eye.svg
     - title: HTTP
-      text: 'Value: HTTP Default name and unclear what endpoint is being called.'
+      text: 'HTTP Default name and unclear what endpoint is being called.'
       icon: icons/package.svg
   references:
   - title: Microsoft Learn - Power Automate Documentation
@@ -248,35 +248,35 @@ rules:
   examples:
     good:
     - title: strCustomerFullName
-      text: 'Value: strCustomerFullName String variable with a descriptive name.'
+      text: 'strCustomerFullName String variable with a descriptive name.'
       icon: icons/pencil.svg
     - title: intNumberOfRetries
-      text: 'Value: intNumberOfRetries Integer variable that clearly expresses its purpose.'
+      text: 'intNumberOfRetries Integer variable that clearly expresses its purpose.'
       icon: icons/lightbulb.svg
     - title: boolIsEligibleForDiscount
-      text: 'Value: boolIsEligibleForDiscount Boolean variable that reads as a condition.'
+      text: 'boolIsEligibleForDiscount Boolean variable that reads as a condition.'
       icon: icons/book-open.svg
     - title: arrPendingApprovals
-      text: 'Value: arrPendingApprovals Array variable with a meaningful collection name.'
+      text: 'arrPendingApprovals Array variable with a meaningful collection name.'
       icon: icons/check.svg
     - title: objOrderDetails
-      text: 'Value: objOrderDetails Object variable that clearly identifies its contents.'
+      text: 'objOrderDetails Object variable that clearly identifies its contents.'
       icon: icons/circle-alert.svg
     bad:
     - title: x
-      text: 'Value: x No indication of purpose or type.'
+      text: 'x No indication of purpose or type.'
       icon: icons/settings.svg
     - title: temp
-      text: 'Value: temp Generic and unclear.'
+      text: 'temp Generic and unclear.'
       icon: icons/workflow.svg
     - title: var1
-      text: 'Value: var1 Generic and unclear.'
+      text: 'var1 Generic and unclear.'
       icon: icons/database.svg
     - title: name
-      text: 'Value: name Missing a type prefix and ambiguous.'
+      text: 'name Missing a type prefix and ambiguous.'
       icon: icons/link.svg
     - title: "n"
-      text: 'Value: n Single-character name with no meaning.'
+      text: 'n Single-character name with no meaning.'
       icon: icons/users.svg
   references:
   - title: Microsoft Learn - Power Automate Documentation
@@ -311,29 +311,29 @@ rules:
   examples:
     good:
     - title: csp - Dataverse - Main Application
-      text: 'Value: csp - Dataverse - Main Application Identifies the publisher, connector, and business context.'
+      text: 'csp - Dataverse - Main Application Identifies the publisher, connector, and business context.'
       icon: icons/database.svg
     - title: csp - SharePoint - Document Library
-      text: 'Value: csp - SharePoint - Document Library Names the connector reference according to the required structure.'
+      text: 'csp - SharePoint - Document Library Names the connector reference according to the required structure.'
       icon: icons/pencil.svg
     - title: csp - Outlook - Service Notifications
-      text: 'Value: csp - Outlook - Service Notifications Describes how the connection is used.'
+      text: 'csp - Outlook - Service Notifications Describes how the connection is used.'
       icon: icons/lightbulb.svg
     - title: csp - Teams - Approval Notifications
-      text: 'Value: csp - Teams - Approval Notifications Includes the publisher prefix and purpose.'
+      text: 'csp - Teams - Approval Notifications Includes the publisher prefix and purpose.'
       icon: icons/users.svg
     bad:
     - title: My Connection
-      text: 'Value: My Connection No structure and no context.'
+      text: 'My Connection No structure and no context.'
       icon: icons/check.svg
     - title: Dataverse
-      text: 'Value: Dataverse Missing the publisher prefix and purpose.'
+      text: 'Dataverse Missing the publisher prefix and purpose.'
       icon: icons/circle-alert.svg
     - title: John's SharePoint
-      text: "Value: John's SharePoint Uses a personal account reference and no standard format."
+      text: "John's SharePoint Uses a personal account reference and no standard format."
       icon: icons/link.svg
     - title: New Connection Reference
-      text: 'Value: New Connection Reference Default name with no meaning.'
+      text: 'New Connection Reference Default name with no meaning.'
       icon: icons/settings.svg
   references:
   - title: Microsoft Learn - Solutions Overview
@@ -464,23 +464,23 @@ rules:
   examples:
     good:
     - title: "@{parameters('env_SharePointSiteUrl')}"
-      text: "Value: @{parameters('env_SharePointSiteUrl')} References an environment variable for a SharePoint site URL."
+      text: "@{parameters('env_SharePointSiteUrl')} References an environment variable for a SharePoint site URL."
       icon: icons/link.svg
     - title: "@{parameters('env_SupportTeamEmail')}"
-      text: "Value: @{parameters('env_SupportTeamEmail')} References an environment variable for a notification email address."
+      text: "@{parameters('env_SupportTeamEmail')} References an environment variable for a notification email address."
       icon: icons/users.svg
     - title: "@{parameters('env_ExternalApiKey')}"
-      text: "Value: @{parameters('env_ExternalApiKey')} References an environment variable for an API key."
+      text: "@{parameters('env_ExternalApiKey')} References an environment variable for an API key."
       icon: icons/settings.svg
     bad:
     - title: https://contoso.sharepoint.com/sites/Operations
-      text: 'Value: https://contoso.sharepoint.com/sites/Operations Hardcoded SharePoint URL.'
+      text: 'https://contoso.sharepoint.com/sites/Operations Hardcoded SharePoint URL.'
       icon: icons/code-xml.svg
     - title: support@contoso.com
-      text: 'Value: support@contoso.com Hardcoded email address.'
+      text: 'support@contoso.com Hardcoded email address.'
       icon: icons/lightbulb.svg
     - title: a1b2c3d4-e5f6-7890-abcd-ef1234567890
-      text: 'Value: a1b2c3d4-e5f6-7890-abcd-ef1234567890 Hardcoded record GUID.'
+      text: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890 Hardcoded record GUID.'
       icon: icons/check.svg
   references:
   - title: Microsoft Learn - Solutions Overview
@@ -509,13 +509,13 @@ rules:
   examples:
     good:
     - title: CF - Set Reference Number
-      text: 'Value: CF - Set Reference Number Child flow that generates and assigns a reference number for reuse across multiple parent flows.'
+      text: 'CF - Set Reference Number Child flow that generates and assigns a reference number for reuse across multiple parent flows.'
       icon: icons/workflow.svg
     - title: CF - Send Notification Email
-      text: 'Value: CF - Send Notification Email Child flow that accepts recipient, subject, and body inputs for reuse across notification scenarios.'
+      text: 'CF - Send Notification Email Child flow that accepts recipient, subject, and body inputs for reuse across notification scenarios.'
       icon: icons/lightbulb.svg
     - title: CF - Validate Address
-      text: 'Value: CF - Validate Address Child flow that validates and standardizes address data for reuse by multiple record creation flows.'
+      text: 'CF - Validate Address Child flow that validates and standardizes address data for reuse by multiple record creation flows.'
       icon: icons/database.svg
     bad:
     - title: Copying and pasting the same 15 actions for sending a notification email into
@@ -595,7 +595,7 @@ rules:
       text: Creating a flow inside the Orders Management solution alongside its related tables, connection references, and environment variables.
       icon: icons/database.svg
     - title: csp
-      text: 'Value: csp Uses a consistent solution publisher prefix and groups related flows in one solution.'
+      text: 'csp Uses a consistent solution publisher prefix and groups related flows in one solution.'
       icon: icons/pencil.svg
     bad:
     - title: Creating a flow from the My Flows section of the Power Automate portal.
@@ -718,4 +718,5 @@ rules:
     url: https://learn.microsoft.com/en-us/power-apps/developer/data-platform/use-fetchxml-construct-query
   - title: Microsoft Learn - Optimize Performance for Dataverse
     url: https://learn.microsoft.com/en-us/power-apps/developer/data-platform/optimize-performance
+
 

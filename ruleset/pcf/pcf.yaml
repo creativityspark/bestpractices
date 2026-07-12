@@ -28,7 +28,7 @@ rules:
       language: shell
     bad:
     - title: script
-      text: 'Value: script npm run build'
+      text: 'script npm run build'
       icon: icons/code-xml.svg
     - title: Non-compliant code example
       code: |-
@@ -744,4 +744,7 @@ rules:
     url: https://temmyraharjo.wordpress.com/2020/11/23/creating-better-pcf-component-part-2/
   - title: Debug code components - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/developer/component-framework/debugging-custom-controls
+
+
+
 

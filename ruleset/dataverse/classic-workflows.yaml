@@ -3,7 +3,7 @@ description: Good practices for Dataverse Classic Workflows and Actions.
 rules:
 - id: WF-001
   title: 'Follow the pattern: [App Prefix]'
-  description: 'Workflow and Action names must follow the pattern: ` [App Prefix] - [Table Schema Name] - [Event Name Code(s)] - [Action/Purpose] `'
+  description: 'Workflow and Action names must follow the pattern:  [App Prefix] - [Table Schema Name] - [Event Name Code(s)] - [Action/Purpose] '
   guidelines:
   - text: 'App Prefix: A short prefix (3 letters) that identifies the application the workflow belongs to. This helps group workflows from the same application together in any list.'
     icon: icons/pencil.svg
@@ -25,22 +25,22 @@ rules:
   examples:
     good:
     - title: CRM - Contact - NEWMOD - Send Notifications
-      text: 'Value: CRM - Contact - NEWMOD - Send Notifications'
+      text: 'CRM - Contact - NEWMOD - Send Notifications'
       icon: icons/lightbulb.svg
     - title: CRM - Account - MOD - Validations
-      text: 'Value: CRM - Account - MOD - Validations'
+      text: 'CRM - Account - MOD - Validations'
       icon: icons/check.svg
     - title: OMS - Order - MOD - Move Out of Notice Wait Period
-      text: 'Value: OMS - Order - MOD - Move Out of Notice Wait Period'
+      text: 'OMS - Order - MOD - Move Out of Notice Wait Period'
       icon: icons/circle-alert.svg
     - title: OMS - Product - CHD - Set Reference Number
-      text: 'Value: OMS - Product - CHD - Set Reference Number'
+      text: 'OMS - Product - CHD - Set Reference Number'
       icon: icons/link.svg
     - title: CRM - CaseBPF - MOD - Set Status
-      text: 'Value: CRM - CaseBPF - MOD - Set Status'
+      text: 'CRM - CaseBPF - MOD - Set Status'
       icon: icons/settings.svg
     - title: OMS - CustomerRequest - DMD - Cancel Record
-      text: 'Value: OMS - CustomerRequest - DMD - Cancel Record'
+      text: 'OMS - CustomerRequest - DMD - Cancel Record'
       icon: icons/workflow.svg
     bad:
     - title: Send Notifications - no prefix, no table name, no event; impossible to identify
@@ -272,4 +272,6 @@ rules:
   references:
   - title: Workflow stages and steps - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/configure-workflow-steps
+
+
 

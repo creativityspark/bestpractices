@@ -138,7 +138,7 @@ rules:
   examples:
     good:
     - title: A user has two roles
-      text: 'Value: A user has two roles cspCRMAppAccess (grants access to the CRM model-driven app and its sitemap areas) and cspAccountManagerData (grants Read/Write on Account, Contact, and Opportunity at the Business Unit level).'
+      text: 'A user has two roles cspCRMAppAccess (grants access to the CRM model-driven app and its sitemap areas) and cspAccountManagerData (grants Read/Write on Account, Contact, and Opportunity at the Business Unit level).'
       icon: icons/shield-alert.svg
     - title: When a new model-driven app is introduced, a new app access role is created
       text: When a new model-driven app is introduced, a new app access role is created without modifying existing data roles.
@@ -252,7 +252,7 @@ rules:
       text: A test user named testsalesrep@contoso.com with only the cspSalesRep role, used to verify that the user can create and edit Opportunities but cannot delete Accounts.
       icon: icons/shield-alert.svg
     - title: A test checklist that includes
-      text: 'Value: A test checklist that includes "Verify that the Finance Viewer role cannot export data from the Employee table."'
+      text: 'A test checklist that includes "Verify that the Finance Viewer role cannot export data from the Employee table."'
       icon: icons/database.svg
     bad:
     - title: Testing all security roles by logging in as System Administrator and assuming
@@ -266,4 +266,8 @@ rules:
     url: https://learn.microsoft.com/en-us/power-platform/admin/environments-overview
   - title: Security roles and privileges - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-platform/admin/security-roles-privileges
+
+
+
+
 

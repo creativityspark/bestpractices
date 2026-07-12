@@ -66,17 +66,17 @@ rules:
   examples:
     good:
     - title: Display Name
-      text: 'Value: Display Name Account Form Events'
+      text: 'Display Name Account Form Events'
       icon: icons/pencil.svg
     - title: Description
-      text: 'Value: Description Handles OnLoad, OnSave, and OnChange events for the Account main form. Depends on contoso\/js/lib/utilities.js. Registered on the Account Main Form._'
+      text: 'Description Handles OnLoad, OnSave, and OnChange events for the Account main form. Depends on contoso\/js/lib/utilities.js. Registered on the Account Main Form._'
       icon: icons/file-text.svg
     bad:
     - title: Display Name
-      text: 'Value: Display Name Script1'
+      text: 'Display Name Script1'
       icon: icons/code-xml.svg
     - title: Description
-      text: 'Value: Description (empty)'
+      text: 'Description (empty)'
       icon: icons/lightbulb.svg
   references:
   - title: Create or edit web resources - Microsoft Learn
@@ -433,4 +433,7 @@ rules:
     url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/resx-web-resources
   - title: Use RESX files to localize web resources - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/custom-html-resx-localization
+
+
+
 

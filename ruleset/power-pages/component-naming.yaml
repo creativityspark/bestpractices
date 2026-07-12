@@ -15,10 +15,10 @@ rules:
   examples:
     good:
     - title: Table Permissions
-      text: 'Value: Table Permissions For this record type, it is best to provide a descriptive name.'
+      text: 'Table Permissions For this record type, it is best to provide a descriptive name.'
       icon: icons/shield-alert.svg
     - title: Millage may vary
-      text: 'Value: Millage may vary Name is subjective and each record type should be evaluated based on what makes sense.'
+      text: 'Millage may vary Name is subjective and each record type should be evaluated based on what makes sense.'
       icon: icons/pencil.svg
     bad:
     - title: Violates the rule requirements.
@@ -27,4 +27,5 @@ rules:
   references:
   - title: Microsoft Learn - Power Platform Documentation
     url: https://learn.microsoft.com/en-us/power-platform/
+
 

@@ -71,25 +71,25 @@ rules:
   examples:
     good:
     - title: Leads
-      text: 'Value: Leads'
+      text: 'Leads'
       icon: icons/lightbulb.svg
     - title: Opportunities
-      text: 'Value: Opportunities'
+      text: 'Opportunities'
       icon: icons/check.svg
     - title: Quotes
-      text: 'Value: Quotes'
+      text: 'Quotes'
       icon: icons/circle-alert.svg
     - title: Accounts
-      text: 'Value: Accounts'
+      text: 'Accounts'
       icon: icons/settings.svg
     - title: Contacts
-      text: 'Value: Contacts'
+      text: 'Contacts'
       icon: icons/workflow.svg
     - title: Active Cases
-      text: 'Value: Active Cases'
+      text: 'Active Cases'
       icon: icons/database.svg
     - title: Knowledge Articles
-      text: 'Value: Knowledge Articles'
+      text: 'Knowledge Articles'
       icon: icons/link.svg
     - title: Compliant code example
       code: |-
@@ -109,31 +109,31 @@ rules:
       language: Plain Text
     bad:
     - title: tbl_lead
-      text: 'Value: tbl_lead'
+      text: 'tbl_lead'
       icon: icons/users.svg
     - title: tbl_opp
-      text: 'Value: tbl_opp'
+      text: 'tbl_opp'
       icon: icons/file-text.svg
     - title: tbl_quot
-      text: 'Value: tbl_quot'
+      text: 'tbl_quot'
       icon: icons/pencil.svg
     - title: tbl_acc
-      text: 'Value: tbl_acc'
+      text: 'tbl_acc'
       icon: icons/eye.svg
     - title: tbl_cont
-      text: 'Value: tbl_cont'
+      text: 'tbl_cont'
       icon: icons/package.svg
     - title: tbl_case
-      text: 'Value: tbl_case'
+      text: 'tbl_case'
       icon: icons/book-open.svg
     - title: tbl_ka
-      text: 'Value: tbl_ka'
+      text: 'tbl_ka'
       icon: icons/folder-open.svg
     - title: tbl_ord
-      text: 'Value: tbl_ord'
+      text: 'tbl_ord'
       icon: icons/shield-alert.svg
     - title: tbl_inv
-      text: 'Value: tbl_inv'
+      text: 'tbl_inv'
       icon: icons/info.svg
     - title: Non-compliant code example
       code: |-
@@ -218,19 +218,19 @@ rules:
   examples:
     good:
     - title: 'A "Service Manager Dashboard" with:'
-      text: 'Value: A "Service Manager Dashboard" with:'
+      text: 'A "Service Manager Dashboard" with:'
       icon: icons/lightbulb.svg
     - title: Chart
-      text: 'Value: Chart Cases by Priority (last 30 days)'
+      text: 'Chart Cases by Priority (last 30 days)'
       icon: icons/check.svg
     - title: Chart
-      text: 'Value: Chart Average Resolution Time (trend)'
+      text: 'Chart Average Resolution Time (trend)'
       icon: icons/package.svg
     - title: List
-      text: 'Value: List Cases Escalated Today'
+      text: 'List Cases Escalated Today'
       icon: icons/circle-alert.svg
     - title: List
-      text: 'Value: List SLA Violations This Week'
+      text: 'List SLA Violations This Week'
       icon: icons/settings.svg
     bad:
     - title: A single "Main Dashboard" with 10+ charts and lists covering Sales, Service
@@ -451,4 +451,7 @@ rules:
   references:
   - title: Create a model-driven app - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/build-first-model-driven-app
+
+
+
 

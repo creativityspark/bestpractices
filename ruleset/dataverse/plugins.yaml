@@ -3,7 +3,7 @@ description: Good practices for Dataverse C# Plugins.
 rules:
 - id: PLG-001
   title: Use a namespace-based naming convention that describes the plugin's purpose.
-  description: "Plugin class names must use a namespace-based naming convention that describes the plugin's purpose. Do not hardcode table schema names, pipeline stages, or event names into the class name, since a single plugin class can be registered on multiple tables and stages, and its configuration may change over time. Follow this pattern: ` [AppName].Plugins.[TableName (if table-specific)].[Action/Purpose] `"
+  description: "Plugin class names must use a namespace-based naming convention that describes the plugin's purpose. Do not hardcode table schema names, pipeline stages, or event names into the class name, since a single plugin class can be registered on multiple tables and stages, and its configuration may change over time. Follow this pattern:  [AppName].Plugins.[TableName (if table-specific)].[Action/Purpose] "
   guidelines:
   - text: 'AppName: The name of the application or solution (e.g., CRM, Sales, FieldService).'
     icon: icons/database.svg
@@ -594,4 +594,5 @@ rules:
     url: https://learn.microsoft.com/en-us/power-apps/developer/data-platform/best-practices/business-logic
   - title: Troubleshoot plug-ins - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/developer/data-platform/troubleshoot-plug-in
+
 

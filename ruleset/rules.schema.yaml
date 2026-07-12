@@ -13,9 +13,14 @@ properties:
     description: The name of the topic covered by this best practices document.
     examples:
       - Plugins
+  sub_topic:
+    type: string
+    description: Optional sub-topic label for breadcrumb navigation and grouping in generated outputs.
+    examples:
+      - ALM
   description:
     type: string
-    description: A short summary of what this best practices document covers.
+    description: A short summary of what this best practices document covers. Markdown formatting is allowed.
     examples:
       - Good practices for Power Platform development.
   rules:
@@ -52,7 +57,7 @@ $defs:
           - Use namespace-based naming conventions for plugin classes
       description:
         type: string
-        description: Full statement of the rule, providing complete context for developers.
+        description: Full statement of the rule, providing complete context for developers. Markdown formatting is allowed.
       guidelines:
         type: array
         description: Actionable steps developers must follow to comply with the rule. Icon values may be reused across different rules, but within a single rule each guideline icon should be unique.
@@ -130,7 +135,7 @@ $defs:
         description: Short title that summarizes the example.
       text:
         type: string
-        description: Explanatory text for non-code examples.
+        description: Explanatory text for non-code examples. Markdown formatting is allowed.
       icon:
         type: string
         description: Optional icon path for non-code examples (for example, icons/info.svg).
@@ -152,7 +157,7 @@ $defs:
     properties:
       text:
         type: string
-        description: Guideline content.
+        description: Guideline content. Markdown formatting is allowed.
       icon:
         type: string
         description: Optional icon path (for example, icons/lightbulb.svg).
@@ -165,7 +170,7 @@ $defs:
     properties:
       text:
         type: string
-        description: Rationale content.
+        description: Rationale content. Markdown formatting is allowed.
       icon:
         type: string
         description: Optional icon path (for example, icons/info.svg).

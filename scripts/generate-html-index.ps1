@@ -21,7 +21,22 @@ if (-not (Get-Module -ListAvailable -Name powershell-yaml)) {
 	Install-Module -Name powershell-yaml -Scope CurrentUser -Force
 }
 
+if (-not (Get-Module -ListAvailable -Name MarkdownToHtml)) {
+	Install-Module -Name MarkdownToHtml -Scope CurrentUser -Force
+}
+
 Import-Module powershell-yaml -ErrorAction Stop
+Import-Module MarkdownToHtml -ErrorAction Stop
+
+function Convert-MarkdownToHtmlSafe {
+	param([string]$Markdown)
+
+	if ([string]::IsNullOrWhiteSpace($Markdown)) {
+		return ""
+	}
+
+	return (Convert-MarkdownToHTMLFragment -InputObject $Markdown).HtmlFragment
+}
 
 New-Item -ItemType Directory -Path $htmlRoot -Force | Out-Null
 
@@ -44,6 +59,7 @@ $rulesets = foreach ($yamlFile in $yamlFiles) {
 	[ordered]@{
 		topic = $ruleset.topic
 		description = $ruleset.description
+		description_html = Convert-MarkdownToHtmlSafe -Markdown $ruleset.description
 		folder = $relativeDirectory -replace "\\", "/"
 		rules = @(
 			foreach ($rule in $ruleset.rules) {
@@ -59,13 +75,30 @@ $rulesets = foreach ($yamlFile in $yamlFiles) {
 				}
 			}
 		)
+		rule_count = @($ruleset.rules).Count
 	}
 }
+
+$sortedRulesets = @($rulesets | Sort-Object topic)
+
+$topicSummaries = @(
+	foreach ($ruleset in $sortedRulesets) {
+		[ordered]@{
+			topic = $ruleset.topic
+			href = "#" + (($ruleset.topic -replace "[^A-Za-z0-9\- ]", "") -replace "\s+", "-").ToLowerInvariant()
+			rule_count = $ruleset.rule_count
+		}
+	}
+)
+
+$totalRuleCount = (@($topicSummaries | ForEach-Object { [int]$_.rule_count }) | Measure-Object -Sum).Sum
 
 $indexModel = [ordered]@{
 	title = "Power Platform Best Practices"
 	subtitle = "Index of all generated HTML rule cards"
-	rulesets = @($rulesets | Sort-Object topic)
+	rulesets = $sortedRulesets
+	topic_summaries = $topicSummaries
+	totalRulesCount = $totalRuleCount
 }
 
 $tempJsonPath = Join-Path ([System.IO.Path]::GetTempPath()) ("rules-index-{0}.json" -f [guid]::NewGuid())

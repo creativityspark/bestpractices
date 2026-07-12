@@ -200,7 +200,7 @@ rules:
       text: A Contact Us basic form in Insert mode paired with table permissions granting Create-only access to the Inquiry table for Anonymous Users.
       icon: icons/shield-alert.svg
     - title: An Application Form implemented as an advanced form with three steps
-      text: 'Value: An Application Form implemented as an advanced form with three steps Personal Details → Upload Documents → Review & Submit. Each step validates required fields before allowing progression.'
+      text: 'An Application Form implemented as an advanced form with three steps Personal Details → Upload Documents → Review & Submit. Each step validates required fields before allowing progression.'
       icon: icons/database.svg
     bad:
     - title: A basic form for the Account table in Edit mode with no table permissions
@@ -286,7 +286,7 @@ rules:
       text: Portal artifacts are stored in a Git repository with a clear folder structure matching the pac paportal download output.
       icon: icons/folder-open.svg
     - title: A CI/CD pipeline runs on every pull request merge
-      text: 'Value: A CI/CD pipeline runs on every pull request merge it downloads the latest portal configuration, applies it to the Test environment, and runs smoke tests before promoting to Production.'
+      text: 'A CI/CD pipeline runs on every pull request merge it downloads the latest portal configuration, applies it to the Test environment, and runs smoke tests before promoting to Production.'
       icon: icons/workflow.svg
     bad:
     - title: Developers edit web templates directly in the Production Power Pages Design
@@ -374,4 +374,7 @@ rules:
   references:
   - title: Content snippets in Power Pages - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-pages/configure/customize-content-snippets
+
+
+
 
