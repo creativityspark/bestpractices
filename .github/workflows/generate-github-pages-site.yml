@@ -31,6 +31,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Generate HTML cards
+        shell: pwsh
+        run: ./scripts/generate-html-cards.ps1
+      - name: Generate HTML index
+        shell: pwsh
+        run: ./scripts/generate-html-index.ps1
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
