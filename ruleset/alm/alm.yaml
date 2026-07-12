@@ -1,9 +1,8 @@
-topic: Application Lifecycle Management (ALM)
-sub_topic: ALM
+topic: ALM
 description: Good practices for Power Platform Application Lifecycle Management.
 rules:
 - id: ALM-001
-  title: Establish a minimum of three environments Development, Test, and Production
+  title: Create separate environments
   description: Establish a minimum of three environments to separate change creation, validation, and live operations.
   guidelines:
   - text: Create dedicated Development environments where makers build and test in isolation using unmanaged solutions.
@@ -55,7 +54,7 @@ rules:
     url: https://learn.microsoft.com/en-us/power-platform/admin/wp-data-loss-prevention
 
 - id: ALM-002
-  title: Always deploy managed solutions to non-development environments
+  title: Use managed solutions
   description: Always deploy managed solutions to Test, UAT, and Production. Reserve unmanaged solutions for Development.
   guidelines:
   - text: Export solutions as managed when deploying to any environment beyond Development.
@@ -156,7 +155,7 @@ rules:
     url: https://learn.microsoft.com/en-us/power-apps/developer/data-platform/introduction-solutions#solution-publisher
 
 - id: ALM-004
-  title: Use environment variables for configuration values that differ between environments
+  title: Use Environment Variables
   description: Use environment variables for values that change by environment instead of hardcoding values in apps, flows, or plug-ins.
   guidelines:
   - text: Create environment variables for URLs, feature flags, email addresses, thresholds, and any value that changes across Dev, Test, and Production.
@@ -222,7 +221,7 @@ rules:
     url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/environmentvariables#use-environment-variables-in-solutions
 
 - id: ALM-005
-  title: Use connection references instead of embedding connections directly
+  title: Use connection references
   description: Use connection references so flows and apps can be rebound to environment-specific connections during deployment.
   guidelines:
   - text: Create connection references in your solution before building flows or apps that use connectors.
@@ -270,7 +269,7 @@ rules:
     url: https://learn.microsoft.com/en-us/power-platform/admin/power-automate-authentication#use-service-principal-based-authentication
 
 - id: ALM-006
-  title: Store all solution artifacts in source control for version history and automation
+  title: Use source control
   description: Store all solution artifacts in source control to enable version history, collaboration, reviews, and deployment automation.
   guidelines:
   - text: Use Power Platform CLI commands such as pac solution clone and pac solution unpack to decompose solution files.
@@ -379,7 +378,7 @@ rules:
     url: https://learn.microsoft.com/en-us/power-platform/admin/create-users-assign-online-security-roles#create-an-application-user
 
 - id: ALM-008
-  title: Integrate Power Platform Solution Checker into CI/CD
+  title: Use Power Platform Solution Checker
   description: Integrate Solution Checker into CI/CD to validate solutions for best-practice, performance, and security issues before deployment.
   guidelines:
   - text: Run Solution Checker on every pull request or build validation pipeline.
@@ -430,7 +429,7 @@ rules:
     url: https://learn.microsoft.com/en-us/power-platform/alm/devops-build-tools#solution-checker
 
 - id: ALM-009
-  title: Apply semantic versioning and increment the version with each deployment
+  title: Use semantic versioning
   description: Apply semantic versioning to every solution and increment the version for every deployment to maintain a clear release history.
   guidelines:
   - text: Use Major.Minor.Build.Revision format, for example 1.0.0.0.
@@ -486,7 +485,6 @@ rules:
     url: https://learn.microsoft.com/en-us/power-platform/alm/update-solutions-alm
   - title: Semantic Versioning specification
     url: https://semver.org/
-
 
 
 

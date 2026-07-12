@@ -30,31 +30,11 @@
 			padding: 24px 32px;
 		}
 
-		.page-header .header-title {
-			font-size: 14px;
-			font-weight: 600;
-			color: #b0c4de;
-			margin-bottom: 2px;
-		}
-
-		.page-header .header-subtitle {
-			font-size: 12px;
-			color: #8fa4c8;
-			margin-bottom: 16px;
-		}
-
 		.page-header .page-title {
 			font-size: 30px;
 			font-weight: 700;
 			color: #ffffff;
-			margin-bottom: 8px;
-		}
-
-		.page-header .page-description {
-			max-width: 760px;
-			font-size: 14px;
-			line-height: 1.6;
-			color: #d7e3f4;
+			margin-bottom: 0;
 		}
 
 		.page-body {
@@ -71,7 +51,13 @@
 		}
 
 		.summary-tile {
-			display: block;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			gap: 6px;
+			min-height: 118px;
 			text-decoration: none;
 			border: 1px solid #e0e0e0;
 			border-radius: 10px;
@@ -80,7 +66,7 @@
 			transition: transform 0.15s ease, border-color 0.15s ease;
 		}
 
-		.summary-tile:hover {
+		.summary-tile-link:hover {
 			transform: translateY(-1px);
 			border-color: #0078d4;
 		}
@@ -89,19 +75,14 @@
 			font-size: 13px;
 			font-weight: 700;
 			color: #1b2a4a;
-			margin-bottom: 6px;
+			margin: 0;
 		}
 
 		.summary-count {
-			font-size: 22px;
+			font-size: 32px;
+			line-height: 1;
 			font-weight: 800;
 			color: #0078d4;
-		}
-
-		.summary-total {
-			font-size: 13px;
-			color: #51627f;
-			margin-top: -8px;
 		}
 
 		.ruleset-card {
@@ -218,28 +199,28 @@
 <body>
 	<div class="page">
 		<div class="page-header">
-			<div class="header-title">Power Platform Best Practices</div>
-			<div class="header-subtitle">HTML Card Index</div>
-			<div class="page-title">{{ title }}</div>
-			<div class="page-description">{{ subtitle }}</div>
+			<div class="page-title">Power Platform Best Practices</div>
 		</div>
 
 		<div class="page-body">
-			<div class="summary-total">Total rules: {{ totalRulesCount }}</div>
 			<div class="summary-grid">
+				<div class="summary-tile" aria-label="Total rules summary">
+					<div class="summary-count">{{ totalRulesCount }}</div>
+					<div class="summary-topic">Total rules</div>
+				</div>
 				{% for summary in topic_summaries %}
-				<a class="summary-tile" href="{{ summary.href }}">
+				<a class="summary-tile summary-tile-link" href="{{ summary.href }}">
+					<div class="summary-count">{{ summary.ruleCount }}</div>
 					<div class="summary-topic">{{ summary.topic }}</div>
-					<div class="summary-count">{{ summary.rule_count }}</div>
 				</a>
 				{% endfor %}
 			</div>
 
 			{% for ruleset in rulesets %}
-			<section class="ruleset-card" id="{{ ruleset.topic | downcase | replace: ' ', '-' }}">
+			<section class="ruleset-card" id="{{ ruleset.anchor }}">
 				<div class="ruleset-card-header">
-					<div class="ruleset-card-title">{{ ruleset.topic }}</div>
-					<div class="ruleset-card-description">{{ ruleset.description_html | raw }}</div>
+					<div class="ruleset-card-title">{{ ruleset.displayTopic }}</div>
+					<div class="ruleset-card-description">{{ ruleset.descriptionHtml | raw }}</div>
 				</div>
 				<div class="rules-grid">
 					{% for rule in ruleset.rules %}

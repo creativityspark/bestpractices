@@ -1,4 +1,5 @@
-topic: Security Roles
+topic: Dataverse
+subtopic: Security Roles
 description: Good practices for Dataverse Security Roles.
 rules:
 - id: SEC-001

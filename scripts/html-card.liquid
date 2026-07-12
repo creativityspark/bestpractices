@@ -220,6 +220,7 @@
         }
 
         .example-box {
+            position: relative;
             border-radius: 8px;
             padding: 20px;
             border: 2px solid;
@@ -235,26 +236,10 @@
             background: #fdf4f3;
         }
 
-        .example-box .example-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .example-box .example-kind {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .example-box .example-kind-icon {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-        }
-
         .example-box .example-label {
+            position: absolute;
+            top: 10px;
+            right: 12px;
             font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
@@ -273,6 +258,7 @@
             font-size: 13px;
             color: #333;
             line-height: 1.55;
+            margin-top: 14px;
         }
 
         .example-content p:first-child {
@@ -283,17 +269,32 @@
             margin-bottom: 0;
         }
 
-        .example-prose-row {
+        .example-content-row {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 12px;
         }
 
-        .example-prose-row .example-prose-icon {
+        .example-content-row .example-content-icon-wrap {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: #edf4fc;
+            border: 1px solid #d9e8f8;
+        }
+
+        .example-content-row .example-content-icon {
             width: 18px;
             height: 18px;
             flex-shrink: 0;
+        }
+
+        .example-content-row .example-content-text {
+            flex: 1;
         }
 
         .example-content pre {
@@ -306,6 +307,7 @@
             border-radius: 6px;
             padding: 10px;
             color: #1f2a44;
+            margin: 0;
         }
 
         .section-title {
@@ -362,7 +364,7 @@
         <!-- Header -->
         <div class="card-header">
             <div class="header-title">Power Platform Best Practices</div>
-            <div class="header-subtitle">{{ breadcrumb_topic }} / {{ breadcrumb_sub_topic }}</div>
+            <div class="header-subtitle">{% if breadcrumb_sub_topic %}{{ breadcrumb_topic }} / {{ breadcrumb_sub_topic }}{% else %}{{ breadcrumb_topic }}{% endif %}</div>
             <div class="title-row">
                 <a href="#"><span class="rule-id">{{ rule.id }}</span></a>
                 <a href="#"><span class="rule-title">{{ rule.title }}</span></a>
@@ -416,42 +418,40 @@
             <div class="examples-grid">
                 {% for example in rule.examples.good %}
                 <div class="example-box do">
-                    <div class="example-header">
-                        <div class="example-kind">
-                            <img class="example-kind-icon" src="{{ asset_img_prefix }}/icons/circle-check-big.svg" alt="Good example" />
-                            <span class="example-label">Do</span>
-                        </div>
-                    </div>
+                    <span class="example-label">DO</span>
                     <div class="example-content">
-                        {% if example.code %}
-                        <pre>{{ example.code }}</pre>
-                        {% else %}
-                        <div class="example-prose-row">
-                            <img class="example-prose-icon" src="{{ asset_img_prefix }}/{% if example.icon %}{{ example.icon }}{% else %}icons/file-text.svg{% endif %}" alt="Example icon" />
+                        <div class="example-content-row">
+                            <div class="example-content-icon-wrap">
+                                <img class="example-content-icon" src="{{ asset_img_prefix }}/{% if example.icon %}{{ example.icon }}{% else %}icons/file-text.svg{% endif %}" alt="Example icon" />
+                            </div>
+                            <div class="example-content-text">
+                                {% if example.code %}
+                                <pre>{{ example.code }}</pre>
+                                {% else %}
+                                {{ example.text_html | raw }}
+                                {% endif %}
+                            </div>
                         </div>
-                        <div>{{ example.text_html | raw }}</div>
-                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
 
                 {% for example in rule.examples.bad %}
                 <div class="example-box dont">
-                    <div class="example-header">
-                        <div class="example-kind">
-                            <img class="example-kind-icon" src="{{ asset_img_prefix }}/icons/x.svg" alt="Bad example" />
-                            <span class="example-label">Don't</span>
-                        </div>
-                    </div>
+                    <span class="example-label">DON'T</span>
                     <div class="example-content">
-                        {% if example.code %}
-                        <pre>{{ example.code }}</pre>
-                        {% else %}
-                        <div class="example-prose-row">
-                            <img class="example-prose-icon" src="{{ asset_img_prefix }}/{% if example.icon %}{{ example.icon }}{% else %}icons/circle-alert.svg{% endif %}" alt="Example icon" />
+                        <div class="example-content-row">
+                            <div class="example-content-icon-wrap">
+                                <img class="example-content-icon" src="{{ asset_img_prefix }}/{% if example.icon %}{{ example.icon }}{% else %}icons/circle-alert.svg{% endif %}" alt="Example icon" />
+                            </div>
+                            <div class="example-content-text">
+                                {% if example.code %}
+                                <pre>{{ example.code }}</pre>
+                                {% else %}
+                                {{ example.text_html | raw }}
+                                {% endif %}
+                            </div>
                         </div>
-                        <div>{{ example.text_html | raw }}</div>
-                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}

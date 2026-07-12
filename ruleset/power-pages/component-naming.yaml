@@ -1,4 +1,5 @@
-topic: Component Naming
+topic: Power Pages
+subtopic: Components
 description: Good practices for Power Pages component naming. i.e., Web Pages, Web Templates, Basic Forms, Advanced Forms, etc.
 rules:
 - id: PPN-001

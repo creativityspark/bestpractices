@@ -55,15 +55,41 @@ $rulesets = foreach ($yamlFile in $yamlFiles) {
 
 	$yamlContent = Get-Content -Path $yamlFile.FullName -Raw
 	$ruleset = ConvertFrom-Yaml -Yaml $yamlContent -Ordered
+	$subTopic = if (-not [string]::IsNullOrWhiteSpace($ruleset.sub_topic)) {
+		$ruleset.sub_topic
+	}
+	elseif (-not [string]::IsNullOrWhiteSpace($ruleset.subtopic)) {
+		$ruleset.subtopic
+	}
+	else {
+		$null
+	}
+	$displayTopic = if (-not [string]::IsNullOrWhiteSpace($subTopic)) {
+		$subTopic
+	}
+	elseif (-not [string]::IsNullOrWhiteSpace($ruleset.topic)) {
+		$ruleset.topic
+	}
+	else {
+		"General"
+	}
+	$anchorBase = (($displayTopic -replace "[^A-Za-z0-9\- ]", "") -replace "\s+", "-").ToLowerInvariant()
+	$folderAnchorSegment = ($relativeDirectory -replace "[\\/]+", "-")
+	$folderAnchorSegment = ($folderAnchorSegment -replace "\s+", "-")
+	$folderAnchorSegment = ($folderAnchorSegment -replace "[^A-Za-z0-9-]", "").ToLowerInvariant()
+	$anchor = if ([string]::IsNullOrWhiteSpace($folderAnchorSegment)) { $anchorBase } else { "{0}-{1}" -f $anchorBase, $folderAnchorSegment }
 
-	[ordered]@{
+	[pscustomobject]@{
 		topic = $ruleset.topic
+		subTopic = $subTopic
+		displayTopic = $displayTopic
+		anchor = $anchor
 		description = $ruleset.description
-		description_html = Convert-MarkdownToHtmlSafe -Markdown $ruleset.description
+		descriptionHtml = Convert-MarkdownToHtmlSafe -Markdown $ruleset.description
 		folder = $relativeDirectory -replace "\\", "/"
 		rules = @(
 			foreach ($rule in $ruleset.rules) {
-				[ordered]@{
+				[pscustomobject]@{
 					id = $rule.id
 					title = $rule.title
 					href = if ([string]::IsNullOrWhiteSpace($relativeDirectory)) {
@@ -75,27 +101,31 @@ $rulesets = foreach ($yamlFile in $yamlFiles) {
 				}
 			}
 		)
-		rule_count = @($ruleset.rules).Count
+		ruleCount = @($ruleset.rules).Count
 	}
 }
 
-$sortedRulesets = @($rulesets | Sort-Object topic)
+$sortedRulesets = @(
+	$rulesets | Sort-Object `
+		@{ Expression = { $_.displayTopic.ToLowerInvariant() } }, `
+		@{ Expression = { $_.topic.ToLowerInvariant() } }, `
+		folder
+)
 
 $topicSummaries = @(
 	foreach ($ruleset in $sortedRulesets) {
-		[ordered]@{
-			topic = $ruleset.topic
-			href = "#" + (($ruleset.topic -replace "[^A-Za-z0-9\- ]", "") -replace "\s+", "-").ToLowerInvariant()
-			rule_count = $ruleset.rule_count
+		[pscustomobject]@{
+			topic = $ruleset.displayTopic
+			href = "#" + $ruleset.anchor
+			ruleCount = $ruleset.ruleCount
 		}
 	}
 )
 
-$totalRuleCount = (@($topicSummaries | ForEach-Object { [int]$_.rule_count }) | Measure-Object -Sum).Sum
+$totalRuleCount = (@($topicSummaries | ForEach-Object { [int]$_.ruleCount }) | Measure-Object -Sum).Sum
 
-$indexModel = [ordered]@{
+$indexModel = [pscustomobject]@{
 	title = "Power Platform Best Practices"
-	subtitle = "Index of all generated HTML rule cards"
 	rulesets = $sortedRulesets
 	topic_summaries = $topicSummaries
 	totalRulesCount = $totalRuleCount
