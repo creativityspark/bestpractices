@@ -134,8 +134,8 @@ foreach ($yamlFile in $yamlFiles) {
 			topic = $ruleset.topic
 			sub_topic = $ruleset.sub_topic
 			ruleset_description = $ruleset.description
-			breadcrumb_topic = if ([string]::IsNullOrWhiteSpace($relativeDirectory)) { $ruleset.topic } else { ($relativeDirectory -split "[\\/]")[0] }
-			breadcrumb_sub_topic = if ($ruleset.sub_topic) { $ruleset.sub_topic } else { $ruleset.topic }
+			breadcrumb_topic = $ruleset.topic
+			breadcrumb_sub_topic = if ([string]::IsNullOrWhiteSpace($ruleset.sub_topic)) { $null } else { $ruleset.sub_topic }
 			asset_img_prefix = $assetImgPrefix
 			index_url = $indexUrl
 			rationale_columns = $rationaleColumns

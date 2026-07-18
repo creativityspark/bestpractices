@@ -1,9 +1,8 @@
-topic: Application Lifecycle Management (ALM)
-sub_topic: ALM
+topic: ALM
 description: Good practices for Power Platform Application Lifecycle Management.
 rules:
 - id: ALM-001
-  title: Establish a minimum of three environments Development, Test, and Production
+  title: Create separate environments
   description: Establish a minimum of three environments to separate change creation, validation, and live operations.
   guidelines:
   - text: Create dedicated Development environments where makers build and test in isolation using unmanaged solutions.
@@ -27,24 +26,18 @@ rules:
     icon: icons/lightbulb.svg
   examples:
     good:
-    - title: Three environments configured
-      text: Three environments are configured as Contoso-Dev, Contoso-Test, and Contoso-Prod.
+    - text: Three environments are configured as **Contoso-Dev**, **Contoso-Test**, and **Contoso-Prod**.
       icon: icons/check.svg
-    - title: Managed promotion path is enforced
-      text: Makers build in Contoso-Dev, deploy managed solutions to Contoso-Test for UAT, and promote the same managed artifact to Contoso-Prod after approval.
+    - text: Makers build in **Contoso-Dev*, deploy managed solutions to **Contoso-Test** for UAT, and promote the same managed artifact to **Contoso-Prod** after approval.
       icon: icons/package.svg
-    - title: Production DLP policy is restrictive
-      text: Production allows only approved business connectors and blocks non-approved connectors.
+    - text: Production allows only **approved** business connectors and blocks **non-approved** connectors.
       icon: icons/lightbulb.svg
     bad:
-    - title: A single environment used for development, testing, and production
-      text: A single environment is used for development, testing, and production simultaneously.
+    - text: A single environment is used for development, testing, and production simultaneously.
       icon: icons/circle-alert.svg
-    - title: Developers making changes directly in the Production environment
-      text: Developers make changes directly in the Production environment.
+    - text: Developers make changes directly in the Production environment.
       icon: icons/settings.svg
-    - title: No DLP policies configured in Production
-      text: No DLP policies are configured, allowing any connector in Production.
+    - text: No DLP policies are configured, allowing any connector in Production.
       icon: icons/workflow.svg
   references:
   - title: Overview of ALM with Microsoft Power Platform - Microsoft Learn
@@ -55,7 +48,7 @@ rules:
     url: https://learn.microsoft.com/en-us/power-platform/admin/wp-data-loss-prevention
 
 - id: ALM-002
-  title: Always deploy managed solutions to non-development environments
+  title: Use managed solutions
   description: Always deploy managed solutions to Test, UAT, and Production. Reserve unmanaged solutions for Development.
   guidelines:
   - text: Export solutions as managed when deploying to any environment beyond Development.
@@ -77,24 +70,18 @@ rules:
     icon: icons/database.svg
   examples:
     good:
-    - title: Managed package promoted to Test
-      text: A solution is exported as managed from Dev and imported into Test for validation.
+    - text: A solution is exported as managed from Dev and imported into Test for validation.
       icon: icons/check.svg
-    - title: Same managed artifact promoted to Production
-      text: After UAT sign-off, the same managed artifact is imported into Production.
+    - text: After UAT sign-off, the same managed artifact is imported into Production.
       icon: icons/package.svg
-    - title: Upgrade process used for updates
-      text: A new version is deployed with Upgrade so deprecated components are removed safely.
+    - text: A new version is deployed with Upgrade so deprecated components are removed safely.
       icon: icons/settings.svg
     bad:
-    - title: An unmanaged solution imported into Production so a developer can quickly fix something
-      text: An unmanaged solution is imported into Production so a developer can quickly fix something.
+    - text: An unmanaged solution is imported into Production so a developer can quickly fix something.
       icon: icons/lightbulb.svg
-    - title: Managed solution deleted and reimported
-      text: A managed solution is deleted and reimported instead of upgraded, creating avoidable risk and potential data loss.
+    - text: A managed solution is deleted and reimported instead of upgraded, creating avoidable risk and potential data loss.
       icon: icons/database.svg
-    - title: Customizations made directly in Production
-      text: Customizations are made directly in Production outside any solution, creating untracked changes.
+    - text: Customizations are made directly in Production outside any solution, creating untracked changes.
       icon: icons/circle-alert.svg
   references:
   - title: Managed and unmanaged solutions - Microsoft Learn
@@ -127,27 +114,20 @@ rules:
     icon: icons/lightbulb.svg
   examples:
     good:
-    - title: Dedicated publisher uses a 3-5 character prefix
-      text: Publisher Contoso Ltd uses prefix cto, and the same publisher is used in Dev, Test, and Prod.
+    - text: Publisher Contoso Ltd uses prefix cto, and the same publisher is used in Dev, Test, and Prod.
       icon: icons/pencil.svg
-    - title: Solution naming and versioning are consistent
-      text: Solution name is CTO_HROnboarding with version 1.2.0.0.
+    - text: Solution name is CTO_HROnboarding with version 1.2.0.0.
       icon: icons/package.svg
-    - title: Custom components use the short publisher prefix
-      text: Custom tables and columns follow names such as cto_employee and cto_onboardingtask.
+    - text: Custom tables and columns follow names such as cto_employee and cto_onboardingtask.
       icon: icons/database.svg
     bad:
-    - title: Using the default CDS Default Publisher with prefix cr for production solutions
-      text: Using the default CDS Default Publisher with prefix cr for production solutions.
+    - text: Using the default CDS Default Publisher with prefix cr for production solutions.
       icon: icons/lightbulb.svg
-    - title: Publisher prefix is too long and unreadable
-      text: Publisher prefix mycompanyglobaltradingsolutions is too long and makes schema names hard to read.
+    - text: Publisher prefix mycompanyglobaltradingsolutions is too long and makes schema names hard to read.
       icon: icons/book-open.svg
-    - title: Solution version stays fixed across deployments
-      text: Solution version remains 1.0.0.0 across deployments with no version history.
+    - text: Solution version remains 1.0.0.0 across deployments with no version history.
       icon: icons/check.svg
-    - title: Different publishers used in Dev and Prod
-      text: Different publishers are used in Dev and Prod, causing import conflicts.
+    - text: Different publishers are used in Dev and Prod, causing import conflicts.
       icon: icons/circle-alert.svg
   references:
   - title: Create a solution publisher - Microsoft Learn
@@ -156,7 +136,7 @@ rules:
     url: https://learn.microsoft.com/en-us/power-apps/developer/data-platform/introduction-solutions#solution-publisher
 
 - id: ALM-004
-  title: Use environment variables for configuration values that differ between environments
+  title: Use Environment Variables
   description: Use environment variables for values that change by environment instead of hardcoding values in apps, flows, or plug-ins.
   guidelines:
   - text: Create environment variables for URLs, feature flags, email addresses, thresholds, and any value that changes across Dev, Test, and Production.
@@ -186,35 +166,29 @@ rules:
     icon: icons/circle-alert.svg
   examples:
     good:
-    - title: Variable names are standardized and discoverable
-      text: Variables follow names like cto_SharePointSiteUrl, cto_NotificationMailbox, and cto_Feature_EnableAutoAssign.
+    - text: Variables follow names like cto_SharePointSiteUrl, cto_NotificationMailbox, and cto_Feature_EnableAutoAssign.
       icon: icons/pencil.svg
-    - title: Current values differ by environment not by code edits
-      text: Dev uses https://contoso-dev.sharepoint.com/sites/hr, Test uses https://contoso-test.sharepoint.com/sites/hr, and Prod uses https://contoso.sharepoint.com/sites/hr through current values.
+    - text: Dev uses https://contoso-dev.sharepoint.com/sites/hr, Test uses https://contoso-test.sharepoint.com/sites/hr, and Prod uses https://contoso.sharepoint.com/sites/hr through current values.
       icon: icons/link.svg
-    - title: Secrets are stored as Secret variables
-      text: API credentials are stored in Secret environment variables and are not hardcoded in flow actions.
+    - text: API credentials are stored in Secret environment variables and are not hardcoded in flow actions.
       icon: icons/shield-alert.svg
-    - title: Deployment pipeline applies environment-specific overrides
-      text: The pipeline sets current values during import so the same managed solution deploys safely across environments.
+    - text: The pipeline sets current values during import so the same managed solution deploys safely across environments.
       icon: icons/workflow.svg
     bad:
     - title: Non-compliant code example
       code: |-
         // URL hardcoded directly in a Power Automate flow action:
-        // Site Address: https://contoso.sharepoint.com/sites/hr
+        // Site Address: `https://contoso.sharepoint.com/sites/hr`
         //
         // When deployed to Test, the flow still points to Production SharePoint,
         // causing test data to be written to the live site.
-      language: Plain Text
     - title: Non-compliant code example
       code: |-
         // API key pasted directly into an HTTP action:
-        // Authorization: Bearer sk-abc123secretkey
+        // Authorization: `Bearer sk-abc123secretkey`
         //
         // The secret is visible to anyone who can edit the flow
         // and is exported with the solution in plain text.
-      language: Plain Text
   references:
   - title: Environment variables overview - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/environmentvariables
@@ -222,7 +196,7 @@ rules:
     url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/environmentvariables#use-environment-variables-in-solutions
 
 - id: ALM-005
-  title: Use connection references instead of embedding connections directly
+  title: Use connection references
   description: Use connection references so flows and apps can be rebound to environment-specific connections during deployment.
   guidelines:
   - text: Create connection references in your solution before building flows or apps that use connectors.
@@ -244,24 +218,18 @@ rules:
     icon: icons/package.svg
   examples:
     good:
-    - title: Shared connection reference is defined once
-      text: The solution defines cto_SharePointConnection and all relevant flows use that reference.
+    - text: The solution defines cto_SharePointConnection and all relevant flows use that reference.
       icon: icons/link.svg
-    - title: Import mapping uses approved target credentials
-      text: During Production import, cto_SharePointConnection is mapped to a service account connection.
+    - text: During Production import, cto_SharePointConnection is mapped to a service account connection.
       icon: icons/lightbulb.svg
-    - title: Rebinding is environment-specific and controlled
-      text: Test and Production use different underlying credentials without modifying flow definitions.
+    - text: Test and Production use different underlying credentials without modifying flow definitions.
       icon: icons/workflow.svg
     bad:
-    - title: A flow uses a direct connection tied to developer@contoso.com
-      text: A flow uses a direct connection tied to developer@contoso.com. When imported to Production, the flow fails because that user has no permissions in Production.
+    - text: A flow uses a direct connection tied to developer@contoso.com. When imported to Production, the flow fails because that user has no permissions in Production.
       icon: icons/shield-alert.svg
-    - title: Multiple flows create orphaned connections during import
-      text: Multiple flows each create their own connection during import, resulting in dozens of orphaned connections with no clear ownership.
+    - text: Multiple flows each create their own connection during import, resulting in dozens of orphaned connections with no clear ownership.
       icon: icons/users.svg
-    - title: A flow runs under a departing employee connection
-      text: A flow runs under a departing employee's connection. When their account is disabled, all dependent flows stop working.
+    - text: A flow runs under a departing employee's connection. When their account is disabled, all dependent flows stop working.
       icon: icons/check.svg
   references:
   - title: Connection references overview - Microsoft Learn
@@ -270,7 +238,7 @@ rules:
     url: https://learn.microsoft.com/en-us/power-platform/admin/power-automate-authentication#use-service-principal-based-authentication
 
 - id: ALM-006
-  title: Store all solution artifacts in source control for version history and automation
+  title: Use source control
   description: Store all solution artifacts in source control to enable version history, collaboration, reviews, and deployment automation.
   guidelines:
   - text: Use Power Platform CLI commands such as pac solution clone and pac solution unpack to decompose solution files.
@@ -294,24 +262,18 @@ rules:
     icon: icons/users.svg
   examples:
     good:
-    - title: Feature branch workflow is followed
-      text: A developer creates a feature branch, unpacks solution changes, commits, and opens a pull request.
+    - text: A developer creates a feature branch, unpacks solution changes, commits, and opens a pull request.
       icon: icons/package.svg
-    - title: Review checks intended metadata diffs
-      text: A reviewer verifies that only expected Dataverse and flow metadata changes are present in the diff.
+    - text: A reviewer verifies that only expected Dataverse and flow metadata changes are present in the diff.
       icon: icons/check.svg
-    - title: Repository stores both metadata and code
-      text: The repository includes unpacked solution files plus related plug-in and PCF source code.
+    - text: The repository includes unpacked solution files plus related plug-in and PCF source code.
       icon: icons/code-xml.svg
     bad:
-    - title: Solution zip files shared outside source control
-      text: Solution zip files are emailed between team members or stored on a shared drive with names like Solutionv2final_FINAL.zip.
+    - text: Solution zip files are emailed between team members or stored on a shared drive with names like Solutionv2final_FINAL.zip.
       icon: icons/pencil.svg
-    - title: No version history for regressions
-      text: Without version history, teams cannot determine what changed or revert to a previous state.
+    - text: Without version history, teams cannot determine what changed or revert to a previous state.
       icon: icons/lightbulb.svg
-    - title: No branching strategy in shared Dev
-      text: All developers work in the same Dev environment without branching and overwrite each other's changes.
+    - text: All developers work in the same Dev environment without branching and overwrite each other's changes.
       icon: icons/circle-alert.svg
   references:
   - title: Source control with solution files - Microsoft Learn
@@ -346,27 +308,20 @@ rules:
     icon: icons/lightbulb.svg
   examples:
     good:
-    - title: Build stage validates every candidate artifact
-      text: The Build stage exports the solution, validates it with Solution Checker, and publishes a managed artifact for downstream stages.
+    - text: The Build stage exports the solution, validates it with Solution Checker, and publishes a managed artifact for downstream stages.
       icon: icons/check.svg
-    - title: Test deployment is fully automated
-      text: On merge to main, the pipeline deploys to Test, applies environment variable and connection reference mappings, and runs smoke validation.
+    - text: On merge to main, the pipeline deploys to Test, applies environment variable and connection reference mappings, and runs smoke validation.
       icon: icons/workflow.svg
-    - title: Production release is gated
-      text: Production deployment requires business and technical approval, then deploys the exact managed artifact that passed Test.
+    - text: Production deployment requires business and technical approval, then deploys the exact managed artifact that passed Test.
       icon: icons/package.svg
-    - title: Authentication is non-personal
-      text: All pipeline connections use an application user and service principal so releases are not tied to individual employees.
+    - text: All pipeline connections use an application user and service principal so releases are not tied to individual employees.
       icon: icons/shield-alert.svg
     bad:
-    - title: A developer manually exports a solution from Dev, downloads the .zip, and
-      text: A developer manually exports a solution from Dev, downloads the .zip, and imports it into Production from the browser.
+    - text: A developer manually exports a solution from Dev, downloads the .zip, and imports it into Production from the browser.
       icon: icons/eye.svg
-    - title: Pipeline authenticates using a developer's personal credentials - when the
-      text: Pipeline authenticates using a developer's personal credentials - when the developer changes their password, all pipelines break.
+    - text: Pipeline authenticates using a developer's personal credentials - when the developer changes their password, all pipelines break.
       icon: icons/shield-alert.svg
-    - title: No approval gates
-      text: No approval gates a pipeline automatically deploys to Production after a commit, with no human review.
+    - text: No approval gates a pipeline automatically deploys to Production after a commit, with no human review.
       icon: icons/book-open.svg
   references:
   - title: Power Platform Build Tools for Azure DevOps - Microsoft Learn
@@ -379,7 +334,7 @@ rules:
     url: https://learn.microsoft.com/en-us/power-platform/admin/create-users-assign-online-security-roles#create-an-application-user
 
 - id: ALM-008
-  title: Integrate Power Platform Solution Checker into CI/CD
+  title: Use Power Platform Solution Checker
   description: Integrate Solution Checker into CI/CD to validate solutions for best-practice, performance, and security issues before deployment.
   guidelines:
   - text: Run Solution Checker on every pull request or build validation pipeline.
@@ -401,27 +356,20 @@ rules:
     icon: icons/package.svg
   examples:
     good:
-    - title: Checker runs automatically on pull requests
-      text: Every pull request triggers Solution Checker and posts results before merge approval.
+    - text: Every pull request triggers Solution Checker and posts results before merge approval.
       icon: icons/check.svg
-    - title: Severity thresholds are enforced
-      text: The pipeline stops when critical or high issues exceed the configured threshold.
+    - text: The pipeline stops when critical or high issues exceed the configured threshold.
       icon: icons/workflow.svg
-    - title: Reports are retained and reviewed
-      text: Checker reports are published as artifacts and reviewed in release readiness meetings.
+    - text: Checker reports are published as artifacts and reviewed in release readiness meetings.
       icon: icons/users.svg
-    - title: Quality trend is monitored
-      text: The team tracks checker findings over time and removes recurring anti-patterns from shared components.
+    - text: The team tracks checker findings over time and removes recurring anti-patterns from shared components.
       icon: icons/lightbulb.svg
     bad:
-    - title: Solution Checker is never run - issues are discovered by users in Production.
-      text: Solution Checker is never run - issues are discovered by users in Production.
+    - text: Solution Checker is never run - issues are discovered by users in Production.
       icon: icons/circle-alert.svg
-    - title: Checker is configured but its results are ignored - the pipeline always
-      text: Checker is configured but its results are ignored - the pipeline always proceeds regardless of findings.
+    - text: Checker is configured but its results are ignored - the pipeline always proceeds regardless of findings.
       icon: icons/settings.svg
-    - title: Checker is only run manually by one team member before major releases, missing
-      text: Checker is only run manually by one team member before major releases, missing issues in intermediate deployments.
+    - text: Checker is only run manually by one team member before major releases, missing issues in intermediate deployments.
       icon: icons/package.svg
   references:
   - title: Power Platform Checker - Microsoft Learn
@@ -430,7 +378,7 @@ rules:
     url: https://learn.microsoft.com/en-us/power-platform/alm/devops-build-tools#solution-checker
 
 - id: ALM-009
-  title: Apply semantic versioning and increment the version with each deployment
+  title: Use semantic versioning
   description: Apply semantic versioning to every solution and increment the version for every deployment to maintain a clear release history.
   guidelines:
   - text: Use Major.Minor.Build.Revision format, for example 1.0.0.0.
@@ -456,37 +404,28 @@ rules:
     icon: icons/check.svg
   examples:
     good:
-    - title: Initial release
-      text: 1.0.0.0 - Initial release.
+    - text: 1.0.0.0 - Initial release.
       icon: icons/package.svg
-    - title: Backward-compatible feature
-      text: 1.1.0.0 - New feature added (leave approval workflow).
+    - text: 1.1.0.0 - New feature added (leave approval workflow).
       icon: icons/workflow.svg
-    - title: Patch release
-      text: 1.1.1.0 - Bug fix (corrected email notification template).
+    - text: 1.1.1.0 - Bug fix (corrected email notification template).
       icon: icons/lightbulb.svg
-    - title: Breaking change release
-      text: 2.0.0.0 - Major redesign with schema changes (requires data migration).
+    - text: 2.0.0.0 - Major redesign with schema changes (requires data migration).
       icon: icons/database.svg
-    - title: Pipeline-managed version increment
-      text: Version is incremented automatically by the CI/CD pipeline on each build.
+    - text: Version is incremented automatically by the CI/CD pipeline on each build.
       icon: icons/check.svg
     bad:
-    - title: Every deployment uses version 1.0.0.0
-      text: Every deployment uses version 1.0.0.0, leaving no way to distinguish releases.
+    - text: Every deployment uses version 1.0.0.0, leaving no way to distinguish releases.
       icon: icons/circle-alert.svg
-    - title: Versions incremented randomly with no pattern
-      text: "Version numbers are incremented randomly with no pattern: 1.0.0.0 -> 3.5.0.0 -> 2.1.0.0."
+    - text: "Version numbers are incremented randomly with no pattern: 1.0.0.0 -> 3.5.0.0 -> 2.1.0.0."
       icon: icons/book-open.svg
-    - title: Version update is manual and often missed
-      text: Version is updated manually and sometimes forgotten, causing import warnings or failures in target environments.
+    - text: Version is updated manually and sometimes forgotten, causing import warnings or failures in target environments.
       icon: icons/settings.svg
   references:
   - title: Solution versioning - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-platform/alm/update-solutions-alm
   - title: Semantic Versioning specification
     url: https://semver.org/
-
 
 
 

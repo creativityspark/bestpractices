@@ -1,4 +1,5 @@
-topic: Plugins
+topic: Dataverse
+subtopic: Plugins
 description: Good practices for Dataverse C# Plugins.
 rules:
 - id: PLG-001

@@ -1,4 +1,4 @@
-topic: PCF Controls
+topic: PCF
 description: Good practices for Power Apps Component Framework (PCF) code components.
 rules:
 - id: PCF-001
