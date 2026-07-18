@@ -110,13 +110,13 @@ $defs:
   example:
     type: object
     description: >
-      A single illustrative example. Title is always required.
+      A single illustrative example.
       If code is provided, language is required.
       If code is not provided, text is required and icon is optional.
       Icon values may be reused across different rules, but prose example icons should not be repeated within the same rule section (good or bad).
     additionalProperties: false
     required:
-      - title
+      - text
     allOf:
       - if:
           required: [code]
@@ -130,9 +130,6 @@ $defs:
         then:
           required: [text]
     properties:
-      title:
-        type: string
-        description: Short title that summarizes the example.
       text:
         type: string
         description: Explanatory text for non-code examples. Markdown formatting is allowed.

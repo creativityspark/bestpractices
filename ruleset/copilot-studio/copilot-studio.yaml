@@ -1,8 +1,8 @@
 topic: Copilot Studio
-description: Good practices for Microsoft Copilot Studio agent development.
+description: Good practices for Microsoft Copilot Studio agents development.
 rules:
 - id: CS-001
-  title: Use a consistent naming convention that indicates the topic's category
+  title: Topic Names
   description: All topics must use a consistent naming convention that indicates the topic's category and purpose.
   guidelines:
   - text: Use a Verb-Noun structure for topic names that clearly describes the intent (e.g., Reset Password, Check Order Status).
@@ -26,38 +26,31 @@ rules:
     icon: icons/check.svg
   examples:
     good:
-    - title: HR - Request Leave - clear category and action
-      text: 'HR - Request Leave - clear category and action'
+    - text: The name `HR - Request Leave` -> Clear category and action.
       icon: icons/workflow.svg
-    - title: IT - Reset Password - grouped under IT, describes the intent
-      text: 'IT - Reset Password - grouped under IT, describes the intent'
+    - text: The name `IT - Reset Password` -> Grouped under IT, clearly describes the intent.
       icon: icons/lightbulb.svg
-    - title: Order - Check Status - grouped under Orders, specific action
-      text: 'Order - Check Status - grouped under Orders, specific action'
+    - text: The name `Order - Check Status` -> Grouped under Orders, describes a specific action.
       icon: icons/check.svg
-    - title: Order - Cancel Order - Confirmation - sub-topic clearly linked to parent
-      text: 'Order - Cancel Order - Confirmation - sub-topic clearly linked to parent'
+    - text: The name `Order - Cancel Order - Confirmation` -> Sub-topic clearly linked to parent.
       icon: icons/link.svg
     bad:
-    - title: Topic 1 - default name, no context
-      text: 'Topic 1 - default name, no context'
+    - text: The name `Topic 1` -> Is the default name, no context.
       icon: icons/pencil.svg
-    - title: Help - too vague, could match anything
-      text: 'Help - too vague, could match anything'
+    - text: The name `Help` -> Is too vague, could match anything.
       icon: icons/circle-alert.svg
-    - title: Password - no action described, unclear intent
-      text: 'Password - no action described, unclear intent'
+    - text: The name `Password` -> No action described, unclear intent.
       icon: icons/settings.svg
-    - title: doStuff - meaningless and inconsistent format
-      text: 'doStuff - meaningless and inconsistent format'
+    - text: The name `doStuff` -> meaningless and inconsistent format.
       icon: icons/database.svg
   references:
   - title: Create and edit topics in Copilot Studio - Microsoft Learn
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-create-edit-topics
   - title: Microsoft Copilot Studio implementation guidance - Microsoft Learn
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/overview
+
 - id: CS-002
-  title: Design trigger phrases that are specific, varied, and non-overlapping across
+  title: Trigger Phrases
   description: Design trigger phrases that are specific, varied, and non-overlapping across topics to ensure accurate intent matching.
   guidelines:
   - text: Provide at least 5–10 trigger phrases per topic, covering different ways a user might express the same intent.
@@ -81,25 +74,7 @@ rules:
     icon: icons/users.svg
   examples:
     good:
-    - title: '"I need to reset my password"'
-      text: '"I need to reset my password"'
-      icon: icons/lightbulb.svg
-    - title: '"How do I change my password?"'
-      text: '"How do I change my password?"'
-      icon: icons/check.svg
-    - title: '"My password expired, what do I do?"'
-      text: '"My password expired, what do I do?"'
-      icon: icons/circle-alert.svg
-    - title: '"I forgot my password"'
-      text: '"I forgot my password"'
-      icon: icons/settings.svg
-    - title: '"Can you help me reset my login credentials?"'
-      text: '"Can you help me reset my login credentials?"'
-      icon: icons/workflow.svg
-    - title: '"Password reset request"'
-      text: '"Password reset request"'
-      icon: icons/database.svg
-    - title: Compliant code example
+    - text: Compliant code example
       code: |-
         // Topic: IT - Reset Password
         Trigger phrases:
@@ -109,23 +84,7 @@ rules:
         - "I forgot my password"
         - "Can you help me reset my login credentials?"
         - "Password reset request"
-      language: Plain Text
     bad:
-    - title: '"password" // Too vague, overlaps with other password-related topics'
-      text: '"password" // Too vague, overlaps with other password-related topics'
-      icon: icons/link.svg
-    - title: '"help" // Matches almost anything'
-      text: '"help" // Matches almost anything'
-      icon: icons/package.svg
-    - title: '"reset" // Could apply to many unrelated topics'
-      text: '"reset" // Could apply to many unrelated topics'
-      icon: icons/users.svg
-    - title: '"I forgot my password" // Same phrase already in Reset Password topic'
-      text: '"I forgot my password" // Same phrase already in Reset Password topic'
-      icon: icons/book-open.svg
-    - title: "\"Can't log in\" // Ambiguous, could be either topic"
-      text: "\"Can't log in\" // Ambiguous, could be either topic"
-      icon: icons/file-text.svg
     - title: Non-compliant code example
       code: |-
         // Topic: IT - Reset Password
@@ -138,14 +97,14 @@ rules:
         Trigger phrases:
         - "I forgot my password"   // Same phrase already in Reset Password topic
         - "Can't log in"           // Ambiguous, could be either topic
-      language: Plain Text
   references:
   - title: Best practices for topic trigger phrases - Microsoft Learn
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/trigger-phrases-best-practices
   - title: Analyze bot performance - Microsoft Learn
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-overview
+
 - id: CS-003
-  title: Customize the fallback and error system topics to provide a helpful experience
+  title: Fallback and Error topics
   description: Customize the fallback and error system topics to provide a helpful experience when the agent cannot understand or process a user request.
   guidelines:
   - text: Customize the Fallback system topic with a friendly message that acknowledges the misunderstanding and suggests alternative actions or topics.
@@ -169,15 +128,6 @@ rules:
     icon: icons/circle-alert.svg
   examples:
     good:
-    - title: Check your order status
-      text: 'Check your order status'
-      icon: icons/check.svg
-    - title: Reset your password
-      text: 'Reset your password'
-      icon: icons/lightbulb.svg
-    - title: Contact support"
-      text: 'Contact support"'
-      icon: icons/circle-alert.svg
     - title: Compliant code example
       code: |-
         // Fallback topic — first attempt
@@ -194,7 +144,6 @@ rules:
         // Error topic
         "Something went wrong on my end. Please try again in a moment.
         If the issue continues, contact support at support@contoso.com."
-      language: Plain Text
     bad:
     - title: Non-compliant code example
       code: |-
@@ -207,14 +156,14 @@ rules:
 
         // Technical error exposed to user
         "Error: HTTP 500 — Internal Server Error in flow Run_GetOrderDetails."
-      language: Plain Text
   references:
   - title: Configure the fallback topic - Microsoft Learn
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-system-fallback-topic
   - title: Manage system topics - Microsoft Learn
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-system-topics
+
 - id: CS-004
-  title: Configure knowledge sources carefully and apply appropriate guardrails when
+  title: Knowledge Sources
   description: Configure knowledge sources carefully and apply appropriate guardrails when enabling generative answers.
   guidelines:
   - text: Ensure knowledge source documents are well-structured with clear headings, bullet points, and concise paragraphs to maximize extraction quality.
@@ -240,38 +189,32 @@ rules:
     icon: icons/eye.svg
   examples:
     good:
-    - title: Knowledge sources use clear Markdown headings and short paragraphs optimized
-      text: Knowledge sources use clear Markdown headings and short paragraphs optimized for AI extraction.
+    - text: Knowledge sources use clear Markdown headings and short paragraphs optimized for AI extraction.
       icon: icons/workflow.svg
-    - title: Generative answers are scoped to an internal SharePoint site and a curated FAQ
-      text: Generative answers are scoped to an internal SharePoint site and a curated FAQ document.
+    - text: Generative answers are scoped to an internal SharePoint site and a curated FAQ document.
       icon: icons/file-text.svg
-    - title: A disclaimer is appended
-      text: 'A disclaimer is appended "This answer was generated from our knowledge base. Please verify with official documentation."'
+    - text: 'A disclaimer is appended "This answer was generated from our knowledge base. Please verify with official documentation."'
       icon: icons/link.svg
-    - title: Monthly reviews of conversation transcripts identify two new frequently asked
-      text: Monthly reviews of conversation transcripts identify two new frequently asked questions that are added to the FAQ.
+    - text: Monthly reviews of conversation transcripts identify two new frequently asked questions that are added to the FAQ.
       icon: icons/code-xml.svg
     bad:
-    - title: A 200-page unstructured PDF is uploaded as a knowledge source, producing
-      text: A 200-page unstructured PDF is uploaded as a knowledge source, producing unreliable generative answers.
+    - text: A 200-page unstructured PDF is uploaded as a knowledge source, producing unreliable generative answers.
       icon: icons/lightbulb.svg
-    - title: Knowledge source documents have not been updated in over a year, and the agent
-      text: Knowledge source documents have not been updated in over a year, and the agent gives outdated policy information.
+    - text: Knowledge source documents have not been updated in over a year, and the agent gives outdated policy information.
       icon: icons/check.svg
-    - title: Generative answers are enabled without scope restrictions, causing the agent to
-      text: Generative answers are enabled without scope restrictions, causing the agent to answer questions outside its domain with fabricated information.
+    - text: Generative answers are enabled without scope restrictions, causing the agent to answer questions outside its domain with fabricated information.
       icon: icons/circle-alert.svg
-    - title: No disclaimer is provided for AI-generated legal or compliance guidance.
-      text: No disclaimer is provided for AI-generated legal or compliance guidance.
+    - text: No disclaimer is provided for AI-generated legal or compliance guidance.
       icon: icons/settings.svg
   references:
   - title: Use knowledge sources for generative answers - Microsoft Learn
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/nlu-boost-conversations
   - title: Manage knowledge sources - Microsoft Learn
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/manage-knowledge-sources
+
+
 - id: CS-005
-  title: Enable end-user authentication and follow security best practices when
+  title: Security
   description: Enable end-user authentication and follow security best practices when connecting your agent to external systems and data.
   guidelines:
   - text: Enable user authentication in the agent settings and require users to sign in before accessing sensitive data or performing actions.
@@ -297,32 +240,27 @@ rules:
     icon: icons/lightbulb.svg
   examples:
     good:
-    - title: Authentication is enabled with Microsoft Entra ID; users sign in via SSO when
-      text: Authentication is enabled with Microsoft Entra ID; users sign in via SSO when they open the agent in Teams.
+    - text: Authentication is enabled with Microsoft Entra ID; users sign in via SSO when they open the agent in Teams.
       icon: icons/shield-alert.svg
-    - title: A Power Automate flow retrieves the user's pending approvals using the
-      text: A Power Automate flow retrieves the user's pending approvals using the authenticated user's token, so each user only sees their own data.
+    - text: A Power Automate flow retrieves the user's pending approvals using the authenticated user's token, so each user only sees their own data.
       icon: icons/database.svg
-    - title: API keys for a third-party service are stored in Azure Key Vault and referenced
-      text: API keys for a third-party service are stored in Azure Key Vault and referenced via environment variables in the solution.
+    - text: API keys for a third-party service are stored in Azure Key Vault and referenced via environment variables in the solution.
       icon: icons/link.svg
     bad:
-    - title: The agent is published without authentication, allowing anonymous users to
-      text: The agent is published without authentication, allowing anonymous users to access internal HR data.
+    - text: The agent is published without authentication, allowing anonymous users to access internal HR data.
       icon: icons/users.svg
-    - title: A Power Automate flow runs under a service account with global admin
-      text: A Power Automate flow runs under a service account with global admin permissions to retrieve employee records, ignoring individual user permissions.
+    - text: A Power Automate flow runs under a service account with global admin permissions to retrieve employee records, ignoring individual user permissions.
       icon: icons/workflow.svg
-    - title: An API key is pasted directly into a topic's HTTP request action and is visible
-      text: An API key is pasted directly into a topic's HTTP request action and is visible in the solution export.
+    - text: An API key is pasted directly into a topic's HTTP request action and is visible in the solution export.
       icon: icons/package.svg
   references:
   - title: Configure user authentication in Copilot Studio - Microsoft Learn
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/configuration-end-user-authentication
   - title: Configure single sign-on for Copilot Studio - Microsoft Learn
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/configure-sso
+
 - id: CS-006
-  title: Use solution-based development and environment separation to manage your agent
+  title: Use Solutions
   description: Use solution-based development and environment separation to manage your agent through development, testing, and production stages.
   guidelines:
   - text: Develop agents inside a managed solution - never build directly in the default environment or outside a solution.
@@ -348,32 +286,27 @@ rules:
     icon: icons/code-xml.svg
   examples:
     good:
-    - title: The agent and all its dependencies (topics, flows, connection references
-      text: The agent and all its dependencies (topics, flows, connection references, environment variables) are packaged in a solution named ContosoITHelpDesk.
+    - text: The agent and all its dependencies (topics, flows, connection references, environment variables) are packaged in a solution named ContosoITHelpDesk.
       icon: icons/pencil.svg
-    - title: A GitHub Actions pipeline exports the solution from Dev, imports it into Test
-      text: A GitHub Actions pipeline exports the solution from Dev, imports it into Test, and after approval, promotes it to Production.
+    - text: A GitHub Actions pipeline exports the solution from Dev, imports it into Test, and after approval, promotes it to Production.
       icon: icons/workflow.svg
-    - title: Environment variables evServiceNowUrl and evApprovalEmailGroup are configured
-      text: Environment variables evServiceNowUrl and evApprovalEmailGroup are configured per environment.
+    - text: Environment variables evServiceNowUrl and evApprovalEmailGroup are configured per environment.
       icon: icons/link.svg
     bad:
-    - title: The agent is built in the default environment with no solution, and topics are
-      text: The agent is built in the default environment with no solution, and topics are manually recreated in production.
+    - text: The agent is built in the default environment with no solution, and topics are manually recreated in production.
       icon: icons/package.svg
-    - title: Changes are tested in production because there is only one environment.
-      text: Changes are tested in production because there is only one environment.
+    - text: Changes are tested in production because there is only one environment.
       icon: icons/check.svg
-    - title: A flow contains a hard-coded URL https
-      text: 'A flow contains a hard-coded URL https //dev-api.contoso.com that fails when imported to the production environment.'
+    - text: 'A flow contains a hard-coded URL https //dev-api.contoso.com that fails when imported to the production environment.'
       icon: icons/code-xml.svg
   references:
   - title: Export and import agents using solutions - Microsoft Learn
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-export-import-bots
   - title: Application lifecycle management with Power Platform - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-platform/alm/overview-alm
+
 - id: CS-007
-  title: Establish a thorough testing strategy and use built-in analytics to continuously
+  title: Testing and Analytics
   description: Establish a thorough testing strategy and use built-in analytics to continuously improve your agent's performance.
   guidelines:
   - text: Use the Test bot pane during development to verify every topic's conversation path, including branching and error scenarios.
@@ -399,24 +332,18 @@ rules:
     icon: icons/lightbulb.svg
   examples:
     good:
-    - title: A test script documents 50+ test scenarios, including happy paths, edge cases
-      text: A test script documents 50+ test scenarios, including happy paths, edge cases, and fallback triggers, and is executed before every release.
+    - text: A test script documents 50+ test scenarios, including happy paths, edge cases, and fallback triggers, and is executed before every release.
       icon: icons/workflow.svg
-    - title: The analytics dashboard is reviewed weekly; a drop in resolution rate from 85%
-      text: The analytics dashboard is reviewed weekly; a drop in resolution rate from 85% to 70% triggers an investigation and topic updates.
+    - text: The analytics dashboard is reviewed weekly; a drop in resolution rate from 85% to 70% triggers an investigation and topic updates.
       icon: icons/package.svg
-    - title: Conversation transcripts reveal that users frequently ask about "PTO balance"
-      text: Conversation transcripts reveal that users frequently ask about "PTO balance" but no topic exists - a new topic is created.
+    - text: Conversation transcripts reveal that users frequently ask about "PTO balance" but no topic exists - a new topic is created.
       icon: icons/users.svg
     bad:
-    - title: Topics are published without testing; users discover that a critical branch
-      text: Topics are published without testing; users discover that a critical branch leads to a dead end.
+    - text: Topics are published without testing; users discover that a critical branch leads to a dead end.
       icon: icons/check.svg
-    - title: Analytics are never reviewed; the agent's fallback rate has been 40% for months
-      text: Analytics are never reviewed; the agent's fallback rate has been 40% for months without anyone noticing.
+    - text: Analytics are never reviewed; the agent's fallback rate has been 40% for months without anyone noticing.
       icon: icons/circle-alert.svg
-    - title: Conversation transcripts are enabled but never read, missing opportunities to
-      text: Conversation transcripts are enabled but never read, missing opportunities to improve the agent.
+    - text: Conversation transcripts are enabled but never read, missing opportunities to improve the agent.
       icon: icons/code-xml.svg
   references:
   - title: Test your agent - Microsoft Learn
@@ -425,8 +352,9 @@ rules:
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-overview
   - title: Export conversation transcripts - Microsoft Learn
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-sessions-transcripts
+
 - id: CS-008
-  title: Plan your deployment channels carefully and design the conversational experience
+  title: Channels
   description: Plan your deployment channels carefully and design the conversational experience to match each channel's capabilities.
   guidelines:
   - text: Identify and prioritize the target channels (Microsoft Teams, web chat, mobile, custom) before designing the conversation flow.
@@ -452,15 +380,6 @@ rules:
     icon: icons/book-open.svg
   examples:
     good:
-    - title: "\U0001F511 Password resets"
-      text: "\U0001F511 Password resets"
-      icon: icons/lightbulb.svg
-    - title: "\U0001F4BB Software requests"
-      text: "\U0001F4BB Software requests"
-      icon: icons/check.svg
-    - title: "\U0001F3AB Ticket status"
-      text: "\U0001F3AB Ticket status"
-      icon: icons/circle-alert.svg
     - title: Compliant code example
       code: |-
         // Greeting message
@@ -473,7 +392,6 @@ rules:
 
         // Suggested actions after a response
         [Reset Password] [Check Ticket Status] [Talk to an Agent]
-      language: Plain Text
     bad:
     - title: Non-compliant code example
       code: |-
@@ -486,14 +404,14 @@ rules:
         printer setup, account unlocking, MFA enrollment, and many other IT-related tasks.
         Please type your question below and we will try to help you as best we can.
         If we cannot help you, we will transfer you to an agent."
-      language: Plain Text
   references:
   - title: Publish your agent to multiple channels - Microsoft Learn
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/publication-fundamentals-publish-channels
   - title: Configure the greeting topic - Microsoft Learn
     url: https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-system-topics
+
 - id: CS-009
-  title: Apply responsible AI principles and configure content moderation to ensure your
+  title: Responsible AI
   description: Apply responsible AI principles and configure content moderation to ensure your agent produces safe, accurate, and appropriate responses.
   guidelines:
   - text: Enable content moderation to filter harmful, offensive, or inappropriate content from both user inputs and agent responses.
@@ -519,24 +437,18 @@ rules:
     icon: icons/settings.svg
   examples:
     good:
-    - title: Content moderation is enabled; the agent refuses to engage with abusive or
-      text: "Content moderation is enabled; the agent refuses to engage with abusive or harmful input and responds with \"I'm here to help with IT support questions. Let me know how I can assist you.\""
+    - text: Content moderation is enabled; the agent refuses to engage with abusive or harmful input and responds with "I'm here to help with IT support questions. Let me know how I can assist you."
       icon: icons/lightbulb.svg
-    - title: The system message instructs the agent
-      text: 'The system message instructs the agent "You are an IT help desk assistant. Only answer questions related to IT support. Do not provide medical, legal, or financial advice."'
+    - text: The system message instructs the agent "You are an IT help desk assistant. Only answer questions related to IT support. Do not provide medical, legal, or financial advice."
       icon: icons/circle-alert.svg
-    - title: When asked a medical question, the agent responds
-      text: "When asked a medical question, the agent responds \"I'm not able to help with medical questions. Please consult a healthcare professional.\""
+    - text: When asked a medical question, the agent responds "I'm not able to help with medical questions. Please consult a healthcare professional."
       icon: icons/check.svg
     bad:
-    - title: Content moderation is disabled; the agent responds to abusive messages or
-      text: Content moderation is disabled; the agent responds to abusive messages or generates inappropriate content.
+    - text: Content moderation is disabled; the agent responds to abusive messages or generates inappropriate content.
       icon: icons/settings.svg
-    - title: No behavioral guardrails are set; the agent answers questions about any topic
-      text: No behavioral guardrails are set; the agent answers questions about any topic, including areas where inaccurate answers could cause harm.
+    - text: No behavioral guardrails are set; the agent answers questions about any topic, including areas where inaccurate answers could cause harm.
       icon: icons/workflow.svg
-    - title: The agent provides detailed financial investment advice with no disclaimer
-      text: The agent provides detailed financial investment advice with no disclaimer, exposing the organization to liability.
+    - text: The agent provides detailed financial investment advice with no disclaimer, exposing the organization to liability.
       icon: icons/database.svg
   references:
   - title: Responsible AI FAQ for Copilot Studio - Microsoft Learn

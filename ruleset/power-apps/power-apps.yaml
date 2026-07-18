@@ -30,14 +30,12 @@ rules:
         // On scrDetails: use the context variable, not the gallery control from scrHome
         lblOrderTitle.Text: locSelectedOrder.Title
         lblOrderStatus.Text: locSelectedOrder.Status
-      language: Plain Text
     bad:
     - title: Non-compliant code example
       code: |-
         // On scrDetails: directly referencing a gallery on scrHome
         lblOrderTitle.Text: scrHome.galOrders.Selected.Title
         lblOrderStatus.Text: scrHome.galOrders.Selected.Status
-      language: Plain Text
   references:
   - title: Microsoft Learn - Power Platform Documentation
     url: https://learn.microsoft.com/en-us/power-platform/

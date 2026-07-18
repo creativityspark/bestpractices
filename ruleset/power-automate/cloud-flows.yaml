@@ -385,7 +385,6 @@ rules:
             Terminate with Failed Status
         Scope: Finally - Cleanup (Run after: Catch)
             Update Processing Status
-      language: Plain Text
     bad:
     - title: No error handling at all, so the flow silently fails.
       text: No error handling at all, so the flow silently fails.
@@ -429,7 +428,6 @@ rules:
             Initialize arrResults
         Scope: Try - Main Logic
             ...
-      language: Plain Text
     bad:
     - title: Mixes initialization with other actions and initializes a variable inside a
       code: |
@@ -438,7 +436,6 @@ rules:
         Condition: Check Status
             Yes: Initialize intCount
             No: ...
-      language: Plain Text
   references:
   - title: Microsoft Learn - Power Automate Documentation
     url: https://learn.microsoft.com/en-us/power-automate/
@@ -699,7 +696,6 @@ rules:
         Select columns: fullname,emailaddress1
         Filter rows: statuscode eq 1
         Row count: 50
-      language: Plain Text
     bad:
     - title: Using List Rows with no column selection, which retrieves all columns for every
       text: Using List Rows with no column selection, which retrieves all columns for every row.

@@ -262,14 +262,12 @@ rules:
           If No  → Stop Workflow (Cancelled: "Email is missing. Cannot send notification.")
           If Yes → Send Email
         Step 3: Update Record → Set csp_workflow_status = "Completed"
-      language: Plain Text
     bad:
     - title: Non-compliant code example
       code: |-
         Step 1: Send Email  → Fails because Email field is empty
                             → Workflow shows as "Failed" in System Jobs
                             → No indication on the record of what went wrong
-      language: Plain Text
   references:
   - title: Workflow stages and steps - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/configure-workflow-steps

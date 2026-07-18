@@ -106,7 +106,6 @@ rules:
           Group: Cases
             - Active Cases
             - Knowledge Articles
-      language: Plain Text
     bad:
     - title: tbl_lead
       text: 'tbl_lead'
@@ -149,7 +148,6 @@ rules:
               - tbl_ka
               - tbl_ord
               - tbl_inv
-      language: Plain Text
   references:
   - title: Create a model-driven app site map - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/maker/model-driven-apps/create-site-map-app
@@ -398,7 +396,6 @@ rules:
 
         Solution: Contoso Service App (contoso_service)
           → Service-specific forms, views, dashboards, sitemap
-      language: Plain Text
     bad:
     - title: All customizations in a single monolithic solution that takes 30+ minutes to
       text: All customizations in a single monolithic solution that takes 30+ minutes to import and cannot be partially rolled back.

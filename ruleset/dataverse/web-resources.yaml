@@ -35,7 +35,6 @@ rules:
         contoso_/html/account/quickView.html
         contoso_/css/common.css
         contoso_/img/icons/phone.svg
-      language: Plain Text
     bad:
     - title: Non-compliant code example
       code: |-
@@ -43,7 +42,6 @@ rules:
         new_script2.js
         accountformeventsvalidationandribbon.js
         contoso_/js/features/module1/submodule2/helpers/internal/utils.js
-      language: Plain Text
   references:
   - title: Web resources in model-driven apps - Microsoft Learn
     url: https://learn.microsoft.com/en-us/power-apps/developer/model-driven-apps/web-resources
